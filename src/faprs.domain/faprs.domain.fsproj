@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Common.fs" />
+    <Compile Include="APRSDataExtensions.fs" />
+    <Compile Include="TNC2MON.fs" />
+  </ItemGroup>
+</Project>
