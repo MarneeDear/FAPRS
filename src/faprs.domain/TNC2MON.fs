@@ -25,5 +25,9 @@ module TNC2MON =
     //     }
 
     let buildTncPaketAscii packet =
-        sprintf "%s>%s,%s:%s" packet.Sender packet.Destination (packet.Path.ToString()) (Option.defaultWith String.Empty packet.Message)
+        let message =
+            match packet.Message with
+            | Some p -> p.ToString()
+            | None -> String.Empty
+        sprintf "%s>%s,%s:%s" packet.Sender packet.Destination (packet.Path.ToString()) message
         
