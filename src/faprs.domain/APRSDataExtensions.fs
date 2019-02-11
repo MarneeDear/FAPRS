@@ -24,7 +24,7 @@ module APRSData =
 
     type Latitude =
         {
-            Degrees : decimal
+            Degrees : float
             Hemisphere : LatitiudeHemisphere
         }
         override this.ToString() =
@@ -33,7 +33,7 @@ module APRSData =
 
     type Longitude =
         {
-            Degrees : decimal
+            Degrees : float
             Hemisphere : LongitudeHemisphere
         }
         override this.ToString() =
@@ -49,22 +49,27 @@ module APRSData =
 
     type Position =
         {
-            Latitude : Latitude //TODO make latititude and longitude their own things
+            Latitude : Latitude 
             Longitude : Longitude
         }
 //TODO support more position report types -- data extensions
     type PositionReport =
         {
             Position : Position
+            Symbol : SymbolCode
             //TODO Comment =%s/%s-
         }
         override this.ToString() =
-            sprintf "=%s/%s" (this.Position.Latitude.ToString()) (this.Position.Longitude.ToString())
+            //Must end ina Symbol Code
+            // Position coordinates are a combination of latitude and longitude, separated
+            // by a display Symbol Table Identifier, and followed by a Symbol Code. 
+            //TODO build list of symbol codes
+            sprintf "=%s/%s%c" (this.Position.Latitude.ToString()) (this.Position.Longitude.ToString()) (this.Symbol.ToChar())
 
-    let positionReport lat lon =
-        {
-            Position = { Latitude = lat; Longitude = lon }
-        }
+    // let positionReport lat lon =
+    //     {
+    //         Position = { Latitude = lat; Longitude = lon }
+    //     }
 
     type Message =
         | PlainText         of string

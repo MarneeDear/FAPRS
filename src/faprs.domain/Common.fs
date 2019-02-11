@@ -1,7 +1,5 @@
 namespace faprs.domain
 
-open System
-
 [<AutoOpen>]
 module Common =
 //        https://stackoverflow.com/questions/791706/how-do-i-customize-output-of-a-custom-type-using-printf
@@ -18,6 +16,27 @@ module Common =
             match this with
             | WIDEnN  _  -> "WIDE1-1"
             | _         -> failwith "Path type not found"
+
+    //This is only a subset of the codes because I don't want to support all of them
+    type SymbolCode =
+        | House 
+        | Bicycle 
+        | Balloon 
+        | Hospital
+        | Jeep 
+        | Truck
+        | Motocycle
+        | Jogger
+        member this.ToChar() =
+            match this with
+            | House     -> '-'
+            | Bicycle   -> 'b'
+            | Balloon   -> 'O'
+            | Hospital  -> 'h'
+            | Jeep      -> 'j'
+            | Truck     -> 'k'
+            | Motocycle -> '<'
+            | Jogger    -> '['
 
     //9 byte field
     //TODO limit to 9 bytes instead of 6 chars. Some senders use an SSID
