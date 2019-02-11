@@ -13,4 +13,7 @@
     <PackageReference Include="YoloDev.Expecto.TestSdk" Version="0.*" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.*" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\faprs.domain\faprs.domain.fsproj" />
+  </ItemGroup>
 </Project>
