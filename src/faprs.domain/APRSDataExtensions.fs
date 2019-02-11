@@ -27,13 +27,17 @@ module APRSData =
             Degrees : decimal
             Hemisphere : LatitiudeHemisphere
         }
+        override this.ToString() =
+            sprintf "%.2f %c" this.Degrees (this.Hemisphere.ToHemisphereChar())
+
 
     type Longitude =
         {
             Degrees : decimal
             Hemisphere : LongitudeHemisphere
         }
-
+        override this.ToString() =
+            sprintf "%.2f %c" this.Degrees (this.Hemisphere.ToHemisphereChar())
 
 //TODO constrain the size of the Degrees field
 // Latitude is expressed as a fixed 8-character field, in degrees and decimal
@@ -48,10 +52,10 @@ module APRSData =
             Latitude : Latitude //TODO make latititude and longitude their own things
             Longitude : Longitude
         }
-        member this.LatitudeToString() =
-            sprintf "%.2f %c" this.Latitude.Degrees (this.Latitude.Hemisphere.ToHemisphereChar())
-        member this.LongitudeToString() =
-            sprintf "%.2f %c" this.Longitude.Degrees (this.Longitude.Hemisphere.ToHemisphereChar())
+        // member this.LatitudeToString() =
+        //     sprintf "%.2f %c" this.Latitude.Degrees (this.Latitude.Hemisphere.ToHemisphereChar())
+        // member this.LongitudeToString() =
+        //     sprintf "%.2f %c" this.Longitude.Degrees (this.Longitude.Hemisphere.ToHemisphereChar())
 
 //TODO support more position report types -- data extensions
     type PositionReport =
@@ -60,7 +64,7 @@ module APRSData =
             //TODO Comment
         }
         override this.ToString() =
-            sprintf "=%s/%s-" (this.Position.LatitudeToString()) (this.Position.LongitudeToString())
+            sprintf "=%s/%s-" (this.Position.Latitude.ToString()) (this.Position.Longitude.ToString())
 
     let positionReport lat lon =
         {
