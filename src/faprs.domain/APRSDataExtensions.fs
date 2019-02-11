@@ -52,19 +52,14 @@ module APRSData =
             Latitude : Latitude //TODO make latititude and longitude their own things
             Longitude : Longitude
         }
-        // member this.LatitudeToString() =
-        //     sprintf "%.2f %c" this.Latitude.Degrees (this.Latitude.Hemisphere.ToHemisphereChar())
-        // member this.LongitudeToString() =
-        //     sprintf "%.2f %c" this.Longitude.Degrees (this.Longitude.Hemisphere.ToHemisphereChar())
-
 //TODO support more position report types -- data extensions
     type PositionReport =
         {
             Position : Position
-            //TODO Comment
+            //TODO Comment =%s/%s-
         }
         override this.ToString() =
-            sprintf "=%s/%s-" (this.Position.Latitude.ToString()) (this.Position.Longitude.ToString())
+            sprintf "=%s/%s" (this.Position.Latitude.ToString()) (this.Position.Longitude.ToString())
 
     let positionReport lat lon =
         {
