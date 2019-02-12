@@ -7,10 +7,10 @@ module Common =
     //TODO get string rep. of all path types
     type Path =
         | WIDEnN    //of string
-        | RELAY     //Obsolete?
+        //| RELAY     //Obsolete?
         | ECHO      
-        | WIDE      //Obsolete?
-        | TRACE     //Obsolete?
+        //| WIDE      //Obsolete?
+        //| TRACE     //Obsolete?
         | GATE      
         override this.ToString() =
             match this with

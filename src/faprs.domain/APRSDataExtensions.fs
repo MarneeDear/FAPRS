@@ -2,6 +2,15 @@ namespace faprs.domain
 
 //TODO module APRSDataExtensions
 
+type PositionReportComment = private PositionReportComment of string
+module PositionReportComment =
+    let create (s:string) =
+        match (s.Trim()) with
+        | s when s.Length < 44  -> PositionReportComment s
+        | _                     -> failwith "Position Report Comment must be less than 43 characters"
+
+    let value (PositionReportComment c) = c //Was trimmed during create
+
 [<AutoOpen>]
 module APRSData = 
 
@@ -20,7 +29,6 @@ module APRSData =
             match this with
             | East _    -> 'E'
             | West _    -> 'W'
-
 
     type Latitude =
         {
@@ -52,24 +60,19 @@ module APRSData =
             Latitude : Latitude 
             Longitude : Longitude
         }
+
 //TODO support more position report types -- data extensions
     type PositionReport =
         {
             Position : Position
             Symbol : SymbolCode
-            //TODO Comment =%s/%s-
+            Comment : PositionReportComment
         }
         override this.ToString() =
-            //Must end ina Symbol Code
-            // Position coordinates are a combination of latitude and longitude, separated
-            // by a display Symbol Table Identifier, and followed by a Symbol Code. 
-            //TODO build list of symbol codes
-            sprintf "=%s/%s%c" (this.Position.Latitude.ToString()) (this.Position.Longitude.ToString()) (this.Symbol.ToChar())
-
-    // let positionReport lat lon =
-    //     {
-    //         Position = { Latitude = lat; Longitude = lon }
-    //     }
+            //Must end in a Symbol Code
+            //Position coordinates are a combination of latitude and longitude, separated
+            //by a display Symbol Table Identifier, and followed by a Symbol Code. 
+            sprintf "=%s/%s%c%s" (this.Position.Latitude.ToString()) (this.Position.Longitude.ToString()) (this.Symbol.ToChar()) (PositionReportComment.value this.Comment)
 
     type Message =
         | PlainText         of string

@@ -4,6 +4,8 @@ open Expecto
 open faprs.domain.TNC2MON
 open faprs.domain.Common
 open faprs.domain.APRSData
+open System
+open faprs.domain
 
 [<Literal>]
 let SENDER = "kg7sio"
@@ -24,7 +26,8 @@ let PACKET_POSITION_REPORT_HOUSE =
             Latitude = { Degrees = LATITUDE; Hemisphere = LATITUDE_HEMISPHERE }
             Longitude = { Degrees = LONGITUDE; Hemisphere = LONGITUDE_HEMISPHERE} 
         } 
-        Symbol = SymbolCode.House 
+        Symbol = SymbolCode.House
+        Comment = PositionReportComment.create String.Empty
     }
 
 //TODO introduce property based testsing?
@@ -32,7 +35,7 @@ let PACKET_POSITION_REPORT_HOUSE =
 [<Tests>]
 let TNCFormatTests =
     testList "TNC Format Tests" [
-        testCase "Can build a simple Position Report with latitude and longitude" <| fun _ ->
+        testCase "Can build a packet with Position Report with latitude and longitude and upper call sign" <| fun _ ->
             let packet = 
                 {
                     Sender      = CallSign.create (SENDER.ToUpper())
@@ -42,7 +45,7 @@ let TNCFormatTests =
                 }.ToString()
             // Console.WriteLine packet
             Expect.equal packet TNC2_FINAL (sprintf "TNC2 formats didnt match")
-        testCase "Can build a simple Position Report with latitude and longitude and lower callsign goes to upper" <| fun _ ->
+        testCase "Can build a packet with Position Report with latitude and longitude and lower callsign goes to upper" <| fun _ ->
             let packet = 
                 {
                     Sender      = CallSign.create SENDER
@@ -54,11 +57,6 @@ let TNCFormatTests =
             Expect.equal packet TNC2_FINAL (sprintf "TNC2 formats didnt match")
     ]
 
-[<Tests>]
-    let SymbolCodeTests =
-        testList "Symbol Code Tests" [
-            testCase "House" <| fun _ ->
-                Expect.equal (SymbolCode.House.ToChar()) '-' "House code should be -"
-            testCase "Bicycle" <| fun _ ->
-                Expect.equal (SymbolCode.Bicycle.ToChar()) 'b' "Bicycle code should be b"
-        ]
+
+// [<Tests>]
+//     let 
