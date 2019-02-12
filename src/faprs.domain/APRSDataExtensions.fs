@@ -38,7 +38,6 @@ module APRSData =
         override this.ToString() =
             sprintf "%.2f %c" this.Degrees (this.Hemisphere.ToHemisphereChar())
 
-
     type Longitude =
         {
             Degrees : float

@@ -7,11 +7,11 @@ open faprs.domain.APRSData
 open faprs.domain
 
 [<Literal>] 
-let RANDOM_SEED = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+let BIG_MESSAGE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 [<Tests>]
 let APRSDataTests =
     testList "APRS Data Tests" [
         testCase "Position Report comment longer than 43 characters fails" <| fun _ ->
-            Expect.throws (fun _ -> (PositionReportComment.create RANDOM_SEED) |> ignore) "Comment was longer than 43 characters but it dit not fail"
+            Expect.throws (fun _ -> (PositionReportComment.create BIG_MESSAGE) |> ignore) "Comment was longer than 43 characters but it dit not fail"
     ]
