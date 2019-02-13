@@ -7,7 +7,7 @@ module PositionReportComment =
     let create (s:string) =
         match (s.Trim()) with
         | s when s.Length < 44  -> PositionReportComment s
-        | _                     -> failwith "Position Report Comment must be less than 43 characters"
+        | _                     -> failwith "Position Report Comment must be less than 43 characters long."
 
     let value (PositionReportComment c) = c //Was trimmed during create
 
