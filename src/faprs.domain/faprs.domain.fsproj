@@ -8,6 +8,7 @@
     <Compile Include="TNC2MON.fs" />
   </ItemGroup>
   <ItemGroup>
+      <PackageReference Include="Argu" Version="5.2.0" />
       <PackageReference Include="FSharp.Core" Version="4.*" />
   </ItemGroup>
 </Project>

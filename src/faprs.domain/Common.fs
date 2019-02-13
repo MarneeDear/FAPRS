@@ -14,7 +14,7 @@ module Common =
         | GATE      
         override this.ToString() =
             match this with
-            | WIDEnN  _  -> "WIDE1-1"
+            | WIDEnN  _ -> "WIDE1-1"
             | _         -> failwith "Path type not found"
 
     //This is only a subset of the codes because I don't want to support all of them
@@ -25,7 +25,7 @@ module Common =
         | Hospital
         | Jeep 
         | Truck
-        | Motocycle
+        | Motorcycle
         | Jogger
         member this.ToChar() =
             match this with
@@ -35,16 +35,27 @@ module Common =
             | Hospital  -> 'h'
             | Jeep      -> 'j'
             | Truck     -> 'k'
-            | Motocycle -> '<'
+            | Motorcycle -> '<'
             | Jogger    -> '['
 
+    let getSymbolCode symbol =
+        match symbol with
+        | '-' -> House
+        | 'b' -> Bicycle
+        | 'O' -> Balloon
+        | 'h' -> Hospital
+        | 'j' -> Jeep
+        | 'k' -> Truck
+        | '<' -> Motorcycle
+        | '[' -> Jogger
+        | _   -> House
+
     //9 byte field
-    //TODO limit to 9 bytes instead of 6 chars. Some senders use an SSID
     type CallSign = private CallSign of string          
     module CallSign =
         let create (s:string) = 
             match (s.Trim()) with
-            | s when s.Length > 0 && s.Length < 7   -> CallSign s
+            | s when s.Length > 0 && s.Length < 10  -> CallSign s
             | _                                     -> failwith "Call Sign cannot be empty and must be less than 7 characters long."
         let value (CallSign s) = s.ToUpper() // MUST BE ALL CAPS        
         

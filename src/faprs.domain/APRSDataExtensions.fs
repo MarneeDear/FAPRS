@@ -30,13 +30,17 @@ module APRSData =
             | East _    -> 'E'
             | West _    -> 'W'
 
+    let hemisphereToString degrees hemisphereChar =
+        sprintf "%.2f%c" degrees hemisphereChar
+
     type Latitude =
         {
             Degrees : float
             Hemisphere : LatitiudeHemisphere
         }
         override this.ToString() =
-            sprintf "%.2f %c" this.Degrees (this.Hemisphere.ToHemisphereChar())
+            hemisphereToString this.Degrees (this.Hemisphere.ToHemisphereChar())
+            //sprintf "%.2f%c" this.Degrees (this.Hemisphere.ToHemisphereChar())
 
     type Longitude =
         {
@@ -44,7 +48,8 @@ module APRSData =
             Hemisphere : LongitudeHemisphere
         }
         override this.ToString() =
-            sprintf "%.2f %c" this.Degrees (this.Hemisphere.ToHemisphereChar())
+            hemisphereToString this.Degrees (this.Hemisphere.ToHemisphereChar())
+            //sprintf "%.2f%c" this.Degrees (this.Hemisphere.ToHemisphereChar())
 
 //TODO constrain the size of the Degrees field
 // Latitude is expressed as a fixed 8-character field, in degrees and decimal

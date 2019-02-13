@@ -30,8 +30,8 @@ let CallSignTests =
         testCase "Fail to create a too short call sign" <| fun _ ->
             Expect.throws (fun _ -> (CallSign.create "") |> ignore) "Call Sign is too short but was not caught"
         testCase "Fail to create too long call sign" <| fun _ ->
-            Expect.throws (fun _ -> ((CallSign.create "1234567") |> ignore)) "Call Sign is too long but was not caught"
-        testCase "Can create a call sign with 1 to 6 characters" <| fun _ ->
+            Expect.throws (fun _ -> ((CallSign.create "1234567890") |> ignore)) "Call Sign is too long but was not caught"
+        testCase "Can create a call sign with 1 to 9 characters" <| fun _ ->
             Expect.equal (CallSign.value((CallSign.create "KG7SIO"))) "KG7SIO" "Call Sign was not created"
     ]
 
