@@ -21,7 +21,7 @@ and SourcePathArguments =
     | [<Mandatory>] [<AltCommandLine("-d")>] Destination    of destination:string
     | Path                                                  of path:string
     | [<AltCommandLine("--rpt")>] PositionReport            of rpt:ParseResults<PositionReportArguments>
-    | CustomMessage                                         of msg:string
+    | [<AltCommandLine("--msg")>] CustomMessage             of msg:string
     | [<AltCommandLine("--save-to")>] SaveFilePath          of save:string
 with
     interface IArgParserTemplate with
