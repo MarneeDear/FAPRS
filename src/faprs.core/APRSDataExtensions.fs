@@ -1,7 +1,7 @@
 namespace faprs.core
 
 //TODO module APRSDataExtensions
-
+//TDO how to model SSIDs ?  APRS SSID Recommendations
 
 [<AutoOpen>]
 module APRSData = 
