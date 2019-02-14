@@ -1,4 +1,4 @@
-namespace faprs.domain
+namespace faprs.core
 
 [<AutoOpen>]
 module Common =

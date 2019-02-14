@@ -1,10 +1,10 @@
 ﻿module APRSDataTests
 
 open Expecto
-open faprs.domain.TNC2MON
-open faprs.domain.Common
-open faprs.domain.APRSData
-open faprs.domain
+open faprs.core.TNC2MON
+open faprs.core.Common
+open faprs.core.APRSData
+open faprs.core
 
 [<Literal>] 
 let BIG_MESSAGE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"

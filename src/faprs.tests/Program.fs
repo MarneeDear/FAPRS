@@ -2,4 +2,7 @@
 
 [<EntryPoint>]
 let main argv =
-    runTestsInAssembly defaultConfig argv
+    let writeResults = TestResults.writeNUnitSummary ("FaprsTestResults.xml", "Expecto.Tests")
+    let config = defaultConfig.appendSummaryHandler writeResults
+    runTestsInAssembly config argv
+    //runTestsInAssembly defaultConfig argv

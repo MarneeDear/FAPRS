@@ -2,25 +2,27 @@
 
 open Argu
 
+[<CliPrefix(CliPrefix.None)>]
 type PositionReportArguments =
-    | [<CliPrefix(CliPrefix.None)>] Latitude    of latitude:float
-    | [<CliPrefix(CliPrefix.None)>] Longitude   of longitude:float
-    | [<CliPrefix(CliPrefix.None)>] Symbol      of symbol:char
-    | [<CliPrefix(CliPrefix.None)>] Comment     of comment:string
+    | [<Mandatory>] Latitude    of latitude:float * hemisphere:char
+    | [<Mandatory>] Longitude   of longitude:float * hemisphere:char
+    | Symbol                    of symbol:char
+    | Comment                   of comment:string
 with
     interface IArgParserTemplate with
         member s.Usage =
             match s with
-            | Latitude _    -> "Your current latitude"
-            | Longitude _   -> "Your current longitude"
-            | Symbol _      -> "Default is House (-)" 
-            | Comment _     -> "What do you want to say. <comment> be 43 characters or fewer."
+            | Latitude _    -> "Your current latitude in this format 3050.15 N"
+            | Longitude _   -> "Your current longitude in this format 2093.13 E"
+            | Symbol _      -> "Optional. Default is House (-). If you want to use House, do not use the symbol argument because dashes do not parse."
+            | Comment _     -> "Optional. What do you want to say? <comment> must be 43 characters or fewer."
 and SourcePathArguments =
-    | [<Mandatory>] Sender      of sender:string
-    | [<Mandatory>] Destination of destination:string
-    | Path of path:string
-    | PositionReport    of rpt:ParseResults<PositionReportArguments>
-    | CustomMessage     of msg:string
+    | [<Mandatory>] [<AltCommandLine("-s")>] Sender         of sender:string
+    | [<Mandatory>] [<AltCommandLine("-d")>] Destination    of destination:string
+    | Path                                                  of path:string
+    | [<AltCommandLine("--rpt")>] PositionReport            of rpt:ParseResults<PositionReportArguments>
+    | CustomMessage                                         of msg:string
+    | [<AltCommandLine("--save-to")>] SaveFilePath          of save:string
 with
     interface IArgParserTemplate with
         member s.Usage =
@@ -28,5 +30,6 @@ with
             | Sender _          -> "Your Call Sign"
             | Destination _     -> "To whom is this intended"
             | Path _            -> "Only option is WIDE1-1" 
-            | PositionReport _  -> "There are subargument -- TODO"
-            | CustomMessage _   -> "Anything you want but cuts off at X length"
+            | PositionReport _  -> "There are subargument -- TODO" //TODO
+            | CustomMessage _   -> "Anything you want but cuts off at X length" //TODO
+            | SaveFilePath _    -> "Send output to a file in this location to be used by Dire Wolf's kissutil"

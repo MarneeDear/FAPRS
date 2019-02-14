@@ -1,7 +1,7 @@
 module CommonTests
 
 open Expecto
-open faprs.domain.Common
+open fapr.core.Common
 
 [<Tests>]
 let SymbolCodeTests =
@@ -13,15 +13,15 @@ let SymbolCodeTests =
         testCase "Balloon" <| fun _ ->
             Expect.equal (SymbolCode.Balloon.ToChar()) 'O' "Balloon code should be O"
         testCase "Hospital" <| fun _ ->
-            Expect.equal (SymbolCode.Hospital.ToChar()) 'h' "Hospital code should be b"
+            Expect.equal (SymbolCode.Hospital.ToChar()) 'h' "Hospital code should be h"
         testCase "Jeep" <| fun _ ->
-            Expect.equal (SymbolCode.Jeep.ToChar()) 'j' "Jeep code should be b"
+            Expect.equal (SymbolCode.Jeep.ToChar()) 'j' "Jeep code should be j"
         testCase "Truck" <| fun _ ->
-            Expect.equal (SymbolCode.Truck.ToChar()) 'k' "Truck code should be b"
+            Expect.equal (SymbolCode.Truck.ToChar()) 'k' "Truck code should be k"
         testCase "Motorcycle" <| fun _ ->
-            Expect.equal (SymbolCode.Motocycle.ToChar()) '<' "Motorcyle code should be b"
+            Expect.equal (SymbolCode.Motorcycle.ToChar()) '<' "Motorcyle code should be <"
         testCase "Jogger" <| fun _ ->
-            Expect.equal (SymbolCode.Jogger.ToChar()) '[' "Jogger code should be b"
+            Expect.equal (SymbolCode.Jogger.ToChar()) '[' "Jogger code should be ["
     ]
 
 [<Tests>]

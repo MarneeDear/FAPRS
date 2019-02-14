@@ -9,9 +9,11 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "faprs.service", "src\faprs.
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "faprs.tests", "src\faprs.tests\faprs.tests.fsproj", "{5E1BE134-C4AC-47F3-B4BA-6C30DDC95E9D}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "faprs.domain", "src\faprs.domain\faprs.domain.fsproj", "{33E51EA4-724D-4188-9C16-E4092C85561C}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "faprs.core", "src\faprs.core\faprs.core.fsproj", "{33E51EA4-724D-4188-9C16-E4092C85561C}"
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "faprs.cli", "src\faprs.cli\faprs.cli.fsproj", "{E8DACA06-CDC8-4D91-AF55-052BFC29B29A}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "faprs.infrastructure", "src\faprs.infrastructure\faprs.infrastructure.fsproj", "{7528F932-439E-4B48-899A-38D2F02E564A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,18 @@ Global
 		{E8DACA06-CDC8-4D91-AF55-052BFC29B29A}.Release|x64.Build.0 = Release|Any CPU
 		{E8DACA06-CDC8-4D91-AF55-052BFC29B29A}.Release|x86.ActiveCfg = Release|Any CPU
 		{E8DACA06-CDC8-4D91-AF55-052BFC29B29A}.Release|x86.Build.0 = Release|Any CPU
+		{7528F932-439E-4B48-899A-38D2F02E564A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7528F932-439E-4B48-899A-38D2F02E564A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7528F932-439E-4B48-899A-38D2F02E564A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7528F932-439E-4B48-899A-38D2F02E564A}.Debug|x64.Build.0 = Debug|Any CPU
+		{7528F932-439E-4B48-899A-38D2F02E564A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7528F932-439E-4B48-899A-38D2F02E564A}.Debug|x86.Build.0 = Debug|Any CPU
+		{7528F932-439E-4B48-899A-38D2F02E564A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7528F932-439E-4B48-899A-38D2F02E564A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7528F932-439E-4B48-899A-38D2F02E564A}.Release|x64.ActiveCfg = Release|Any CPU
+		{7528F932-439E-4B48-899A-38D2F02E564A}.Release|x64.Build.0 = Release|Any CPU
+		{7528F932-439E-4B48-899A-38D2F02E564A}.Release|x86.ActiveCfg = Release|Any CPU
+		{7528F932-439E-4B48-899A-38D2F02E564A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +94,7 @@ Global
 		{5E1BE134-C4AC-47F3-B4BA-6C30DDC95E9D} = {D22495EB-8649-47C6-9F0F-C077DAF3484C}
 		{33E51EA4-724D-4188-9C16-E4092C85561C} = {D22495EB-8649-47C6-9F0F-C077DAF3484C}
 		{E8DACA06-CDC8-4D91-AF55-052BFC29B29A} = {D22495EB-8649-47C6-9F0F-C077DAF3484C}
+		{7528F932-439E-4B48-899A-38D2F02E564A} = {D22495EB-8649-47C6-9F0F-C077DAF3484C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4C4FED79-10D6-43D7-806A-77E280370AC3}

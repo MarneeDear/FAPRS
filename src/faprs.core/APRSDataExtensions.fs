@@ -1,18 +1,19 @@
-namespace faprs.domain
+namespace faprs.core
 
 //TODO module APRSDataExtensions
 
-type PositionReportComment = private PositionReportComment of string
-module PositionReportComment =
-    let create (s:string) =
-        match (s.Trim()) with
-        | s when s.Length < 44  -> PositionReportComment s
-        | _                     -> failwith "Position Report Comment must be less than 43 characters long."
-
-    let value (PositionReportComment c) = c //Was trimmed during create
 
 [<AutoOpen>]
 module APRSData = 
+
+    type PositionReportComment = private PositionReportComment of string
+    module PositionReportComment =
+        let create (s:string) =
+            match (s.Trim()) with
+            | s when s.Length < 44  -> PositionReportComment s
+            | _                     -> failwith "Position Report Comment must be less than 43 characters long."
+
+        let value (PositionReportComment c) = c //Was trimmed during create
 
     type LatitiudeHemisphere =
         | North     
@@ -22,6 +23,12 @@ module APRSData =
             | North _   -> 'N'
             | South _   -> 'S'
 
+    let getLatHemisphere h =
+        match h with
+        | 'N' -> LatitiudeHemisphere.North
+        | 'S' -> LatitiudeHemisphere.South
+        | _ -> failwith "Latitude must be in northern (N) or southern (S) hemisphere."
+
     type LongitudeHemisphere = 
         | East      
         | West      
@@ -29,6 +36,12 @@ module APRSData =
             match this with
             | East _    -> 'E'
             | West _    -> 'W'
+
+    let getLonHemisphere h =
+        match h with
+        | 'E' -> LongitudeHemisphere.East
+        | 'W' -> LongitudeHemisphere.West
+        | _ -> failwith "Longitude must be in eastern (E) or western (W) hemisphere."
 
     let hemisphereToString degrees hemisphereChar =
         sprintf "%.2f%c" degrees hemisphereChar

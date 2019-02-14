@@ -16,7 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\faprs.domain\faprs.domain.fsproj" />
+    <ProjectReference Include="..\faprs.core\faprs.core.fsproj" />
+    <ProjectReference Include="..\faprs.infrastructure\faprs.infrastructure.fsproj" />
   </ItemGroup>
 
 </Project>
