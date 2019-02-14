@@ -28,7 +28,7 @@ with
         member s.Usage =
             match s with
             | Sender _          -> "Your Call Sign"
-            | Destination _     -> "To whom is this intended"
+            | Destination _     -> "To whom is this intended? This could also be a an application from the To Calls list http://aprs.org/aprs11/tocalls.txt"
             | Path _            -> "Only option is WIDE1-1" 
             | PositionReport _  -> "There are subargument -- TODO" //TODO
             | CustomMessage _   -> "Anything you want but cuts off at X length" //TODO

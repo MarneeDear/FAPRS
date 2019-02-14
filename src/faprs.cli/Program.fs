@@ -15,6 +15,9 @@ $ dotnet run --sender KG7SIO --destination KG7SIL --positionreport latitude 3216
 $ dotnet run --sender KG7SIO --destination KG7SIL --positionreport latitude 3216.4 longitude 11057.3 symbol b comment "Hello world!"
 $ dotnet run --sender KG7SIO --destination KG7SIL --rpt latitude 3216.4 N longitude 11057.3 W
 
+Use the short argument flags and save a kissutl frame to the current directors (.). Use the defualts for symbol (House) and comment
+$ dotnet run -s KG7SIO -d KG7SIL --save-to . --rpt latitude 3216.4 N longitude 11057.3 W
+
 NOTE you can't use - (dash) in symbol because Argu won't parse it
 
 *)
