@@ -1,11 +1,10 @@
 module TNC2FormatTests
 
 open Expecto
-open fapr.core.TNC2MON
-open fapr.core.Common
-open fapr.core.APRSData
+open faprs.core.TNC2MON
+open faprs.core.Common
+open faprs.core.APRSData
 open System
-open fapr.core
 
 [<Literal>]
 let SENDER = "kg7sio"

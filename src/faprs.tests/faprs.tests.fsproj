@@ -5,6 +5,7 @@
     <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="TNC2MONRepositoryTests.fs" />
     <Compile Include="APRSDataExtensionTest.fs" />
     <Compile Include="CommonTests.fs" />
     <Compile Include="TNC2FormatTests.fs" />
@@ -21,5 +22,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\faprs.core\faprs.core.fsproj" />
+    <ProjectReference Include="..\faprs.infrastructure\faprs.infrastructure.fsproj" />
   </ItemGroup>
 </Project>

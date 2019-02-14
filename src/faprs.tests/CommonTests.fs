@@ -1,7 +1,7 @@
 module CommonTests
 
 open Expecto
-open fapr.core.Common
+open faprs.core.Common
 
 [<Tests>]
 let SymbolCodeTests =
