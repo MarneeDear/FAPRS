@@ -1,7 +1,9 @@
 namespace faprs.core
 
 //TODO module APRSDataExtensions
-//TDO how to model SSIDs ?  APRS SSID Recommendations
+//TODO how to model SSIDs ?  APRS SSID Recommendations
+//TODO include SSIDs
+//http://www.aprs.org/aprs11/SSIDs.txt
 
 [<AutoOpen>]
 module APRSData = 
@@ -98,3 +100,63 @@ module APRSData =
             match this with 
             | PlainText m -> m
             | PositionReport p -> p.ToString()
+
+    type SSID =
+        | PrimaryStation 
+        | Generic_1
+        | Generic_2
+        | Generic_3
+        | Generic_4
+        | Other
+        | SpecialActivity
+        | HumanPortable
+        | SecondMainMobile
+        | PrimaryMobile
+        | InternetLink
+        | Aircraft
+        | TTDevices
+        | WeatherStation
+        | FullTimeDriver
+        | Generic_15
+        member this.ToInt() =
+            match this with
+            | PrimaryStation    -> 0
+            | Generic_1         -> 1
+            | Generic_2         -> 2
+            | Generic_3         -> 3
+            | Generic_4         -> 4
+            | Other             -> 5
+            | SpecialActivity   -> 6
+            | HumanPortable     -> 7
+            | SecondMainMobile  -> 8
+            | PrimaryMobile     -> 9
+            | InternetLink      -> 10
+            | Aircraft          -> 11
+            | TTDevices         -> 12
+            | WeatherStation    -> 13
+            | FullTimeDriver    -> 14
+            | Generic_15        -> 15
+
+    let getSSID ssid =
+        match ssid with
+        | 0     -> PrimaryStation
+        | 1     -> Generic_1
+        | 2     -> Generic_2
+        | 3     -> Generic_3
+        | 4     -> Generic_4
+        | 5     -> Other
+        | 6     -> SpecialActivity
+        | 7     -> HumanPortable
+        | 8     -> SecondMainMobile
+        | 9     -> PrimaryMobile
+        | 10    -> InternetLink
+        | 11    -> Aircraft
+        | 12    -> TTDevices
+        | 13    -> WeatherStation
+        | 14    -> FullTimeDriver
+        | 15    -> Generic_15
+        | _     -> failwith "Unknown SSID number."
+
+
+
+
