@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -6,9 +6,9 @@
     <Compile Include="Common.fs" />
     <Compile Include="APRSDataExtensions.fs" />
     <Compile Include="TNC2MON.fs" />
+    <Compile Include="KISS.fs" />
   </ItemGroup>
   <ItemGroup>
-      <PackageReference Include="Argu" Version="5.2.0" />
       <PackageReference Include="FSharp.Core" Version="4.*" />
   </ItemGroup>
 </Project>

@@ -75,7 +75,7 @@ module Main =
             //TODO: write to a file that direwolf can use in the kissutil
 
             match saveTo with
-            | Some path -> writePacketToKissUtilFile [packet] path (DateTime.Now.ToString("yyyyMMddHHmmssff")) //TODO write to file
+            | Some path -> writeKissUtilFrame None [packet] path (DateTime.Now.ToString("yyyyMMddHHmmssff")) //TODO write to file
             | None      -> ()
         with e ->
             Console.error <| (sprintf "%s" e.Message)
