@@ -1,7 +1,8 @@
 ﻿namespace faprs.core
 
 (*
-Input, starting with a lower case letter is interpreted as being a command. Whitespace, as shown in the examples, is optional.
+Input, starting with a lower case letter is interpreted as being a command. 
+Whitespace, as shown in the examples, is optional.
 letter meaning example
 ------- ----------- -----------
 d txDelay, 10ms units d 30
@@ -27,7 +28,7 @@ module KISS =
             | S -> 's'
             | T -> 't'
             | F -> 'f'
-            | h -> 'h'
+            | H -> 'h'
      
     let getCommand c =
         match c with
