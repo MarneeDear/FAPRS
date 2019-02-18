@@ -10,3 +10,7 @@ A system for sending APRS messages built in F#, because functional programming a
 
 
 ### Program
+
+### Run the tests
+
+dotnet watch -p src/faprs.tests run -f netcoreapp2.1

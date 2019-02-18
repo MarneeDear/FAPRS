@@ -6,6 +6,9 @@
 # Expecto test results
 FaprsTestResults.xml
 
+# output files from faprs command line
+*faprs.txt
+
 # User-specific files
 *.rsuser
 *.suo
