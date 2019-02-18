@@ -5,9 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="ParseFrames.fsx" />
     <Compile Include="TNC2MONRepository.fs" />
-    <Compile Include="Library.fs" />
   </ItemGroup>
+
+  <ItemGroup />
 
   <ItemGroup>
     <ProjectReference Include="..\faprs.core\faprs.core.fsproj" />
