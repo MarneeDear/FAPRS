@@ -44,9 +44,16 @@ let PACKET =
 
 [<Tests>]
 let WriteTNC2PacketTests =
-    testList "Write packet to file" [
+    testList "Write packet to a kissutil frame file" [
         testCase "A file is created in the path provided" <| fun _ ->
             let timestamp = (DateTime.Now.ToString("yyyyMMddHHmmssff"))
-            writePacketToKissUtilFile [PACKET] FILE_PATH timestamp
+            writeKissUtilFrame None [PACKET] FILE_PATH timestamp
             Expect.isTrue (File.Exists(Path.Combine(Path.GetFullPath(FILE_PATH), sprintf "%s%s" timestamp "faprs.txt"))) "The frame file was created."
     ]
+
+//[0] K1NRO-1>APDW14,WIDE2-2:!4238.80NS07105.63W#PHG5630
+//[<Tests>]
+//let ReadTNC2PacketTests =
+//    testList "Read kissutil frames and create TNC2MON packets" [
+//        testCase ""
+//    ]

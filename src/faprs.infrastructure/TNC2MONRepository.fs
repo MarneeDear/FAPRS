@@ -4,7 +4,8 @@ open faprs.core
 
 //TODO Kiss settings
 (*
-Input, starting with a lower case letter is interpreted as being a command. Whitespace, as shown in the examples, is optional.
+Input, starting with a lower case letter is interpreted as being a command. 
+Whitespace, as shown in the examples, is optional.
 letter meaning example
 ------- ----------- -----------
 d txDelay, 10ms units d 30
@@ -33,4 +34,21 @@ module TNC2MONRepository =
             packets 
             |> List.map (fun p -> p.ToString())
         
-        File.WriteAllLines (file, kiss @ frames) |> ignore 
+        File.WriteAllLines (file, kiss @ frames) |> ignore //put the commands first and then the frames
+
+    //turn the kissutil frame into a list of frame elements
+    //[0] K1NRO-1>APDW14,WIDE2-2:!4238.80NS07105.63W#PHG5630
+    //[0] KG7SIO-7>APRD15,WIDE1-1:=3216.4N/11057.3Wb
+    let parseFrame (frame:string) =
+        frame.Split(' ')
+
+    //map the frame elements into a valid TNC2MON packet
+    let mapToPacket frameElements =
+        ()
+
+    //All received frames are displayed in the usual monitor format, preceded with the channel number inside of [ ].
+    //[0] K1NRO-1>APDW14,WIDE2-2:!4238.80NS07105.63W#PHG5630
+    //See Dire Wolf User Guide 14.6 kissutil – KISS TNC troubleshooting and Application Interface
+    //let readKissUtilFrames file =
+    //    let frames = File.ReadAllLines file 
+    //    frames |> List.map (fun f -> parseFrame)
