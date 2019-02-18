@@ -5,6 +5,8 @@ module Common =
 //        https://stackoverflow.com/questions/791706/how-do-i-customize-output-of-a-custom-type-using-printf
     //9 byte field
     //TODO get string rep. of all path types
+    //aka the UNPROTO path
+    //The digipeater path to the destination callsign
     type Path =
         | WIDEnN    //of string
         //| RELAY     //Obsolete?
