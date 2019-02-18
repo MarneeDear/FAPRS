@@ -5,12 +5,14 @@
     <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="FrameActivePatternsTests.fs" />
     <Compile Include="TNC2MONRepositoryTests.fs" />
     <Compile Include="APRSDataExtensionTest.fs" />
     <Compile Include="CommonTests.fs" />
     <Compile Include="TNC2FormatTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <PackageReference Include="Expecto" Version="8.*" />
     <PackageReference Include="Expecto.FsCheck" Version="8.8.0" />
