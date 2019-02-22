@@ -68,10 +68,10 @@ module FrameActivePatterns =
 
             match msg.IndexOf('W'), msg.IndexOf('E'), start with
             | -1, -1, -1 -> None
-            | w, e, s when e = -1 && s > -1 -> Some (msg.Substring(start + 2, w - start - 1)) //Western Hemisphere
-            | w, e, s when w = -1 && s > -1 -> Some (msg.Substring(start + 2, e - start - 1)) //Eastern Hemisphere 
-            | w, e, s when w < e && s > -1  -> Some (msg.Substring(start + 2, w - start - 1)) //Western Hemisphere 
-            | w, e, s when e < w && s > -1  -> Some (msg.Substring(start + 2, e - start - 1)) //Eastern Hemisphere 
+            | w, e, st when e = -1 && st > -1 -> Some (msg.Substring(st + 2, w - st - 1)) //Western Hemisphere
+            | w, e, st when w = -1 && st > -1 -> Some (msg.Substring(st + 2, e - st - 1)) //Eastern Hemisphere 
+            | w, e, st when w < e && st > -1  -> Some (msg.Substring(st + 2, w - st - 1)) //Western Hemisphere 
+            | w, e, st when e < w && st > -1  -> Some (msg.Substring(st + 2, e - st - 1)) //Eastern Hemisphere 
             | _, _, _ -> None
         else
             //We do not have a position report
@@ -93,6 +93,8 @@ module FrameActivePatterns =
         | w, e, r when e < w ->  Some (r.Substring(e + 1, 1).Chars(0)) //e
         | _, _, _ -> None
 
-    let (|Comment|_|) (msg:string) (symbol:char) =
+    let (|Comment|_|) (symbol:char) (msg:string) =
         let comment = msg.Substring(msg.IndexOf(symbol) + 1).Trim()
         if comment = String.Empty then None else Some comment
+
+    
