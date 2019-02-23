@@ -8,9 +8,12 @@ A system for sending APRS messages built in F#, because functional programming a
 
 ### System
 
+TODO draw a diagram
+
 #### Requirements
 
 * .NET Core SDK 2.2 and above
+* [Dire Wolf v1.5](https://github.com/wb2osz/direwolf/releases/tag/1.5)
 
 #### Dependencies
 
@@ -23,6 +26,15 @@ See the project files, but here are the highlights.
 Future enhancements will include a [Fable-based, Elmish, progressive web app](https://elmish.github.io/elmish/).
 
 ### Program
+
+The design calls for 3 main parts:
+
+* A service that runs on the APRS server (work in progress).
+  * This service picks up new APRS messages from Dire Wolf. The messages are written in TNC2MON format to a designated folder by the DireWolf `kissutil`.
+* A CLI that can be used to write TNC2MON format frames.
+  * They can be written to a folder monitored by the `kissutil`. When the `kissutil` detects a new file it, DireWolf will process the frames and transmit.
+* A progressive web app that can be used to compose APRS pakets that will be used by the `kissutil`.
+  * The service will serve the web app.
 
 ## How to setup and run
 
@@ -110,7 +122,7 @@ Let's break this down:
 
 * Who is sending this packet?
   * `KG7SIO`
-* The destination in this case is the Dire Wolf v15 `TOCALL` as [specified in APRS 1.1.](http://www.aprs.org/aprs11/tocalls.txt). The destination field can be overridden to indicate the sending application.
+* The destination in this case is the Dire Wolf v1.5 `TOCALL` as [specified in APRS 1.1.](http://www.aprs.org/aprs11/tocalls.txt). The destination field can be overridden to indicate the sending application.
   * `APDW15`
 * Your position is `3000.5 degrees N` and `1000.5 degrees W`
 * Your APRS symbol is `b` for `bicycle`
