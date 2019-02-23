@@ -32,9 +32,9 @@ The design calls for 3 main parts:
 * A service that runs on the APRS server (work in progress).
   * This service picks up new APRS messages from Dire Wolf. The messages are written in TNC2MON format to a designated folder by the DireWolf `kissutil`.
 * A CLI that can be used to write TNC2MON format frames.
-  * They can be written to a folder monitored by the `kissutil`. When the `kissutil` detects a new file it, DireWolf will process the frames and transmit.
-  * Presently only produces TNC2MON formatted messages with `Lat/Lon Position Report without Timestamp'.
-* A progressive web app that can be used to compose APRS pakets that will be used by the `kissutil`.
+  * They can be written to a folder monitored by the `kissutil`. When the `kissutil` detects a new file DireWolf will process the frames and transmit.
+  * Presently only produces TNC2MON formatted messages with `Lat/Lon Position Report without Timestamp', and a plain text message
+* A progressive web app that can be used to compose APRS packets that will be used by the `kissutil`. (not started)
   * The service will serve the web app.
 
 ## How to setup and run
