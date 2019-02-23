@@ -114,14 +114,29 @@ Let's break this down:
   * `APDW15`
 * Your position is `3000.5 degrees N` and `1000.5 degrees W`
 * Your APRS symbol is `b` for `bicycle`
-* Your comment is "The sleeper has awakened."
+* Your comment is `The sleeper has awakened.`
 
 ## Developers and contributors
 
+Contributors welcome. Please follow the [F# Style Guide](https://docs.microsoft.com/en-us/dotnet/fsharp/style-guide/) and [open source contributors guide.](https://opensource.guide/how-to-contribute/)
+
+### How to get started
+
+1. Clone this repo
+2. Run `dotnet build` or run the tests like below
+
 ### Run the tests
+
+```bash
+dotnet run -p src/faprs.tests -f netcoreapp2.1
+```
+
+This will restore dependencies, compile all projects, and run tests.
 
 #### Run the tests while changing code
 
+```bash
 dotnet watch -p src/faprs.tests run -f netcoreapp2.1
+```
 
 The tests will re-run every time you save changes, including adding more tests.
