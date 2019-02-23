@@ -12,15 +12,27 @@ A system for sending APRS messages built in F#, because functional programming a
 
 * .NET Core SDK 2.2 and above
 
+#### Dependencies
+
+See the project files, but here are the highlights.
+
+* .NET Core SDK v2.2 and above 
+* [Argu](https://github.com/fsprojects/Argu) for the CLI
+* [Expecto](https://github.com/haf/expecto) for unit tests
+
+Future enhancements will include a [Fable-based, Elmish, progressive web app](https://elmish.github.io/elmish/).
+
 ### Program
 
 ## How to setup and run
 
-Currently there is only a CLI that can be used to create a `TNC2MON` formatted KISS frame suitable for the Dire Wolf `kissutil`.
+First, make sure you have .NET Core SDK 2.2 or above installed.
+
+Currently, there is only a CLI that can be used to create a `TNC2MON` formatted KISS frame suitable for the Dire Wolf `kissutil`, but a progressive web app (in Fable) is planned.
 
 The CLI can produce a frame with a simple message or a Lat/Lon position report without timestamp as per the APRS 1.01 specification.
 
-After cloning this repo you can restore the dependencies, run the tests, or run the CLI with `dotnet`. 
+After cloning this repo you can restore the dependencies, run the tests, or run the CLI with `dotnet`.
 
 ### Run the CLI and see the possible commands
 
@@ -97,15 +109,19 @@ The CLI will save it to the folder (and path) specified in `--save-to`. In this 
 Let's break this down:
 
 * Who is sending this packet?
-  * KG7SIO
-* The destination in this case is the Dire Wolf TOCALL as [specified in APRS 1.1.](http://www.aprs.org/aprs11/tocalls.txt). The destination field can be overridden to indicate the sending application.
-* Your position is 3000.5 degrees N and 1000.5 degrees W
-* Your APRS symbol is b for `bicycle`
+  * `KG7SIO`
+* The destination in this case is the Dire Wolf v15 `TOCALL` as [specified in APRS 1.1.](http://www.aprs.org/aprs11/tocalls.txt). The destination field can be overridden to indicate the sending application.
+  * `APDW15`
+* Your position is `3000.5 degrees N` and `1000.5 degrees W`
+* Your APRS symbol is `b` for `bicycle`
 * Your comment is "The sleeper has awakened."
-
 
 ## Developers and contributors
 
 ### Run the tests
 
+#### Run the tests while changing code
+
 dotnet watch -p src/faprs.tests run -f netcoreapp2.1
+
+The tests will re-run every time you save changes, including adding more tests.
