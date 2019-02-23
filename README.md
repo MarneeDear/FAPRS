@@ -92,6 +92,8 @@ This will create a TNC2MON formatted frame with a lat/lon position report that l
 KG7SIO>APDW15:WIDE1-1:=3000.5N/1000.5WbThe sleeper has awakened.
 ```
 
+The CLI will save it to the folder (and path) specified in `--save-to`. In this case the XMIT folder (if you have one) in your `present working directory.`
+
 Let's break this down:
 
 * Who is sending this packet?
@@ -100,6 +102,7 @@ Let's break this down:
 * Your position is 3000.5 degrees N and 1000.5 degrees W
 * Your APRS symbol is b for `bicycle`
 * Your comment is "The sleeper has awakened."
+
 
 ## Developers and contributors
 
