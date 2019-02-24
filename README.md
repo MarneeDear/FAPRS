@@ -138,6 +138,10 @@ Contributors welcome. Please follow the [F# Style Guide](https://docs.microsoft.
 1. Clone this repo
 2. Run `dotnet build` or run the tests like below
 
+Or
+
+There is a `DOCKERFILE` if you are so inclined.
+
 ### Run the tests
 
 ```bash
