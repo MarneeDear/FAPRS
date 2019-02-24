@@ -13,7 +13,17 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "faprs.core", "src\faprs.cor
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "faprs.cli", "src\faprs.cli\faprs.cli.fsproj", "{E8DACA06-CDC8-4D91-AF55-052BFC29B29A}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "faprs.infrastructure", "src\faprs.infrastructure\faprs.infrastructure.fsproj", "{7528F932-439E-4B48-899A-38D2F02E564A}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "faprs.infrastructure", "src\faprs.infrastructure\faprs.infrastructure.fsproj", "{7528F932-439E-4B48-899A-38D2F02E564A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sln", "sln", "{1E2F5BB5-6345-49EF-93B0-6B1436B5C797}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Dockerfile = Dockerfile
+		global.json = global.json
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "faprs.saturn", "src\faprs.saturn\faprs.saturn.fsproj", "{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +95,18 @@ Global
 		{7528F932-439E-4B48-899A-38D2F02E564A}.Release|x64.Build.0 = Release|Any CPU
 		{7528F932-439E-4B48-899A-38D2F02E564A}.Release|x86.ActiveCfg = Release|Any CPU
 		{7528F932-439E-4B48-899A-38D2F02E564A}.Release|x86.Build.0 = Release|Any CPU
+		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Debug|x64.Build.0 = Debug|Any CPU
+		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Debug|x86.Build.0 = Debug|Any CPU
+		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Release|x64.ActiveCfg = Release|Any CPU
+		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Release|x64.Build.0 = Release|Any CPU
+		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Release|x86.ActiveCfg = Release|Any CPU
+		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
