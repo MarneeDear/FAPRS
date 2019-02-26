@@ -58,6 +58,6 @@ module Common =
         let create (s:string) = 
             match (s.Trim()) with
             | s when s.Length > 0 && s.Length < 10  -> CallSign s
-            | _                                     -> failwith "Call Sign cannot be empty and must be less than 7 characters long."
+            | _                                     -> failwith "Call Sign cannot be empty and must be 1 - 9 characters. See APRS 1.01."
         let value (CallSign s) = s.ToUpper() // MUST BE ALL CAPS        
         
