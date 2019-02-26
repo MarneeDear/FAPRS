@@ -136,11 +136,13 @@ Contributors welcome. Please follow the [F# Style Guide](https://docs.microsoft.
 ### How to get started
 
 1. Clone this repo
-2. Run `dotnet build` or run the tests like below
+2. Run `dotnet build` or run the tests like below under `Run the tests`
 
 Or
 
 There is a `DOCKERFILE` if you are so inclined.
+
+Run service:  `dotnet run -p src/faprs.service` or `dotnet watch -p src/faprs.service/ run`
 
 ### Run the tests
 
