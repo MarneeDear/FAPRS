@@ -6,11 +6,50 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="favicon.ico" />
+    <Compile Include="Config.fs" />
+    <Compile Include="Templates\App.fs" />
+    <Compile Include="Templates\Index.fs" />
+    <Compile Include="Templates\InternalError.fs" />
+    <Compile Include="Templates\NotFound.fs" />
+    <Compile Include="WeatherReports\WeatherReportModels.fs" />
+    <Compile Include="WeatherReports\WeatherReportViews.fs" />
+    <Compile Include="WeatherReports\WeatherReportController.fs" />
+    <Compile Include="Messages\MessagesModels.fs" />
+    <Compile Include="Messages\MessagesViews.fs" />
+    <Compile Include="Messages\MessagesController.fs" />
+    <Compile Include="RaceReports\RaceReportModels.fs" />
+    <Compile Include="RaceReports\RaceReportViews.fs" />
+    <Compile Include="RaceReports\RaceReportController.fs" />
+    <Compile Include="PositionReport\PositionReportModels.fs" />
+    <Compile Include="PositionReport\PositionReportViews.fs" />
+    <Compile Include="PositionReport\PositionReportController.fs" />
+    <Compile Include="Router.fs" />
     <Compile Include="Program.fs" />
+    <Content Include="static\app.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="static\app.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="static\favicon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\faprs.core\faprs.core.fsproj" />
   </ItemGroup>
-
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0" />
+    <PackageReference Include="Saturn" Version="0.8.0" />
+  </ItemGroup>
 </Project>

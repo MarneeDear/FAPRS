@@ -3,7 +3,7 @@ module Router
 open Saturn
 open Giraffe.Core
 open Giraffe.ResponseWriters
-
+open PositionReport
 
 let browser = pipeline {
     plug acceptHtml
@@ -23,6 +23,22 @@ let browserRouter = router {
     pipe_through browser //Use the default browser pipeline
 
     forward "" defaultView //Use the default view
+
+    //POSITION REPORTS
+    //GET a list of messages
+    //Will I store them in a database? SQL Lite?
+    //POST a message to send with KISSUTIL
+    //Store sent messages and give option to re-send
+    forward "/position_reports" PositionReport.Controller.resource
+
+    //RACE REPORTS
+    forward "/race_reports" RaceReport.Controller.resource
+
+    //MESSAGES
+    forward "/messages" Messages.Controller.resource
+
+    //WEATHER REPORTS
+    forward "/weather_reports" WeatherReport.Controller.resource
 }
 
 //Other scopes may use different pipelines and error handlers

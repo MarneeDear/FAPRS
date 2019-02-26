@@ -7,10 +7,11 @@ let layout (content: XmlNode list) =
         head [] [
             meta [_charset "utf-8"]
             meta [_name "viewport"; _content "width=device-width, initial-scale=1" ]
-            title [] [encodedText "Hello faprs.saturn"]
+            title [] [encodedText "FAPRS"]
             link [_rel "stylesheet"; _href "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" ]
             link [_rel "stylesheet"; _href "https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css" ]
             link [_rel "stylesheet"; _href "/app.css" ]
+            link [_rel "shortcut icon"; _href "/favicon.ico"]
 
         ]
         body [] [
@@ -27,7 +28,7 @@ let layout (content: XmlNode list) =
                 ]
                 div [_class "navbar-menu"; _id "navMenu"] [
                     div [_class "navbar-start"] [
-                        a [_class "navbar-item"; _href "https://github.com/SaturnFramework/Saturn/blob/master/README.md"] [rawText "Getting started"]
+                        a [_class "navbar-item"; _href "https://github.com/MarneeDear/FAPRS/blob/master/README.md"] [rawText "Getting started"]
                     ]
                 ]
             ]
@@ -36,10 +37,11 @@ let layout (content: XmlNode list) =
                 div [_class "container"] [
                     div [_class "content has-text-centered"] [
                         p [] [
-                            rawText "Powered by "
+                            encodedText "Powered by "
                             a [_href "https://github.com/SaturnFramework/Saturn"] [rawText "Saturn"]
-                            rawText " - F# MVC framework created by "
+                            encodedText " - F# MVC framework created by "
                             a [_href "http://lambdafactory.io"] [rawText "λFactory"]
+                            encodedText ", DireWolf, and Amateur Radio - KG7SIO"
                         ]
                     ]
                 ]

@@ -23,8 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sln", "sln", "{1E2F5BB5-634
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "faprs.saturn", "src\faprs.saturn\faprs.saturn.fsproj", "{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,18 +93,6 @@ Global
 		{7528F932-439E-4B48-899A-38D2F02E564A}.Release|x64.Build.0 = Release|Any CPU
 		{7528F932-439E-4B48-899A-38D2F02E564A}.Release|x86.ActiveCfg = Release|Any CPU
 		{7528F932-439E-4B48-899A-38D2F02E564A}.Release|x86.Build.0 = Release|Any CPU
-		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Debug|x64.Build.0 = Debug|Any CPU
-		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Debug|x86.Build.0 = Debug|Any CPU
-		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Release|x64.ActiveCfg = Release|Any CPU
-		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Release|x64.Build.0 = Release|Any CPU
-		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Release|x86.ActiveCfg = Release|Any CPU
-		{1F1E69B8-1656-4D7B-86DB-DE47EE0CEFEB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
