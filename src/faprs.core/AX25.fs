@@ -18,10 +18,10 @@ module AX25 =
 
     type Packet =
         {
-            Flag : byte
-            Address : byte
-            Control : byte
-            ProtocolIdentifier : byte
-            Information: byte
-            FrameCheckSequence: byte
+            Flag : byte[]
+            Address : byte[]
+            Control : byte[]
+            ProtocolIdentifier : byte[]
+            Information: byte[]
+            FrameCheckSequence: byte[]
         }
