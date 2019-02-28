@@ -29,6 +29,7 @@ Hex value 	Name 	        Bytes 	Description
 
 *)
 module KISS =
+    open System
 
     type Command =
         | Data
@@ -58,7 +59,17 @@ module KISS =
             | FullDuplex    -> 0x05
             | SetHardware   -> 0x06
             | Return        -> 0xFF
-     
+        member this.ToBytes() =
+            match this with
+            | Data          -> BitConverter.GetBytes(0x00)
+            | TxDelay       -> BitConverter.GetBytes(0x01)
+            | Persistence   -> BitConverter.GetBytes(0x02)
+            | SlotTime      -> BitConverter.GetBytes(0x03)
+            | TxTail        -> BitConverter.GetBytes(0x04)
+            | FullDuplex    -> BitConverter.GetBytes(0x05)
+            | SetHardware   -> BitConverter.GetBytes(0x06)
+            | Return        -> BitConverter.GetBytes(0xFF)
+
     let getCommand c =
         match c with
         | 'd'   -> TxDelay
@@ -98,14 +109,40 @@ module KISS =
             | FESC  -> 0xDB
             | TFEND -> 0xDC
             | TFESC -> 0xDD
+        member this.ToBytes() =
+            match this with
+            | FEND  -> BitConverter.GetBytes(0xC0)
+            | FESC  -> BitConverter.GetBytes(0xDB)
+            | TFEND -> BitConverter.GetBytes(0xDC)
+            | TFESC -> BitConverter.GetBytes(0xDD)
+
+    type Port =
+        | P00
+        | P01
+        | P02
+        | P03
+        member this.ToBytes() =
+            match this with
+            | P00 -> BitConverter.GetBytes(0)
+            | P01 -> BitConverter.GetBytes(1)
+            | P02 -> BitConverter.GetBytes(2)
+            | P03 -> BitConverter.GetBytes(3)
 
     type Packet =
         {
-            Port : int8
+            Port : Port
             Command : Command
             Data : string //TODO AX25 data frame
         }
         member this.ToTx() = //TODO give this a better name
+            //TODO I think this needs to be a byte array?
             // FEND | PORT | COMMAND | DATA (AX.25) | FEND
-            sprintf "%i%i%iDATA_TODO%i" (FEND.ToHexCode()) this.Port (Command.Data.ToHex()) (FEND.ToHexCode())
+            Array.empty 
+            |> Array.append (FEND.ToBytes())
+            |> Array.append (this.Port.ToBytes())
+            |> Array.append (this.Command.ToBytes())
+            |> Array.append (System.Text.ASCIIEncoding.ASCII.GetBytes(this.Data))
+            |> Array.append (FEND.ToBytes())
+            //sprintf "%i%i%iDATA_TODO%i" (FEND.ToHexCode()) this.Port (Command.Data.ToHex()) (FEND.ToHexCode())
+            //|> System.Text.ASCIIEncoding.ASCII.GetBytes  this probalby inst right
             //() //TODO build the farme or packet or whatever it is called
