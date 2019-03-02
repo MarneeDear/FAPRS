@@ -107,7 +107,7 @@ OPTIONS:
 #### Create a TNC2MON formatted frame with position report
 
 ```bash
-dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destination APDW15 --path WIDE1-1 --rpt latitude 3000.5 N longitude 1000.5 W symbol b comment "The sleeper has awakened."
+dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destination APDW15 --path WIDE1-1 --rpt latitude 3000.5 N longitude 1000.5 W symbol b comment "Subscribe to PewDiePie."
 
 ```
 
