@@ -97,6 +97,15 @@ module KISS =
     FEND 	High nibble – Port Index
             Low nibble – Command 	    Data (AX.25 wrapped?)       FEND
 
+    If a FEND ever appears in the data, it is translated into the two byte sequence 
+    
+    FESC TFEND (Frame Escape, Transposed Frame End). 
+    
+    Likewise, if the FESC character ever appears in the user data, 
+    it is replaced with the two character sequence 
+    
+    FESC TFESC (Frame Escape, Transposed Frame Escape).
+
     *)
     type SpecialCharacters =
         | FEND
@@ -105,16 +114,16 @@ module KISS =
         | TFESC
         member this.ToHexCode() =
             match this with
-            | FEND  -> 0xC0
-            | FESC  -> 0xDB
-            | TFEND -> 0xDC
-            | TFESC -> 0xDD
+            | FEND  -> 0xC0us
+            | FESC  -> 0xDBus
+            | TFEND -> 0xDCus
+            | TFESC -> 0xDDus
         member this.ToBytes() =
             match this with
-            | FEND  -> BitConverter.GetBytes(0xC0)
-            | FESC  -> BitConverter.GetBytes(0xDB)
-            | TFEND -> BitConverter.GetBytes(0xDC)
-            | TFESC -> BitConverter.GetBytes(0xDD)
+            | FEND  -> BitConverter.GetBytes(0xC0us)
+            | FESC  -> BitConverter.GetBytes(0xDBus)
+            | TFEND -> BitConverter.GetBytes(0xDCus)
+            | TFESC -> BitConverter.GetBytes(0xDDus)
 
     type Port =
         | P00
@@ -123,26 +132,25 @@ module KISS =
         | P03
         member this.ToBytes() =
             match this with
-            | P00 -> BitConverter.GetBytes(0)
-            | P01 -> BitConverter.GetBytes(1)
-            | P02 -> BitConverter.GetBytes(2)
-            | P03 -> BitConverter.GetBytes(3)
+            | P00 -> BitConverter.GetBytes(0us)
+            | P01 -> BitConverter.GetBytes(1us)
+            | P02 -> BitConverter.GetBytes(2us)
+            | P03 -> BitConverter.GetBytes(3us)
 
     type Packet =
         {
             Port : Port
             Command : Command
-            Data : string //TODO AX25 data frame
+            //Data : string //TODO AX25 data frame
+            Data : AX25.Packet
         }
         member this.ToTx() = //TODO give this a better name
+            //TODO replace payload FEND codes with FESC, TFEND and FESC,TFESC 
             //TODO I think this needs to be a byte array?
             // FEND | PORT | COMMAND | DATA (AX.25) | FEND
             Array.empty 
             |> Array.append (FEND.ToBytes())
             |> Array.append (this.Port.ToBytes())
             |> Array.append (this.Command.ToBytes())
-            |> Array.append (System.Text.ASCIIEncoding.ASCII.GetBytes(this.Data))
+            //|> Array.append  //(System.Text.ASCIIEncoding.ASCII.GetBytes(this.Data)) TODO get from AX.25
             |> Array.append (FEND.ToBytes())
-            //sprintf "%i%i%iDATA_TODO%i" (FEND.ToHexCode()) this.Port (Command.Data.ToHex()) (FEND.ToHexCode())
-            //|> System.Text.ASCIIEncoding.ASCII.GetBytes  this probalby inst right
-            //() //TODO build the farme or packet or whatever it is called
