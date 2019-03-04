@@ -147,7 +147,7 @@ Run service:  `dotnet run -p src/faprs.service` or `dotnet watch -p src/faprs.se
 ### Run the tests
 
 ```bash
-dotnet run -p src/faprs.tests -f netcoreapp2.1
+dotnet run -p src/faprs.tests -f netcoreapp2.2
 ```
 
 This will restore dependencies, compile all projects, and run tests.
@@ -155,7 +155,7 @@ This will restore dependencies, compile all projects, and run tests.
 #### Run the tests while changing code
 
 ```bash
-dotnet watch -p src/faprs.tests run -f netcoreapp2.1
+dotnet watch -p src/faprs.tests run -f netcoreapp2.2
 ```
 
 The tests will re-run every time you save changes, including adding more tests.
