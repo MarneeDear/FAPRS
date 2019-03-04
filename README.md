@@ -114,7 +114,7 @@ dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destinat
 This will create a TNC2MON formatted frame with a lat/lon position report that looks like this:
 
 ```text
-KG7SIO>APDW15:WIDE1-1:=3000.5N/1000.5WbThe sleeper has awakened.
+KG7SIO>APDW15:WIDE1-1:=3000.5N/1000.5WbSubscribe to PewDiePie.
 ```
 
 The CLI will save it to the folder (and path) specified in `--save-to`. In this case the XMIT folder (if you have one) in your `present working directory.`
