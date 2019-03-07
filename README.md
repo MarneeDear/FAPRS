@@ -4,6 +4,8 @@ A work in progress.
 
 A system for sending APRS messages built in F#, because functional programming and static typing make everything better.
 
+> Mac and Linux users: You too can work on this code. Install the .NET Core SDK for your system and you can do all the things. I recommend installing Visual Studio Code with the Ionide plugin for development.
+
 ## The architecture
 
 ### System
@@ -33,7 +35,7 @@ The design calls for 3 main parts:
   * This service picks up new APRS messages from Dire Wolf. The messages are written in TNC2MON format to a designated folder by the DireWolf `kissutil`.
 * A CLI that can be used to write TNC2MON format frames.
   * They can be written to a folder monitored by the `kissutil`. When the `kissutil` detects a new file DireWolf will process the frames and transmit.
-  * Presently only produces TNC2MON formatted messages with `Lat/Lon Position Report without Timestamp', and a plain text message
+  * Presently only produces TNC2MON formatted messages with `Lat/Lon Position Report without Timestamp`, and a plain text message
 * A progressive web app that can be used to compose APRS packets that will be used by the `kissutil`. (not started)
   * The service will serve the web app.
 
@@ -114,7 +116,7 @@ dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destinat
 This will create a TNC2MON formatted frame with a lat/lon position report that looks like this:
 
 ```text
-KG7SIO>APDW15:WIDE1-1:=3000.5N/1000.5WbThe sleeper has awakened.
+KG7SIO>APDW15:WIDE1-1:=3000.5N/1000.5WbSubscribe to PewDiePie.
 ```
 
 The CLI will save it to the folder (and path) specified in `--save-to`. In this case the XMIT folder (if you have one) in your `present working directory.`
