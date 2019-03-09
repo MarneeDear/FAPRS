@@ -103,7 +103,7 @@ module FrameCheckSequence =
     [<Literal>]
     let PPPINITFCS16    = 0xffffus  //Initial FCS value
     [<Literal>]
-    let P               = 0x8408us //The HDLC polynomial: x**0 + x**5 + x**12 + x**16 (0x8408).
+    let P               = 0x1021us //= 0x8408us //The HDLC polynomial: x**0 + x**5 + x**12 + x**16 (0x8408).
     //[<Literal>]
     //let PPPGOODFCS16 = 0xf0b8us  //Good final FCS value
 
@@ -117,22 +117,23 @@ module FrameCheckSequence =
 	        for (j=0; j<len; j++) {
 
   	          crc = ((crc) >> 8) ^ ccitt_table[((crc) ^ data[j]) & 0xff];
+
 	        }
 
 	        return ( crc ^ 0xffff );
         }    
     *)
     let CRC_16_with_table msg =
-        let mutable code    = PPPINITFCS16  //Initial FCS value
+        let mutable code    = 0xFFFFus  //Initial FCS value
         for b in msg do
-            code <- (code >>> 8) ^^^ fcstab.[int ((code ^^^ b) &&& 0xffus)]
-        code ^^^ PPPINITFCS16
+            code <- (code >>> 8) ^^^ fcstab.[int ((code ^^^ b) &&& 0xFFus)]
+        code ^^^ 0XFFFFus
 
         //PPPINITFCS16 :: msg
         //|> Seq.fold (fun acc elem -> ) //Can I use fold here?
 
     let CRC_16_calculated_polynomial msg =
-        let polynomial      = P             //The HDLC CRC-16-CCITT (CRC-CCITT) revered polynomial representation 
+        let polynomial      = P             //0x1021 The HDLC CRC-16-CCITT (CRC-CCITT) revered polynomial representation 
         let mutable code    = PPPINITFCS16  //Initial FCS value
         for b in msg do
             //code <- code ^^^ uint16 b
