@@ -31,20 +31,22 @@ Output XOR mask 	                            0xFF
 
 [<Tests>]
 let CRCSharpTests =
-    testList "CRC 16 Mcrf4Xx" [
-    testCase "Subscribe to PewDiePie!" <| fun _ ->
-        let crc_params = CrcStdParams.StandardParameters.[CrcAlgorithms.Crc16X25]
-        let crc = new Crc(crc_params)
-        let input_bytes = Encoding.ASCII.GetBytes("123456789") 
-        let result = crc.ComputeCrc(0xFFFFUL, input_bytes, 0, input_bytes.Length)
-        Console.WriteLine(sprintf "Computed CRC :: 0x%s" (result.ToString("X4")))
-        Expect.equal result 50189UL "Result did not match expected MCRF4XX calculation"
+    testList "CRC 16 AX25" [
+    //TTODO: his doesnt work for AX25 algorithm. I am not going to use this library, but I will try
+    //to port it to F# and make sure it work for AX25 at least
+    //testCase "123456789" <| fun _ ->
+    //    let crc_params = CrcStdParams.StandardParameters.[CrcAlgorithms.Crc16X25]
+    //    let crc = new Crc(crc_params)
+    //    let input_bytes = Encoding.ASCII.GetBytes("123456789") 
+    //    let result = crc.ComputeCrc(0xFFFFUL, input_bytes, 0, input_bytes.Length)
+    //    Console.WriteLine(sprintf "Computed CRC :: 0x%s" (result.ToString("X4")))
+    //    Expect.equal (result.ToString("X4")) "906E" "The CRC was not right"
     //testCase "Table" <| fun _ ->
     //    let crc_params = CrcStdParams.StandardParameters.[CrcAlgorithms.Crc16Mcrf4Xx]
     //    let crc = new Crc(crc_params)
     //    Console.WriteLine(sprintf "TABLE %s" "Hi")
     //    Console.WriteLine(sprintf "%A" crc._table)
-    testCase "AX25FCS" <| fun _ -> 
+    testCase "AX25FCS 123456789" <| fun _ -> 
         let input = 
             Encoding.ASCII.GetBytes("123456789") |> Seq.map uint16
         let result = CRC_16_with_table input
