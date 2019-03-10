@@ -26,28 +26,65 @@ AX.25 UI-FRAME FORMAT
 *)
 module AX25 =
     open System
+    open faprs.crc.FrameCheckSequence
 
-    let FLAG = (BitConverter.GetBytes(0x7EB))
+    //Address Field encoding https://tapr.org/pub_ax25.html#2.2.13
+    type Address = 
+        {
+            Destination : string
+            Source : string
+        }
+
+    let FLAG = 0x7Eus //(BitConverter.GetBytes(0x7Eus))
+    //WORK IN PROGRESS -- MMD 3/10/2019
+    //TODO Should the fields be in strings and use Encoding.ASCII.GetBytes to convert to byte arrays?
+    //https://stackoverflow.com/questions/4198908/c-sharp-convert-string-to-uint
+    //type Packet =
+    //    {
+    //        //Flag : int8
+    //        Address : string 
+    //        Control : string //Control Field encoding
+    //        ProtocolIdentifier : uint16 //Protocol Identifier https://tapr.org/pub_ax25.html#2.2.4
+    //        Information: string
+    //        //FrameCheckSequence: byte[]
+    //    }
+    //    member this.ToSeq() =
+    //        //TODO teh byte arrays need to be ordered in LSB and MSB according to the spec
+    //        //AX25.2.2.pdf All fields except the Frame Check Sequence (FCS) are transmitted low-order bit first. 
+    //        //FCS is transmitted bit 15 first.
+    //        //TODO bit stuffing
+    //        let ax25_data = 
+    //            [
+    //                FLAG
+    //                this.Address
+    //                this.Control
+    //                this.ProtocolIdentifier
+    //                this.Information
+    //            ]
+    //        FLAG :: ((ax25_data |> List.toSeq |> CRC_16_with_table) :: ax25_data) 
+    //        |> List.toSeq
 
     type Packet =
         {
             //Flag : int8
-            Address : byte[]
-            Control : byte[]
-            ProtocolIdentifier : byte[]
-            Information: byte[]
-            FrameCheckSequence: byte[]
+            Address : uint16 //byte[]
+            Control : uint16 //byte[]
+            ProtocolIdentifier : uint16 //byte[]
+            Information: uint16 //byte[]
+            //FrameCheckSequence: byte[]
         }
-        member this.ToByteArray() =
+        member this.ToSeq() =
             //TODO teh byte arrays need to be ordered in LSB and MSB according to the spec
             //AX25.2.2.pdf All fields except the Frame Check Sequence (FCS) are transmitted low-order bit first. 
             //FCS is transmitted bit 15 first.
-            Array.empty
-            |> Array.append FLAG
-            |> Array.append this.Address
-            |> Array.append this.Control
-            |> Array.append this.ProtocolIdentifier
-            |> Array.append this.Information
-            |> Array.append this.FrameCheckSequence
-            |> Array.append FLAG
+            let ax25_data = 
+                [
+                    FLAG
+                    this.Address
+                    this.Control
+                    this.ProtocolIdentifier
+                    this.Information
+                ]
+            FLAG :: ((ax25_data |> List.toSeq |> CRC_16_with_table) :: ax25_data) 
+            |> List.toSeq
 

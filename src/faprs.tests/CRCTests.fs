@@ -1,7 +1,7 @@
 ﻿module CRCTests
 
 open Expecto
-open faprs.core.FrameCheckSequence
+open faprs.crc.FrameCheckSequence
 open System
 open System.Text
 open System.Collections

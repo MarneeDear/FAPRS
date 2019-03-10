@@ -100,13 +100,6 @@ module FrameCheckSequence =
         0x7bc7us; 0x6a4eus; 0x58d5us; 0x495cus; 0x3de3us; 0x2c6aus; 0x1ef1us; 0x0f78us
         |]
 
-    [<Literal>]
-    let PPPINITFCS16    = 0xffffus  //Initial FCS value
-    [<Literal>]
-    let P               = 0x1021us //= 0x8408us //The HDLC polynomial: x**0 + x**5 + x**12 + x**16 (0x8408).
-    //[<Literal>]
-    //let PPPGOODFCS16 = 0xf0b8us  //Good final FCS value
-
     (*
         DIREWOLF IMPLEMENTATION
         unsigned short fcs_calc (unsigned char *data, int len)

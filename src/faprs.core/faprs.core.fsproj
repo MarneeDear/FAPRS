@@ -13,4 +13,7 @@
   <ItemGroup>
       <PackageReference Include="FSharp.Core" Version="4.*" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\faprs.crc\faprs.crc.fsproj" />
+  </ItemGroup>
 </Project>
