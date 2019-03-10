@@ -131,6 +131,21 @@ Let's break this down:
 * Your APRS symbol is `b` for `bicycle`
 * Your comment is `The sleeper has awakened.`
 
+#### Create a TNC2MON formatted frame with custom message (string)
+
+```bash
+dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destination APDW15 --path WIDE1-1 --msg "Subscribe to PewDiePie."
+
+```
+
+This will create a TNC2MON formatted frame with a custom message that looks like this:
+
+```text
+KG7SIO>APDW15:WIDE1-1:Subscribe to PewDiePie
+```
+
+The CLI will save it to the folder (and path) specified in `--save-to`. In this case the XMIT folder (if you have one) in your `present working directory.`
+
 ## Developers and contributors
 
 Contributors welcome. Please follow the [F# Style Guide](https://docs.microsoft.com/en-us/dotnet/fsharp/style-guide/) and [open source contributors guide.](https://opensource.guide/how-to-contribute/)
@@ -161,3 +176,6 @@ dotnet watch -p src/faprs.tests run -f netcoreapp2.2
 ```
 
 The tests will re-run every time you save changes, including adding more tests.
+
+## Deploy to a Raspberry PI
+
