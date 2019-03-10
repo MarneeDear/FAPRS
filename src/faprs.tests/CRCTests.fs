@@ -1,10 +1,11 @@
 ﻿module CRCTests
 
 open Expecto
-open faprs.crc
 open faprs.core.FrameCheckSequence
 open System
 open System.Text
+open System.Collections
+open System.ComponentModel
 
 //MCRF$XX seems to be the only one that works consistently with https://crccalc.com/
 //It does seem to be the right one to use, anyway
@@ -52,4 +53,20 @@ let CRCSharpTests =
         let result = CRC_16_with_table input
         Console.WriteLine(sprintf "AX25 FCS :: 0x%s" (result.ToString("X4")))
         Expect.equal (result.ToString("X4")) "906E" "The CRC was not right"
+        (*
+            byte[] ret = new byte[(bits.Length - 1) / 8 + 1];
+            bits.CopyTo(ret, 0);
+            return ret;
+        *)
+    //testCase "AX25FCS ABC" <| fun _ -> 
+    //    let input = 
+    //        Encoding.ASCII.GetBytes("ABC") |> Seq.map uint16
+    //    let result = CRC_16_with_table input
+    //    Console.WriteLine(sprintf "AX25 FCS :: 0x%s" (result.ToString("X4")))
+    //    let bitarray = new BitArray([|1;1;1;1;0;1;0;0;1;1;1;1;1;0;0;1|])
+    //    let mutable ret = byte |> Array.init ((bitarray.Length - 1) / 8 + 1)
+    //    bitarray.CopyTo(ret, 0)
+    //    Console.WriteLine(sprintf "bitarray :: %s" )
+    //    Expect.equal (result.ToString("X4")) (BitConverter.ToString(ret).Replace("-", ""))  "The CRC was not right"
+        //()
     ]

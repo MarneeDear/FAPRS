@@ -24,7 +24,6 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.*" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\faprs.crc\faprs.crc.csproj" />
     <ProjectReference Include="..\faprs.core\faprs.core.fsproj" />
     <ProjectReference Include="..\faprs.infrastructure\faprs.infrastructure.fsproj" />
   </ItemGroup>
