@@ -43,6 +43,19 @@ module Console =
 
 module Main =
 
+    let composePositionReportMessage (pRpt: ParseResults<PositionReportArguments>) = 
+        let latArgu = pRpt.GetResult(CommandArguments.Latitude)
+        let lonArgu = pRpt.GetResult(CommandArguments.Longitude)
+        let lat : Latitude = { Degrees = fst latArgu ; Hemisphere = getLatHemisphere (snd latArgu) } 
+        let lon : Longitude = { Degrees = fst lonArgu; Hemisphere = getLonHemisphere (snd lonArgu) }
+        let symbol = getSymbolCode ((pRpt.TryGetResult(CommandArguments.Symbol)) |> Option.defaultValue '-')
+        let comment = pRpt.TryGetResult(CommandArguments.Comment) |> Option.defaultValue String.Empty
+        { 
+            Position = { Latitude = lat; Longitude = lon }
+            Symbol = symbol 
+            Comment = PositionReportComment.create comment
+        }
+
     [<EntryPoint>]
     let main argv =
         let errorHandler = ProcessExiter(colorizer = function ErrorCode.HelpText -> None | _ -> Some ConsoleColor.Red)
@@ -57,22 +70,24 @@ module Main =
             let sender = results.GetResult(Sender)
             let destination = results.GetResult(Destination)
             let path = Common.Path.WIDEnN //only this for now TODO
-            let pRpt = results.GetResult(CommandArguments.PositionReport)
-            let latArgu = pRpt.GetResult(CommandArguments.Latitude)
-            let lonArgu = pRpt.GetResult(CommandArguments.Longitude)
-            let lat : Latitude = { Degrees = fst latArgu ; Hemisphere = getLatHemisphere (snd latArgu) } 
-            let lon : Longitude = { Degrees = fst lonArgu; Hemisphere = getLonHemisphere (snd lonArgu) }
-            let symbol = getSymbolCode ((pRpt.TryGetResult(CommandArguments.Symbol)) |> Option.defaultValue '-')
-            let comment = pRpt.TryGetResult(CommandArguments.Comment) |> Option.defaultValue String.Empty
-            let packet = 
+
+            let pRpt = results.TryGetResult(CommandArguments.PositionReport)
+            let msg = results.TryGetResult(CommandArguments.CustomMessage)
+
+            let messageData =
+                match pRpt, msg with
+                | Some _, Some _        -> failwith "Cannot use both Position Report and Custom Message at the same time."
+                | Some rptArgs, None    -> PositionReport (composePositionReportMessage rptArgs) 
+                | None _, Some msg      -> PlainText msg
+                | None, None            -> failwith "Must provide a position report or a custom message."
+            
+            let packet =
                 {
                     Sender = CallSign.create sender
                     Destination = CallSign.create destination
                     Path = path
-                    Message = Some (PositionReport { Position = { Latitude = lat; Longitude = lon }; Symbol = symbol; Comment = PositionReportComment.create comment})
+                    Message = Some messageData
                 }
-            Console.info <| (sprintf "%s" (packet.ToString()))
-            //TODO: write to a file that direwolf can use in the kissutil
 
             match saveTo with
             | Some path -> writeKissUtilFrame None [packet] path (DateTime.Now.ToString("yyyyMMddHHmmssff")) //TODO write to file
