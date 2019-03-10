@@ -42,7 +42,7 @@ module TNC2MONRepository =
     let parseFrame (frame:string) =
         frame.Split(' ')
 
-    //map the frame elements into a valid TNC2MON packet
+    //TODO map the frame elements into a valid TNC2MON packet
     let mapToPacket frameElements =
         ()
 
