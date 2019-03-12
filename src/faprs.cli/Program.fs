@@ -78,7 +78,7 @@ module Main =
                 match pRpt, msg with
                 | Some _, Some _        -> failwith "Cannot use both Position Report and Custom Message at the same time."
                 | Some rptArgs, None    -> PositionReport (composePositionReportMessage rptArgs) 
-                | None _, Some msg      -> PlainText msg
+                | None _, Some msg      -> Unformatted (UnformattedMessage.create msg)
                 | None, None            -> failwith "Must provide a position report or a custom message."
             
             let packet =

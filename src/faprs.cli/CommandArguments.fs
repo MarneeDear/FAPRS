@@ -2,6 +2,9 @@
 
 open Argu
 
+//TODO should restructure the cli because only certain reports require a sender and destination
+//DireWolf will not support all types?
+
 [<CliPrefix(CliPrefix.None)>]
 type PositionReportArguments =
     | [<Mandatory>] Latitude    of latitude:float * hemisphere:char
@@ -30,6 +33,6 @@ with
             | Sender _          -> "Your Call Sign"
             | Destination _     -> "To whom is this intended? This could also be a an application from the To Calls list http://aprs.org/aprs11/tocalls.txt"
             | Path _            -> "Only option is WIDE1-1" 
-            | PositionReport _  -> "There are subargument -- TODO" //TODO
-            | CustomMessage _   -> "Anything you want but cuts off at X length" //TODO
+            | PositionReport _  -> "Position Reports require a Latitude and Longitude. See Position Report usage for more." //TODO
+            | CustomMessage _   -> "Unformatted message. Anything you want but cuts off at 63 chars. in length" //TODO
             | SaveFilePath _    -> "Send output to a file in this location to be used by Dire Wolf's kissutil"

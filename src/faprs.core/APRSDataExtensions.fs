@@ -92,14 +92,22 @@ module APRSData =
             //Position coordinates are a combination of latitude and longitude, separated
             //by a display Symbol Table Identifier, and followed by a Symbol Code. 
             sprintf "=%s/%s%c%s" (this.Position.Latitude.ToString()) (this.Position.Longitude.ToString()) (this.Symbol.ToChar()) (PositionReportComment.value this.Comment)
+    
+    type UnformattedMessage = private UnformattedMessage of string
+    module UnformattedMessage =
+        let create (s:string) =
+            match (s.Trim()) with
+            | s when s.Length < 63 -> UnformattedMessage s
+            | _ -> UnformattedMessage (s.Substring(0, 63)) //TODO or throw an exception?
+        let value (UnformattedMessage s) = s
 
     type Message =
-        | PlainText         of string
+        | Unformatted       of UnformattedMessage
         | PositionReport    of PositionReport
         override this.ToString() =
             match this with 
-            | PlainText m -> m
-            | PositionReport p -> p.ToString()
+            | Unformatted m     -> UnformattedMessage.value m
+            | PositionReport p  -> p.ToString()
 
     type SSID =
         | PrimaryStation 

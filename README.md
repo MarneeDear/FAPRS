@@ -67,7 +67,7 @@ USAGE: faprs [--help] --sender <sender> --destination <destination> [--path <pat
 SUBCOMMANDS:
 
     --positionreport, --rpt <rpt>
-                          There are subargument -- TODO
+                          Position Reports require a Latitude and Longitude. See Position Report usage for more.
 
     Use 'faprs <subcommand> --help' for additional information.
 
@@ -78,7 +78,7 @@ OPTIONS:
                           To whom is this intended? This could also be a an application from the To Calls list http://aprs.org/aprs11/tocalls.txt
     --path <path>         Only option is WIDE1-1
     --custommessage, --msg <msg>
-                          Anything you want but cuts off at X length
+                          Unformatted message. Anything you want but cuts off at 63 chars. in length
     --savefilepath, --save-to <save>
                           Send output to a file in this location to be used by Dire Wolf's kissutil
     --help                display this list of options.
@@ -131,7 +131,7 @@ Let's break this down:
 * Your APRS symbol is `b` for `bicycle`
 * Your comment is `The sleeper has awakened.`
 
-#### Create a TNC2MON formatted frame with custom message (string)
+#### Create a TNC2MON formatted frame with unformatted message (string)
 
 ```bash
 dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destination APDW15 --path WIDE1-1 --msg "Subscribe to PewDiePie."
@@ -141,7 +141,7 @@ dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destinat
 This will create a TNC2MON formatted frame with a custom message that looks like this:
 
 ```text
-KG7SIO>APDW15:WIDE1-1:Subscribe to PewDiePie
+KG7SIO>APDW15,WIDE1-1:Subscribe to PewDiePie
 ```
 
 The CLI will save it to the folder (and path) specified in `--save-to`. In this case the XMIT folder (if you have one) in your `present working directory.`
