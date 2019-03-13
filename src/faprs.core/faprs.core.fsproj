@@ -5,6 +5,7 @@
   <ItemGroup>
     <Compile Include="Common.fs" />
     <Compile Include="FrameActivePatterns.fs" />
+    <Compile Include="ParticipantStatus.fs" />
     <Compile Include="APRSDataExtensions.fs" />
     <Compile Include="TNC2MON.fs" />
     <Compile Include="AX25.fs" />

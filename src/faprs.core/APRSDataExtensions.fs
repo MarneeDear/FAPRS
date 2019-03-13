@@ -6,7 +6,7 @@ namespace faprs.core
 //http://www.aprs.org/aprs11/SSIDs.txt
 
 [<AutoOpen>]
-module APRSData = 
+module APRSDataExtensions = 
 
     type PositionReportComment = private PositionReportComment of string
     module PositionReportComment =
@@ -81,7 +81,7 @@ module APRSData =
         }
 
 //TODO support more position report types -- data extensions
-    type PositionReport =
+    type PositionReportWithoutTimeStamp =
         {
             Position : Position
             Symbol : SymbolCode
@@ -97,17 +97,17 @@ module APRSData =
     module UnformattedMessage =
         let create (s:string) =
             match (s.Trim()) with
-            | s when s.Length < 63 -> UnformattedMessage s
-            | _ -> UnformattedMessage (s.Substring(0, 63)) //TODO or throw an exception?
+            | s when s.Length <= 255 -> UnformattedMessage s //AX.25 field is 256 chars but the message has to accomodate the { for user defined messages
+            | _ -> UnformattedMessage (s.Substring(0, 254)) //TODO or throw an exception?
         let value (UnformattedMessage s) = s
 
     type Message =
-        | Unformatted       of UnformattedMessage
-        | PositionReport    of PositionReport
+        | Unformatted                       of UnformattedMessage
+        | PositionReportWithoutTimeStamp    of PositionReportWithoutTimeStamp
         override this.ToString() =
             match this with 
-            | Unformatted m     -> UnformattedMessage.value m
-            | PositionReport p  -> p.ToString()
+            | Unformatted m     -> sprintf ":%s" (UnformattedMessage.value m) // (:) is the aprs data type ID for message
+            | PositionReportWithoutTimeStamp p  -> p.ToString()
 
     type SSID =
         | PrimaryStation 
