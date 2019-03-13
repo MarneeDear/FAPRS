@@ -129,7 +129,7 @@ Let's break this down:
   * `APDW15`
 * Your position is `3000.5 degrees N` and `1000.5 degrees W`
 * Your APRS symbol is `b` for `bicycle`
-* Your comment is `The sleeper has awakened.`
+* Your comment is `Subscribe to PewDiePie.`
 
 #### Create a TNC2MON formatted frame with unformatted message (string)
 
