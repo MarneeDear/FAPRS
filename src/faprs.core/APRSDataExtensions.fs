@@ -98,7 +98,7 @@ module APRSDataExtensions =
         let create (s:string) =
             match (s.Trim()) with
             | s when s.Length <= 255 -> UnformattedMessage s //AX.25 field is 256 chars but the message has to accomodate the { for user defined messages
-            | _ -> UnformattedMessage (s.Substring(0, 254)) //TODO or throw an exception?
+            | _ -> UnformattedMessage (s.Substring(0, 255)) //TODO or throw an exception?
         let value (UnformattedMessage s) = s
 
     type Message =
