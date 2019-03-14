@@ -52,19 +52,22 @@ Experimental User-Defined types start with {{ (double curly braces)
 module Participant = 
     open System
 
-    type ParticipantNumber = private ParticipantNumber of string
-    module ParticipantNumber =
+    //TODO return failed state if not correct length 
+    type ParticipantID = private ParticipantID of string
+    module ParticipantID =
         let create (nbr:string) =
             match nbr with 
-            | n when nbr.Length < 6 -> n
-            | n -> n.Substring(0, 4)
-        let value (ParticipantNumber n) = n
+            | n when nbr.Length < 6 -> ParticipantID n
+            | n -> ParticipantID (n.Substring(0, 5))
+        let value (ParticipantID n) = n
 
     type RecordedOn = private RecordedOn of string
     module RecordedOn =
-        let create =
-            let utcNow = DateTime.UtcNow
-            sprintf "%0i%0i%0i%0i" utcNow.Day utcNow.Month utcNow.Hour utcNow.Minute
+        let create (date:DateTime option) =
+            match date with
+            | Some d    -> RecordedOn (sprintf "%02i%02i%02i%02i" d.Month d.Day d.Hour d.Minute)
+            | None      -> let utcNow = DateTime.UtcNow
+                           RecordedOn (sprintf "%02i%02i%02i%02i" utcNow.Month utcNow.Day utcNow.Hour utcNow.Minute)
         let value (RecordedOn d) = d
 
     type ParticipantStatusMessage = private ParticipantStatusMessage of string
@@ -72,7 +75,7 @@ module Participant =
         let create (s:string) =
             match (s.Trim()) with
             | s when s.Length <= 239 -> ParticipantStatusMessage s
-            | _ -> ParticipantStatusMessage (s.Substring(0, 238))
+            | _ -> ParticipantStatusMessage (s.Substring(0, 239))
         let value (ParticipantStatusMessage s) = s
 
     type ParticipantStatus =
@@ -93,10 +96,10 @@ module Participant =
 
     type ParitipantData =
         {
-            ParticipantNumber : ParticipantNumber
+            ParticipantNumber : ParticipantID
             TimeStamp : RecordedOn
             ParticipantStatus : ParticipantStatus
         }
         override this.ToString() =
             let status1, status2, msg = this.ParticipantStatus.ToStatusCombination() 
-            sprintf "%s%s%i%i%s" (RecordedOn.value this.TimeStamp) (ParticipantNumber.value this.ParticipantNumber) status1 status2 msg
+            sprintf "%s%s%i%i%s" (RecordedOn.value this.TimeStamp) (ParticipantID.value this.ParticipantNumber) status1 status2 msg

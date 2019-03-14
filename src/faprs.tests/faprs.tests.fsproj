@@ -5,6 +5,7 @@
     <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ParticipantStatusTests.fs" />
     <Compile Include="CRCTests.fs" />
     <Compile Include="AX25Tests.fs" />
     <Compile Include="FrameActivePatternsTests.fs" />
