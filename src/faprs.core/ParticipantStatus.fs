@@ -28,11 +28,15 @@ Participant Status
 * Status (Continued, injured, waiting for help, taking a break) -- this will need status codes
     * description
 * Sender identifies the comm staion Or include GPS to identify the way point
-* Destination identifies the HQ
- 
+* Destination identifies the HQ??
+
+Participant Status Field
+        TIMESTAMP   PARTICIPANT#    STATUS-1    STATUS-2    MESSAGE
+BYTES   8           0-5             1           1           0-239 
 
  NOT USING THIS PROBABLY Date/Time format 2009-06-15T13:45:30 -- yyyy-MM-ddTHH:mm:ss
 
+TIMESTAMP
 Month/Day/Hours/Minutes (MDHM) format is a fixed 8-character field,
 consisting of the month (01–12) and day-of-the-month (01–31), followed by
 the time in hours and minutes zulu. For example:
@@ -45,8 +49,16 @@ but can be renewed for the next day
 Experimental User-Defined types start with {{ (double curly braces)
 
 *)
-module ParticipantStatus = 
+module Participant = 
     open System
+
+    type ParticipantNumber = private ParticipantNumber of string
+    module ParticipantNumber =
+        let create (nbr:string) =
+            match nbr with 
+            | n when nbr.Length < 6 -> n
+            | n -> n.Substring(0, 4)
+        let value (ParticipantNumber n) = n
 
     type RecordedOn = private RecordedOn of string
     module RecordedOn =
@@ -59,8 +71,8 @@ module ParticipantStatus =
     module ParticipantStatusMessage =
         let create (s:string) =
             match (s.Trim()) with
-            | s when s.Length <= 244 -> ParticipantStatusMessage s
-            | _ -> ParticipantStatusMessage (s.Substring(0, 243))
+            | s when s.Length <= 239 -> ParticipantStatusMessage s
+            | _ -> ParticipantStatusMessage (s.Substring(0, 238))
         let value (ParticipantStatusMessage s) = s
 
     type ParticipantStatus =
@@ -78,3 +90,13 @@ module ParticipantStatus =
                                     | _                 -> failwith "Injured can only be continued, resting, needs support."
             | Resting m         -> (3, 3, ParticipantStatusMessage.value m)
             | NeedsSupport m    -> (4, 4, ParticipantStatusMessage.value m)
+
+    type ParitipantData =
+        {
+            ParticipantNumber : ParticipantNumber
+            TimeStamp : RecordedOn
+            ParticipantStatus : ParticipantStatus
+        }
+        override this.ToString() =
+            let status1, status2, msg = this.ParticipantStatus.ToStatusCombination() 
+            sprintf "%s%s%i%i%s" (RecordedOn.value this.TimeStamp) (ParticipantNumber.value this.ParticipantNumber) status1 status2 msg
