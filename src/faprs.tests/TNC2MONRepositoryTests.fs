@@ -3,7 +3,7 @@
 open Expecto
 open faprs.core.TNC2MON
 open faprs.core.Common
-open faprs.core.APRSData
+open faprs.core.APRSDataExtensions
 open faprs.infrastructure.TNC2MONRepository
 open System
 open System.IO
@@ -39,7 +39,7 @@ let PACKET =
         Sender      = CallSign.create (SENDER.ToUpper())
         Destination = CallSign.create (DESTINATION.ToUpper())
         Path        = WIDEnN //"WIDE1-1"
-        Message     = Some (PositionReport PACKET_POSITION_REPORT_HOUSE)
+        Message     = Some (PositionReportWithoutTimeStamp PACKET_POSITION_REPORT_HOUSE)
     }
 
 [<Tests>]
