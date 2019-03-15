@@ -1,5 +1,7 @@
 # F# for APRS
 
+[logo]: https://raw.githubusercontent.com/MarneeDear/FAPRS/master/logo.png "FAPRS"
+
 A work in progress.
 
 A system for sending APRS messages built in F#, because functional programming and static typing make everything better.
