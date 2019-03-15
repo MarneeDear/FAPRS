@@ -1,8 +1,8 @@
-# F# for APRS
-
 ![alt text][logo]
 
 [logo]: https://raw.githubusercontent.com/MarneeDear/FAPRS/master/logo.png "FAPRS"
+
+# F# for APRS
 
 A work in progress.
 
