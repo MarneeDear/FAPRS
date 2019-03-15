@@ -179,3 +179,27 @@ The tests will re-run every time you save changes, including adding more tests.
 
 ## Deploy to a Raspberry PI
 
+TBD
+
+## Working with Dire Wolf and the `kissutil`
+
+Follow the Dire Wolf user guide to install Dire Wolf on your system. Follow the user guide 
+to configure and start Dire Wolf.
+
+### Start the `kissutil` specifying the read and write folder
+
+```bash
+kissutil -o REC -f kissutil -f XMIT
+```
+
+`-o` specifies the folder to which Dire Wolf will write the received APRS messages.
+
+`-f` specifies the folder from which Dire Wolf will read the messages FAPRS will send.
+
+### User FAPRS to send a message through `kissutil`
+
+Write a Position Report without Timestamp to the `XMIT` folder.
+
+```bash
+dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destination APDW15 --path WIDE1-1 --msg "Subscribe to PewDiePie."
+```
