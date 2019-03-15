@@ -193,7 +193,7 @@ to configure and start Dire Wolf.
 ### Start the `kissutil` specifying the read and write folder
 
 ```bash
-kissutil -o REC -f kissutil -f XMIT
+kissutil -o REC -f XMIT
 ```
 
 `-o` specifies the folder to which Dire Wolf will write the received APRS messages.
