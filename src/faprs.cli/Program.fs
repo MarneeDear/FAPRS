@@ -3,7 +3,7 @@
 open System
 open Argu
 open CommandArguments
-open faprs.core.APRSData
+open faprs.core.APRSDataExtensions
 open faprs.core.TNC2MON
 open faprs.core
 open faprs.infrastructure.TNC2MONRepository
@@ -77,7 +77,7 @@ module Main =
             let messageData =
                 match pRpt, msg with
                 | Some _, Some _        -> failwith "Cannot use both Position Report and Custom Message at the same time."
-                | Some rptArgs, None    -> PositionReport (composePositionReportMessage rptArgs) 
+                | Some rptArgs, None    -> PositionReportWithoutTimeStamp (composePositionReportMessage rptArgs) 
                 | None _, Some msg      -> Unformatted (UnformattedMessage.create msg)
                 | None, None            -> failwith "Must provide a position report or a custom message."
             
