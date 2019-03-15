@@ -102,9 +102,9 @@ USAGE: faprs --positionreport [--help] latitude <latitude> <hemisphere> longitud
 OPTIONS:
 
     latitude <latitude> <hemisphere>
-                          Your current latitude in this format 3050.15 N
+                          Your current latitude in this format 36.106964 N
     longitude <longitude> <hemisphere>
-                          Your current longitude in this format 2093.13 E
+                          Your current longitude in this format 112.112999 E
     symbol <symbol>       Optional. Default is House (-). If you want to use House, do not use the symbol argument because dashes do not parse.
     comment <comment>     Optional. What do you want to say? <comment> must be 43 characters or fewer.
     --help                display this list of options.
@@ -113,14 +113,14 @@ OPTIONS:
 #### Create a TNC2MON formatted frame with position report
 
 ```bash
-dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destination APDW15 --path WIDE1-1 --rpt latitude 3000.5 N longitude 1000.5 W symbol b comment "Subscribe to PewDiePie."
+dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destination APDW15 --path WIDE1-1 --rpt latitude 36.106964 N longitude -112.112999 W symbol b comment "Subscribe to PewDiePie."
 
 ```
 
 This will create a TNC2MON formatted frame with a lat/lon position report that looks like this:
 
 ```text
-KG7SIO>APDW15:WIDE1-1:=3000.5N/1000.5WbSubscribe to PewDiePie.
+KG7SIO>APDW15:WIDE1-1:=36.106964N/112.112999WbSubscribe to PewDiePie.
 ```
 
 The CLI will save it to the folder (and path) specified in `--save-to`. In this case the XMIT folder (if you have one) in your `present working directory.`
@@ -131,7 +131,7 @@ Let's break this down:
   * `KG7SIO`
 * The destination in this case is the Dire Wolf v1.5 `TOCALL` as [specified in APRS 1.1.](http://www.aprs.org/aprs11/tocalls.txt). The destination field can be overridden to indicate the sending application.
   * `APDW15`
-* Your position is `3000.5 degrees N` and `1000.5 degrees W`
+* Your position is `36.106964 degrees N` and `112.112999 degrees W`
 * Your APRS symbol is `b` for `bicycle`
 * Your comment is `Subscribe to PewDiePie.`
 
