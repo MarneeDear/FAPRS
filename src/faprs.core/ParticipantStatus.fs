@@ -31,8 +31,8 @@ Participant Status
 * Destination identifies the HQ??
 
 Participant Status Field
-        TIMESTAMP   PARTICIPANT#    STATUS-1    STATUS-2    MESSAGE
-BYTES   8           0-5             1           1           0-239 
+        TIMESTAMP   PARTICIPANT-ID      STATUS-1    STATUS-2    MESSAGE
+BYTES   8           0-5                 1           1           0-239 
 
  NOT USING THIS PROBABLY Date/Time format 2009-06-15T13:45:30 -- yyyy-MM-ddTHH:mm:ss
 
@@ -79,27 +79,27 @@ module Participant =
         let value (ParticipantStatusMessage s) = s
 
     type ParticipantStatus =
-        | Continued     of ParticipantStatusMessage
-        | Injured       of ParticipantStatus
-        | Resting       of ParticipantStatusMessage
-        | NeedsSupport  of ParticipantStatusMessage
+        | Continued                 of ParticipantStatusMessage
+        | Injured                   of ParticipantStatus
+        | Resting                   of ParticipantStatusMessage
+        | NeedsEmergencySupport     of ParticipantStatusMessage
         member this.ToStatusCombination() =
             match this with
             | Continued m       -> (1, 1, ParticipantStatusMessage.value m)
             | Injured s         ->  match s with
-                                    | Continued m       -> (1, 2, ParticipantStatusMessage.value m)
-                                    | Resting m         -> (3, 2, ParticipantStatusMessage.value m)
-                                    | NeedsSupport m    -> (4, 2, ParticipantStatusMessage.value m)
-                                    | _                 -> failwith "Injured can only be continued, resting, needs support."
-            | Resting m         -> (3, 3, ParticipantStatusMessage.value m)
-            | NeedsSupport m    -> (4, 4, ParticipantStatusMessage.value m)
+                                    | Continued m               -> (1, 2, ParticipantStatusMessage.value m)
+                                    | Resting m                 -> (3, 2, ParticipantStatusMessage.value m)
+                                    | NeedsEmergencySupport m   -> (4, 2, ParticipantStatusMessage.value m)
+                                    | _                         -> failwith "Injured can only be continued, resting, needs support."
+            | Resting m                 -> (3, 3, ParticipantStatusMessage.value m)
+            | NeedsEmergencySupport m   -> (4, 4, ParticipantStatusMessage.value m)
 
-    type ParitipantData =
+    type ParitipantStatusReport =
         {
-            ParticipantNumber : ParticipantID
             TimeStamp : RecordedOn
+            ParticipantID : ParticipantID
             ParticipantStatus : ParticipantStatus
         }
         override this.ToString() =
             let status1, status2, msg = this.ParticipantStatus.ToStatusCombination() 
-            sprintf "%s%s%i%i%s" (RecordedOn.value this.TimeStamp) (ParticipantID.value this.ParticipantNumber) status1 status2 msg
+            sprintf "{{%s%s%i%i%s" (RecordedOn.value this.TimeStamp) (ParticipantID.value this.ParticipantID) status1 status2 msg

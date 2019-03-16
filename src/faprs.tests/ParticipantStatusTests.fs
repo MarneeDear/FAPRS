@@ -30,8 +30,8 @@ let ParticipantTests =
         testCase "Can create a good paricipant message" <| fun _ ->
             let data =
                 {
-                    ParticipantNumber = ParticipantID.create "12345"
                     TimeStamp = RecordedOn.create None
+                    ParticipantID = ParticipantID.create "12345"
                     ParticipantStatus = ParticipantStatus.Continued (ParticipantStatusMessage.create "We have a winner!")
                 }
             Expect.stringContains (data.ToString()) GOOD_PARTICIPANT_CONTINUED_STATUS "Message worked"
