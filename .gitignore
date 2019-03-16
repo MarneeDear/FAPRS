@@ -346,3 +346,7 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# DireWold REC and XMIT files
+REC*
+XMIT*
