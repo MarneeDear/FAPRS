@@ -113,14 +113,14 @@ OPTIONS:
 #### Create a TNC2MON formatted frame with position report
 
 ```bash
-dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destination APDW15 --path WIDE1-1 --rpt latitude 36.106964 N longitude -112.112999 W symbol b comment "Subscribe to PewDiePie."
+dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destination APDW15 --path WIDE1-1 --rpt latitude 36.106964 N longitude -112.112999 W symbol b comment "Join Oro Valley Amateur Radio Club"
 
 ```
 
 This will create a TNC2MON formatted frame with a lat/lon position report that looks like this:
 
 ```text
-KG7SIO>APDW15:WIDE1-1:=36.106964N/112.112999WbSubscribe to PewDiePie.
+KG7SIO>APDW15:WIDE1-1:=36.106964N/112.112999WbJoin Oro Valley Amateur Radio Club.
 ```
 
 The CLI will save it to the folder (and path) specified in `--save-to`. In this case the XMIT folder (if you have one) in your `present working directory.`
@@ -133,19 +133,19 @@ Let's break this down:
   * `APDW15`
 * Your position is `36.106964 degrees N` and `112.112999 degrees W`
 * Your APRS symbol is `b` for `bicycle`
-* Your comment is `Subscribe to PewDiePie.`
+* Your comment is `Join Oro Valley Amateur Radio Club`
 
 #### Create a TNC2MON formatted frame with unformatted message (string)
 
 ```bash
-dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destination APDW15 --path WIDE1-1 --msg "Subscribe to PewDiePie."
+dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destination APDW15 --path WIDE1-1 --msg "Join Oro Valley Amateur Radio Club"
 
 ```
 
 This will create a TNC2MON formatted frame with a custom message that looks like this:
 
 ```text
-KG7SIO>APDW15,WIDE1-1:Subscribe to PewDiePie
+KG7SIO>APDW15,WIDE1-1:Join Oro Valley Amateur Radio Club
 ```
 
 The CLI will save it to the folder (and path) specified in `--save-to`. In this case the XMIT folder (if you have one) in your `present working directory.`
@@ -205,5 +205,5 @@ kissutil -o REC -f XMIT
 Write a Position Report without Timestamp to the `XMIT` folder.
 
 ```bash
-dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destination APDW15 --path WIDE1-1 --msg "Subscribe to PewDiePie."
+dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destination APDW15 --path WIDE1-1 --msg "Join Oro Valley Amateur Radio Club"
 ```
