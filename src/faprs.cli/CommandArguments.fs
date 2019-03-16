@@ -7,16 +7,16 @@ open Argu
 
 [<CliPrefix(CliPrefix.None)>]
 type PositionReportArguments =
-    | [<Mandatory>] Latitude    of latitude:float * hemisphere:char
-    | [<Mandatory>] Longitude   of longitude:float * hemisphere:char
+    | [<Mandatory>] Latitude    of latitude:float //* hemisphere:char
+    | [<Mandatory>] Longitude   of longitude:float //* hemisphere:char
     | Symbol                    of symbol:char
     | Comment                   of comment:string
 with
     interface IArgParserTemplate with
         member s.Usage =
             match s with
-            | Latitude _    -> "Your current latitude in this format 3050.15 N"
-            | Longitude _   -> "Your current longitude in this format 2093.13 E"
+            | Latitude _    -> "Your current latitude in DD (decimal degrees) format"
+            | Longitude _   -> "Your current longitude in DD (decimal degrees) format"
             | Symbol _      -> "Optional. Default is House (-). If you want to use House, do not use the symbol argument because dashes do not parse."
             | Comment _     -> "Optional. What do you want to say? <comment> must be 43 characters or fewer."
 and SourcePathArguments =

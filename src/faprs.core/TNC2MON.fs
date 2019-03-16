@@ -44,6 +44,6 @@ module TNC2MON =
         override this.ToString() =
             let message =
                 match this.Message with
-                | Some p    -> p.ToString()
+                | Some rpt    -> rpt.ToString()
                 | None      -> String.Empty
             sprintf "%s>%s,%s:%s" (CallSign.value this.Sender) (CallSign.value this.Destination) (this.Path.ToString()) message

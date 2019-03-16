@@ -94,7 +94,7 @@ module Participant =
             | Resting m                 -> (3, 3, ParticipantStatusMessage.value m)
             | NeedsEmergencySupport m   -> (4, 4, ParticipantStatusMessage.value m)
 
-    type ParitipantStatusReport =
+    type ParitcipantStatusReport =
         {
             TimeStamp : RecordedOn
             ParticipantID : ParticipantID

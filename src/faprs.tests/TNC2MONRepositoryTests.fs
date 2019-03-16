@@ -3,7 +3,7 @@
 open Expecto
 open faprs.core.TNC2MON
 open faprs.core.Common
-open faprs.core.APRSDataExtensions
+open faprs.core.APRSData
 open faprs.infrastructure.TNC2MONRepository
 open System
 open System.IO
@@ -14,11 +14,11 @@ let FILE_PATH = @"."
 [<Literal>]
 let SENDER = "kg7sio"
 [<Literal>]
-let DESTINATION = "kg7sil"
+let DESTINATION = "apdw15"  //DireWolf v1.15 ToCall 
 [<Literal>]
 let PATH = "WIDE1-1"
-let LATITUDE = 111.11
-let LONGITUDE = 222.2
+let LATITUDE = 36.0591117
+let LONGITUDE = -112.1093343
 let LONGITUDE_HEMISPHERE = LongitudeHemisphere.East // 'E'
 let LATITUDE_HEMISPHERE =  LatitiudeHemisphere.North // 'N'
 let POSITION_REPORT_HOUSE = sprintf "=%.2f%c/%.2f%c-" LATITUDE (LATITUDE_HEMISPHERE.ToHemisphereChar()) LONGITUDE (LONGITUDE_HEMISPHERE.ToHemisphereChar())
@@ -27,8 +27,8 @@ let TNC2_FINAL = (sprintf "%s>%s,%s:%s" (SENDER.ToUpper()) (DESTINATION.ToUpper(
 let PACKET_POSITION_REPORT_HOUSE =
     { 
         Position = { 
-            Latitude = { Degrees = LATITUDE; Hemisphere = LATITUDE_HEMISPHERE }
-            Longitude = { Degrees = LONGITUDE; Hemisphere = LONGITUDE_HEMISPHERE} 
+            Latitude = FormattedLatitude.create LATITUDE  //{ Degrees = LATITUDE; Hemisphere = LATITUDE_HEMISPHERE }
+            Longitude = FormattedLongitude.create LONGITUDE //{ Degrees = LONGITUDE; Hemisphere = LONGITUDE_HEMISPHERE} 
         } 
         Symbol = SymbolCode.House
         Comment = PositionReportComment.create String.Empty

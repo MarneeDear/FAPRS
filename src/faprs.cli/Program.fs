@@ -3,9 +3,9 @@
 open System
 open Argu
 open CommandArguments
-open faprs.core.APRSDataExtensions
 open faprs.core.TNC2MON
 open faprs.core
+open faprs.core.APRSData
 open faprs.infrastructure.TNC2MONRepository
 
 (*
@@ -46,8 +46,8 @@ module Main =
     let composePositionReportMessage (pRpt: ParseResults<PositionReportArguments>) = 
         let latArgu = pRpt.GetResult(CommandArguments.Latitude)
         let lonArgu = pRpt.GetResult(CommandArguments.Longitude)
-        let lat : Latitude = { Degrees = fst latArgu ; Hemisphere = getLatHemisphere (snd latArgu) } 
-        let lon : Longitude = { Degrees = fst lonArgu; Hemisphere = getLonHemisphere (snd lonArgu) }
+        let lat = FormattedLatitude.create latArgu
+        let lon = FormattedLongitude.create lonArgu
         let symbol = getSymbolCode ((pRpt.TryGetResult(CommandArguments.Symbol)) |> Option.defaultValue '-')
         let comment = pRpt.TryGetResult(CommandArguments.Comment) |> Option.defaultValue String.Empty
         { 
