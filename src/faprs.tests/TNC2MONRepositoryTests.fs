@@ -10,6 +10,10 @@ open System.IO
 
 [<Literal>]
 let FILE_PATH = @"."
+[<Literal>]
+let REC = "REC"
+[<Literal>]
+let XMIT = "XMIT"
 
 [<Literal>]
 let SENDER = "kg7sio"
@@ -43,12 +47,25 @@ let PACKET =
     }
 
 [<Tests>]
-let WriteTNC2PacketTests =
-    testList "Write packet to a kissutil frame file" [
+let WriteTNC2RecordTests =
+    testList "Write record to a kissutil file" [
         testCase "A file is created in the path provided" <| fun _ ->
             let timestamp = (DateTime.Now.ToString("yyyyMMddHHmmssff"))
-            writeKissUtilFrame None [PACKET] FILE_PATH timestamp
-            Expect.isTrue (File.Exists(Path.Combine(Path.GetFullPath(FILE_PATH), sprintf "%s%s" timestamp "faprs.txt"))) "The frame file was created."
+            writeKissUtilRecord None [PACKET] FILE_PATH timestamp
+            Expect.isTrue (File.Exists(Path.Combine(Path.GetFullPath(FILE_PATH), sprintf "%sfaprs.txt" timestamp))) "The frame file was created."
+    ]
+
+[<Tests>]
+let ProcessTNC2RecordTests =
+    testList "Read records in a received kissutil file" [
+        //testCase "Can read files created by faprs and create an array of valid aprs messages" <| fun _ ->
+        //    let timestamp = (DateTime.Now.ToString("yyyyMMddHHmmssff"))
+        //    writeKissUtilRecord None [PACKET] (Path.Combine(FILE_PATH, XMIT)) timestamp
+        //    let frames = processKissUtilFrames (Path.Combine(FILE_PATH, XMIT)) (Some (sprintf "%sfaprs.txt" timestamp))
+        //    frames |> Array.iter (fun f -> Expect.isOk f "frame was not parsed")
+        testCase "Can read files created by DireWolf and create an array of valid aprs messages" <| fun _ ->
+            let frames = processKissUtilFrames (Path.Combine(FILE_PATH, REC)) None              
+            frames |> Array.iter (fun f -> Expect.isOk f "frame was not parsed")
     ]
 
 //[0] K1NRO-1>APDW14,WIDE2-2:!4238.80NS07105.63W#PHG5630

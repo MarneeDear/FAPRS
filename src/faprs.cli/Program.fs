@@ -90,7 +90,7 @@ module Main =
                 }
 
             match saveTo with
-            | Some path -> writeKissUtilFrame None [packet] path (DateTime.Now.ToString("yyyyMMddHHmmssff")) //TODO write to file
+            | Some path -> writeKissUtilRecord None [packet] path (DateTime.Now.ToString("yyyyMMddHHmmssff")) 
             | None      -> ()
         with e ->
             Console.error <| (sprintf "%s" e.Message)
