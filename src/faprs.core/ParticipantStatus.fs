@@ -32,7 +32,7 @@ Participant Status
 
 Participant Status Field
         TIMESTAMP   PARTICIPANT-ID      STATUS-1    STATUS-2    MESSAGE
-BYTES   8           0-5                 1           1           0-239 
+BYTES   8-fixed     5-fixed             1-fixed     1-fixed     0-239 
 
  NOT USING THIS PROBABLY Date/Time format 2009-06-15T13:45:30 -- yyyy-MM-ddTHH:mm:ss
 
@@ -57,12 +57,20 @@ module Participant =
     module ParticipantID =
         let create (nbr:string) =
             match nbr with 
-            | n when nbr.Length < 6 -> ParticipantID n
+            | n when nbr.Length < 6 -> ParticipantID (sprintf "%5s" n)
             | n -> ParticipantID (n.Substring(0, 5))
         let value (ParticipantID n) = n
 
+    //10092345 is 23 hours 45 minutes zulu on October 9th.
     type RecordedOn = private RecordedOn of string
     module RecordedOn =
+        let revert (timestamp:string) =
+            let mm = (timestamp.Substring(0, 2))
+            let dd = (timestamp.Substring(2, 2))
+            let HH = (timestamp.Substring(4, 2))
+            let MM = (timestamp.Substring(6, 2))
+            let dt = sprintf "%i-%s-%sT%s:%s:00Z" DateTime.Today.Year mm dd HH MM
+            DateTime.Parse(dt)
         let create (date:DateTime option) =
             match date with
             | Some d    -> RecordedOn (sprintf "%02i%02i%02i%02i" d.Month d.Day d.Hour d.Minute)
@@ -83,6 +91,7 @@ module Participant =
         | Injured                   of ParticipantStatus
         | Resting                   of ParticipantStatusMessage
         | NeedsEmergencySupport     of ParticipantStatusMessage
+        | Unknown                   of ParticipantStatusMessage
         member this.ToStatusCombination() =
             match this with
             | Continued m       -> (1, 1, ParticipantStatusMessage.value m)
@@ -90,9 +99,11 @@ module Participant =
                                     | Continued m               -> (1, 2, ParticipantStatusMessage.value m)
                                     | Resting m                 -> (3, 2, ParticipantStatusMessage.value m)
                                     | NeedsEmergencySupport m   -> (4, 2, ParticipantStatusMessage.value m)
-                                    | _                         -> failwith "Injured can only be continued, resting, needs support."
+                                    | Unknown m                 -> (0, 2, ParticipantStatusMessage.value m) 
+                                    | _                         -> (0, 0, "Unknown participant status.")
             | Resting m                 -> (3, 3, ParticipantStatusMessage.value m)
             | NeedsEmergencySupport m   -> (4, 4, ParticipantStatusMessage.value m)
+            | Unknown m -> (0, 0, ParticipantStatusMessage.value m)
 
     type ParitcipantStatusReport =
         {
