@@ -173,7 +173,7 @@ dotnet run -p src/faprs.tests -f netcoreapp2.2
 
 This will restore dependencies, compile all projects, and run tests.
 
-#### Run the tests while changing code
+#### Run the tests while changing code (dotnet watch)
 
 ```bash
 dotnet watch -p src/faprs.tests run -f netcoreapp2.2
@@ -207,3 +207,7 @@ Write a Position Report without Timestamp to the `XMIT` folder.
 ```bash
 dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destination APDW15 --path WIDE1-1 --msg "Join Oro Valley Amateur Radio Club"
 ```
+
+## DireWolf tips
+
+Debugging tip:  Use the direwolf "-d n" command line option to print the KISS frames in hexadecimal so we can see what is being sent.
