@@ -79,6 +79,8 @@ module APRSData =
         let create (d:float) =
             let deg, min, sec = calcDegMinSec d
             FormattedLatitude (sprintf "%02i%02i.%02i%c" deg min (int ((float sec) / 60.0 * 100.0)) (if d > 0.0 then (North.ToHemisphereChar()) else (South.ToHemisphereChar())))
+        let check (d:string) =
+            FormattedLatitude d //TODO verify in expected format -- regular expressions?
         let value (FormattedLatitude d) = d
 
     (* 
@@ -97,6 +99,8 @@ module APRSData =
         let create (d:float) =
             let deg, min, sec = calcDegMinSec d
             FormattedLongitude (sprintf "%02i%03i.%02i%c" deg min (int ((float sec) / 60.0 * 100.0)) (if d > 0.0 then (East.ToHemisphereChar()) else (West.ToHemisphereChar())))
+        let check (d:string) =
+            FormattedLongitude d //TODO verify in expected format -- regular expressions?
         let value (FormattedLongitude d) = d
 
     type Position =
