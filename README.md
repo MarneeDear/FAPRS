@@ -14,9 +14,9 @@ A system for sending APRS messages built in F#, because functional programming a
 
 Here is a similar system using a Kantronics packet radio setup that functions like a BBS with keyboard-to-keyboard communications.
 
-[![You Tube](http://img.youtube.com/vi/FJEVWMuz6Xg&t=329s/0.jpg)](http://www.youtube.com/watch?v=FJEVWMuz6Xg&t=329s "Kantronics Packet Radio Mail and BBS Operations")
+[![You Tube](http://img.youtube.com/vi/FJEVWMuz6Xg/0.jpg)](http://www.youtube.com/watch?v=FJEVWMuz6Xg "Kantronics Packet Radio Mail and BBS Operations")
 
-[![Everything Is AWESOME](https://img.youtube.com/vi/FJEVWMuz6Xg&t=329s/0.jpg)](https://www.youtube.com/watch?v=FJEVWMuz6Xg&t=329s "Everything Is AWESOME")
+[![Everything Is AWESOME](https://img.youtube.com/vi/StTqXEQ2l-Y/0.jpg)](https://www.youtube.com/watch?v=StTqXEQ2l-Y "Everything Is AWESOME")
 
 [Kantronics Packet Radio Mail and BBS Operations](https://www.youtube.com/watch?v=FJEVWMuz6Xg&t=329s)
 
