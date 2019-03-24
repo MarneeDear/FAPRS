@@ -52,23 +52,17 @@ module FrameActivePatterns =
     //Eample: =3603.55N/112006.56W-
     let (|Latitude|_|) (msg:string) = 
         let parseLatitude (posRpt:string) =
-            posRpt.Substring(1, 8) //TODO check that it is at least sort of an APRS latitude or longitude
+            let lat = posRpt.Substring(1, 8)
+            match lat.EndsWith("N"), lat.EndsWith("S") with
+            | true, false   -> Some lat
+            | false, true   -> Some lat
+            | _             -> None
         match getAPRSDataTypeIdentifier (msg.Substring(0,1)) with
         | Some id   ->  match id with
-                        | PositionReportWithoutTimeStampWithMessaging   -> Some (parseLatitude msg)
-                        | PositionReportWithoutTimeStampNoMessaging     -> Some (parseLatitude msg)
+                        | PositionReportWithoutTimeStampWithMessaging   -> (parseLatitude msg)
+                        | PositionReportWithoutTimeStampNoMessaging     -> (parseLatitude msg)
                         | _                                             -> None
          | None     -> None //We do not have a position report and therefore no latitude
-        //if msg.StartsWith("=") || msg.StartsWith("!") then 
-        //    //We have identigied a Lat/Long Position Report Format — without Timestamp
-        //    match msg.IndexOf(@"N/"), msg.IndexOf(@"S/") with
-        //    | -1, -1 -> None
-        //    | n, s when n = -1 -> Some (msg.Substring(msg.IndexOf("=") + 1, s)) //Southern Hemisphere
-        //    | n, s when s = -1 -> Some (msg.Substring(msg.IndexOf("=") + 1, n)) //Northern Hemisphere
-        //    | _, _ -> None
-        //else
-        //    //We do not have a position report
-        //    None
 
     //Only supports Lat/Long Position Report Format — without Timestamp
     //See APRS 1.01 spec, section 8 POSITION AND DF REPORT DATA FORMATS
@@ -76,32 +70,15 @@ module FrameActivePatterns =
     //Example: =3603.55N/112006.56W-
     let (|Longitude|_|) (msg:string) =
         let parseLongitude (posRpt:string) =
-            posRpt.Substring(9, 9) //TODO check that it is at least sort of an APRS latitude or longitude
-        match getAPRSDataTypeIdentifier (msg.Substring(9,1)) with
-        | Some id   ->  match id with
-                        | PositionReportWithoutTimeStampWithMessaging   -> Some (parseLongitude msg)
-                        | PositionReportWithoutTimeStampNoMessaging     -> Some (parseLongitude msg)
-                        | _                                             -> None
-         | None     -> None //We do not have a position report and therefore no latitude
-        //if msg.StartsWith("=") || msg.StartsWith("!") then 
-        //    //We have a valid Lat/Long Position Report Format — without Timestamp
-        //    let start =
-        //        match msg.IndexOf(@"N/"), msg.IndexOf(@"S/") with
-        //        | -1, -1 -> -1
-        //        | n, s when n = -1 -> s
-        //        | n, s when s = -1 -> n 
-        //        | _, _ -> -1
-
-        //    match msg.IndexOf('W'), msg.IndexOf('E'), start with
-        //    | -1, -1, -1 -> None
-        //    | w, e, st when e = -1 && st > -1 -> Some (msg.Substring(st + 2, w - st - 1)) //Western Hemisphere
-        //    | w, e, st when w = -1 && st > -1 -> Some (msg.Substring(st + 2, e - st - 1)) //Eastern Hemisphere 
-        //    | w, e, st when w < e && st > -1  -> Some (msg.Substring(st + 2, w - st - 1)) //Western Hemisphere 
-        //    | w, e, st when e < w && st > -1  -> Some (msg.Substring(st + 2, e - st - 1)) //Eastern Hemisphere 
-        //    | _, _, _ -> None
-        //else
-        //    //We do not have a position report
-        //    None
+            let lon = posRpt.Substring(10, 9) 
+            match lon.EndsWith("W"), lon.EndsWith("E") with 
+            | true, false   -> Some lon
+            | false, true   -> Some lon
+            | _             -> None
+            
+        match msg.Substring(9,1) with
+        | "/" -> parseLongitude msg
+        | _ -> None
 
     //TODO can do this by string position because the lat/lon is a fixed length
     let (|Symbol|_|) (msg:string) =

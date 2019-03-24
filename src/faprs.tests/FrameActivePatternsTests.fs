@@ -3,6 +3,7 @@
 open Expecto
 open faprs.core.FrameActivePatterns
 open System
+open faprs.core
 
 //TODO would this be a smarter way to do this? https://stackoverflow.com/questions/2671491/f-active-pattern-list-filter-or-equivalent?rq=1
 
@@ -96,49 +97,49 @@ let MessageParsingTests =
     testList "Message Parsing Tests" [
         testCase "Can get message part of well formed frame with message" <| fun _ ->
             let result =
-                match "[0] KG7SIO-7>APRD15,WIDE1-1,TCPXX*,qAX,CWOP-2:=3216.4N/11057.3Wb,b>,lah:blah /fishcakes" with
-                | Message m -> m
+                match "[0] KG7SIO-7>APRD15,WIDE1-1,TCPXX*,qAX,CWOP-2:=03216.4N/011057.3Wb,b>,lah:blah /fishcakes" with
+                | FrameActivePatterns.Message m -> m
                 | _ -> String.Empty
-            Expect.equal result "=3216.4N/11057.3Wb,b>,lah:blah /fishcakes" "Message does not match"
+            Expect.equal result "=03216.4N/011057.3Wb,b>,lah:blah /fishcakes" "Message does not match"
         testCase "Can get Latitude from well formed message position report" <| fun _ ->
             let result =
-                match "=3216.4N/11057.3Wb,b>,lah:blah /fishcakes" with
+                match "=03216.4N/011057.3Wb,b>,lah:blah /fishcakes" with
                 | Latitude l -> l
                 | _ -> String.Empty
-            Expect.equal result "3216.4N" "Latitude did not match"
+            Expect.equal result "03216.4N" "Latitude did not match"
         testCase "Latitude in malformed position report cannot be parsed" <| fun _ ->
             let result =
-                match "=3216.4N'11057.3Wb,b>,lah:blah /fishcakes" with
+                match "=vvv03216.4N'0011057.3Wb,b>,lah:blah /fishcakes" with
                 | Latitude l -> Some l
                 | _ -> None
             Expect.isNone result "Latitude should not have been parsed"
         testCase "Can get Longitude from well formed position report" <| fun _ -> 
             let result =
-                match "=3216.4N/11057.3Wb,b>,lah:blah /fishcakes" with
+                match "=03216.4N/011057.3Wb,b>,lah:blah /fishcakes" with
                 | Longitude l -> l
                 | _ -> String.Empty
-            Expect.equal result "11057.3W" "Longitude did not match"
+            Expect.equal result "011057.3W" "Longitude did not match"
         testCase "Longitude in malformed position report cannot be parsed" <| fun _ ->
             let result =
-                match "-3216.4W/11057.3Sb,b>,lah:blah /fishcakes" with
+                match "-03216.4W/011057.3Sb,b>,lah:blah /fishcakes" with
                 | Longitude l -> Some l
                 | _ -> None
             Expect.isNone result "Longitude should not have been parsed."
         testCase "Can get Symbol from well formed position report" <| fun _ ->
             let result =
-                match "=3216.4N/11057.3Eb,b>,lah:blah /fishcakes" with
+                match "=03216.4N/011057.3Eb,b>,lah:blah /fishcakes" with
                 | Symbol s -> s
                 | _ -> ' '
             Expect.equal result 'b' "Symbol did not match"
         testCase "Symbol in malformed position report cannot be parsed" <| fun _ ->
             let result =
-                match "=3216.4I`11057.3Lb,b>,lah:blah /fishcakes" with
+                match "=03216.4I`011057.3Lb,b>,lah:blah /fishcakes" with
                 | Symbol b -> Some b
                 | _ -> None
             Expect.isNone result "Symbol should not have been parsed"
         testCase "Can get comment from well formed message with position report" <| fun _ ->
             let result = 
-                match ("=3216.4N/11057.3Wb,b>,lah:blah /fishcakes") with
+                match ("=03216.4N/011057.3Wb,b>,lah:blah /fishcakes") with
                 | Comment 'b' c -> c 
                 | _ -> String.Empty
             Expect.equal result ",b>,lah:blah /fishcakes" "Comment did not match"
