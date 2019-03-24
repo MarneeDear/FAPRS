@@ -128,9 +128,9 @@ let MessageParsingTests =
         testCase "Can get Symbol from well formed position report" <| fun _ ->
             let result =
                 match "=03216.4N/011057.3Eb,b>,lah:blah /fishcakes" with
-                | Symbol s -> s
-                | _ -> ' '
-            Expect.equal result 'b' "Symbol did not match"
+                | Symbol s -> Some s
+                | _ -> None
+            Expect.equal result (Some Bicycle) "Symbol did not match"
         testCase "Symbol in malformed position report cannot be parsed" <| fun _ ->
             let result =
                 match "=03216.4I`011057.3Lb,b>,lah:blah /fishcakes" with

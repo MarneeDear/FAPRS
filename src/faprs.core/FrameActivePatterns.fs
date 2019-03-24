@@ -81,21 +81,14 @@ module FrameActivePatterns =
         | _ -> None
 
     //TODO can do this by string position because the lat/lon is a fixed length
+    //Should be char 20
+    //Example: =3603.55N/112006.56W-
     let (|Symbol|_|) (msg:string) =
-        let rpt =
-            match msg.IndexOf(@"N/"), msg.IndexOf(@"S/") with
-            | -1, -1 -> String.Empty
-            | n, s when n = -1 -> (msg.Substring(s + 2)) //s
-            | n, s when s = -1 -> (msg.Substring(n + 2)) //n 
-            | _, _ -> String.Empty
-
-        match rpt.IndexOf('W'), rpt.IndexOf('E'), rpt with
-        | -1, -1, _ -> None
-        | w, e, r when e = -1 -> Some (r.Substring(w + 1, 1).Chars(0)) //w
-        | w, e, r when w = -1 -> Some (r.Substring(e + 1, 1).Chars(0)) //e
-        | w, e, r when w < e ->  Some (r.Substring(w + 1, 1).Chars(0)) //w
-        | w, e, r when e < w ->  Some (r.Substring(e + 1, 1).Chars(0)) //e
-        | _, _, _ -> None
+        //TODO check that the previous char was a W or E meaning that it was probably and APRS lat/lon
+        match msg.Substring(18,1) with
+        | "W" -> getSymbolCode (msg.Substring(19,1).ToCharArray().[0])
+        | "E" -> getSymbolCode (msg.Substring(19,1).ToCharArray().[0])
+        | _ -> None
 
     let (|Comment|_|) (symbol:char) (msg:string) =
         let comment = msg.Substring(msg.IndexOf(symbol) + 1).Trim()

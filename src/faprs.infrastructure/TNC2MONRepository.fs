@@ -38,7 +38,7 @@ module TNC2MONRepository =
             | None, None -> failwith "Neither Latitude nor Longitude were in expected format."
         let sym =
             match (|Symbol|_|) rpt with
-            | Some s -> Common.getSymbolCode s //Defaults to house if no match found -- TODO do I want to do this?
+            | Some s -> s //Defaults to house if no match found -- TODO do I want to do this?
             | None -> Common.SymbolCode.House
         let comment =
             match (|Comment|_|) (sym.ToChar()) rpt with

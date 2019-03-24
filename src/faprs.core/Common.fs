@@ -44,15 +44,15 @@ module Common =
 
     let getSymbolCode symbol =
         match symbol with
-        | '-' -> House
-        | 'b' -> Bicycle
-        | 'O' -> Balloon
-        | 'h' -> Hospital
-        | 'j' -> Jeep
-        | 'k' -> Truck
-        | '<' -> Motorcycle
-        | '[' -> Jogger
-        | _   -> House
+        | '-' -> Some House
+        | 'b' -> Some Bicycle
+        | 'O' -> Some Balloon
+        | 'h' -> Some Hospital
+        | 'j' -> Some Jeep
+        | 'k' -> Some Truck
+        | '<' -> Some Motorcycle
+        | '[' -> Some Jogger
+        | _   -> None
 
     //9 byte field
     type CallSign = private CallSign of string          
