@@ -57,8 +57,8 @@ module Participant =
     module ParticipantID =
         let create (nbr:string) =
             match nbr with 
-            | n when nbr.Length < 6 -> ParticipantID (sprintf "%5s" n)
-            | n -> ParticipantID (n.Substring(0, 5))
+            | n when nbr.Length < 6 -> ParticipantID (sprintf "%5s" n) //Fixed width 5 chars
+            | n -> ParticipantID (n.Substring(0, 5)) //TODO should probably return an error
         let value (ParticipantID n) = n
 
     //10092345 is 23 hours 45 minutes zulu on October 9th.

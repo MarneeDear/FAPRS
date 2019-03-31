@@ -55,5 +55,7 @@ let ParticipantTests =
         testCase "Can create participant number" <| fun _ ->
             let result = ParticipantID.create GOOD_PARTICIPANT_NBR
             Expect.equal (ParticipantID.value result) GOOD_PARTICIPANT_NBR "Participant number string was created"
-
+        testCase "Short participant number is padded tp length 5 chars" <| fun _ ->
+            Expect.equal (ParticipantID.value (ParticipantID.create "9")) "    9" "Participant number is not fixed-length of 5"
+            
     ]
