@@ -64,7 +64,7 @@ module Participant =
     //10092345 is 23 hours 45 minutes zulu on October 9th.
     type RecordedOn = private RecordedOn of string
     module RecordedOn =
-        let revert (timestamp:string) =
+        let revert (timestamp:string) = //TODO would this be better in an active pattern?
             let mm = (timestamp.Substring(0, 2))
             let dd = (timestamp.Substring(2, 2))
             let HH = (timestamp.Substring(4, 2))
