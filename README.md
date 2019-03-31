@@ -217,3 +217,21 @@ dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destinat
 ## DireWolf tips
 
 Debugging tip:  Use the direwolf "-d n" command line option to print the KISS frames in hexadecimal so we can see what is being sent.
+
+## Run the web project
+
+`faprs.service` provides a web interface to enter messages you want to send over APRS and to see messages received over APRS.
+
+You can run it with `dotnet run` and `dotnet watch`.
+
+Run with re-loading after changes.
+
+```bash
+dotnet watch -p src/faprs.service/ run
+```
+
+Just run.
+
+```bash
+dotnet run -p src/faprs.service/
+```
