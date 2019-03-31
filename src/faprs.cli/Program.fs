@@ -52,7 +52,7 @@ module Main =
         let comment = pRpt.TryGetResult(CommandArguments.Comment) |> Option.defaultValue String.Empty
         { 
             Position = { Latitude = lat; Longitude = lon }
-            Symbol = symbol 
+            Symbol = (if symbol.IsSome then symbol.Value else SymbolCode.House)
             Comment = PositionReportComment.create comment
         }
 
