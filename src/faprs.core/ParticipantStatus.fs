@@ -69,7 +69,7 @@ module Participant =
             let dd = (timestamp.Substring(2, 2))
             let HH = (timestamp.Substring(4, 2))
             let MM = (timestamp.Substring(6, 2))
-            let dt = sprintf "%i-%s-%sT%s:%s:00Z" DateTime.Today.Year mm dd HH MM
+            let dt = sprintf "%i-%s-%sT%s:%s" DateTime.Today.Year mm dd HH MM
             DateTime.Parse(dt)
         let create (date:DateTime option) =
             match date with

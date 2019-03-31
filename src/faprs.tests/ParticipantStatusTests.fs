@@ -57,5 +57,6 @@ let ParticipantTests =
             Expect.equal (ParticipantID.value result) GOOD_PARTICIPANT_NBR "Participant number string was created"
         testCase "Short participant number is padded tp length 5 chars" <| fun _ ->
             Expect.equal (ParticipantID.value (ParticipantID.create "9")) "    9" "Participant number is not fixed-length of 5"
-            
+        testCase "Can revert a properly formated timestamp to datetime" <| fun _ ->
+            Expect.equal (RecordedOn.revert TEST_TIMESTAMP) TEST_DATE "Reverted timestamp equals input datetime"
     ]
