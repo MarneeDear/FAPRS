@@ -17,9 +17,10 @@ Amateur radio communications protocols, specifically the very popular packet rad
 
 * Demonstrate the power of F# in domain modelling that makes modelling protocols clear TODO
 Show how great F# is as domain modelling, making it a wonderful choice for developing for protocols -- functional domain modelling for communications protocols
-* Provide a simple, easy to use application for sending and receiving APRS messages.
+* Provide a cross-platform, simple, easy to use application for sending and receiving APRS messages.
 * Provide an automated way to track race participants during amateur radio supported long-distance races (e.g, 24 Hours in the Old Pueblo, C/V 50/50). 
 * Provide a framework for developing custom APRS applications.
+* Get more people involved in amateur radio
 
 The code uses a lot of functional programming techniques and F# libraries to get things done, but here are the highlights:
 
@@ -27,10 +28,10 @@ The code uses a lot of functional programming techniques and F# libraries to get
   * Single case unions
   * Constrained strings
   * Making impossible states impossible
-* Active patterns for string parsing and validation
-* Argu for command line parsing
-* Expecto for testing
-* Saturn for building a web app
+* [Active patterns]() for string parsing and validation
+* [Argu]() for command line parsing
+* [Expecto]() for testing
+* [Saturn]() for building the web app/web API/web service
 
 
 ## Amateur Radio and APRS
@@ -53,6 +54,10 @@ What Wikipedia thinks it is:
 
 > *Automatic Packet Reporting System* is an amateur radio-based system for real time digital communications of information of immediate value in the local area. Data can include object Global Positioning System coordinates, weather station telemetry, text messages, announcements, queries, and other telemetry.
 
+What I think it is:
+
+> APRS is an amateur radio protocol that is really cool and awesome and makes me look like an real Engineer.
+
 The APRS protocol was developed by [TAPR (Tucson Amateur Packet Radio)](https://www.tapr.org/aprs_information.html). 
 
 The specification versions:
@@ -66,5 +71,6 @@ This video is a nice demonstration of what you can do with APRS. The system demo
 
 > _click the video to watch on You Tube_
 
-APRS is an amateur radio protocol that is really cool and awesome and makes me look like an real Engineer.
+
+
 
