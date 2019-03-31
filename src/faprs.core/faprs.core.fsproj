@@ -4,7 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Common.fs" />
-    <Compile Include="FrameActivePatterns.fs" />
+    <Compile Include="TNC2MONActivePatterns.fs" />
     <Compile Include="ParticipantStatus.fs" />
     <Compile Include="APRSData.fs" />
     <Compile Include="TNC2MON.fs" />

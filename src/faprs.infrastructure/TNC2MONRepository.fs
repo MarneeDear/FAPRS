@@ -1,7 +1,7 @@
 ﻿namespace faprs.infrastructure
 
 open faprs.core
-open faprs.core.FrameActivePatterns
+open faprs.core.TNC2MonActivePatterns
 open faprs.core.APRSData
 open faprs.core.Participant
 

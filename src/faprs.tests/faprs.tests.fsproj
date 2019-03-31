@@ -8,7 +8,7 @@
     <Compile Include="ParticipantStatusTests.fs" />
     <Compile Include="CRCTests.fs" />
     <Compile Include="AX25Tests.fs" />
-    <Compile Include="FrameActivePatternsTests.fs" />
+    <Compile Include="TNC2MONActivePatternsTests.fs" />
     <Compile Include="TNC2MONRepositoryTests.fs" />
     <Compile Include="APRSDataTest.fs" />
     <Compile Include="CommonTests.fs" />
