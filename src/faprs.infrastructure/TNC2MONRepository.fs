@@ -32,18 +32,18 @@ module TNC2MONRepository =
                     Longitude = FormattedLongitude.check lon 
                 }
             match (|Latitude|_|) rpt, (|Longitude|_|) rpt with
-            | Some lat, Some lon -> posRec lat lon
-            | None, Some _ -> failwith "Latitude was not in expected format."
-            | Some _, None -> failwith "Longitude was not in exptected format."
-            | None, None -> failwith "Neither Latitude nor Longitude were in expected format."
+            | Some lat, Some lon    -> posRec lat lon
+            | None, Some _          -> failwith "Latitude was not in expected format."
+            | Some _, None          -> failwith "Longitude was not in exptected format."
+            | None, None            -> failwith "Neither Latitude nor Longitude were in expected format."
         let sym =
             match (|Symbol|_|) rpt with
-            | Some s -> s //Defaults to house if no match found -- TODO do I want to do this?
-            | None -> Common.SymbolCode.House
+            | Some s    -> s //Defaults to house if no match found -- TODO do I want to do this?
+            | None      -> Common.SymbolCode.House
         let comment =
             match (|Comment|_|) (sym.ToChar()) rpt with
-            | Some c -> PositionReportComment.create c
-            | None -> PositionReportComment.create String.Empty
+            | Some c    -> PositionReportComment.create c
+            | None      -> PositionReportComment.create String.Empty
         {
             Position = pos
             Symbol = sym
@@ -75,22 +75,6 @@ module TNC2MONRepository =
         }
         |> ParticipantStatusReport
 
-    //Write a TNC2MON packet to a file that will be read and transmitted by Dire Wolf vis the kissutil
-    //See Dire Wolf User Guide section 14.6.3 Transmit frames from files
-    let writeKissUtilRecord (commands: KISS.Command list option) (packets: TNC2MON.Packet list) (saveTo:string) timestamp =
-        let file = Path.Combine(Path.GetFullPath(saveTo), sprintf "%s%s" timestamp "faprs.txt")
-        
-        let kiss =
-            commands
-            |> Option.defaultValue []
-            |> List.map (fun c -> string (c.ToChar()))        
-        
-        let frames = 
-            packets 
-            |> List.map (fun p -> p.ToString())
-        
-        File.WriteAllLines (file, kiss @ frames) |> ignore //put the commands first and then the frames
-
     //Examples
     //[0] K1NRO-1>APDW14,WIDE2-2:!4238.80NS07105.63W#PHG5630
     //[0] KG7SIO-7>APRD15,WIDE1-1:=3216.4N/11057.3Wb
@@ -116,8 +100,7 @@ module TNC2MONRepository =
         frame record
         |> Result.bind msg
         |> Result.bind participant
-
-    //All received frames are displayed in the usual monitor format, preceded with the channel number inside of [ ].
+            //All received frames are displayed in the usual monitor format, preceded with the channel number inside of [ ].
     //[0] K1NRO-1>APDW14,WIDE2-2:!4238.80NS07105.63W#PHG5630
     //See Dire Wolf User Guide 14.6 kissutil – KISS TNC troubleshooting and Application Interface
     //TODO this needs to process each file not a specific file name -- we wont know file name at runtime

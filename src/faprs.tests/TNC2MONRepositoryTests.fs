@@ -5,6 +5,7 @@ open faprs.core.TNC2MON
 open faprs.core.Common
 open faprs.core.APRSData
 open faprs.infrastructure.TNC2MONRepository
+open faprs.infrastructure.DireWolf.KissUtil
 open System
 open System.IO
 

@@ -5,14 +5,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="ParseFrames.fsx" />
+    <Compile Include="Database.fs" />
+    <Compile Include="ParticipantStatusRepository.fs" />
     <Compile Include="TNC2MONRepository.fs" />
+    <Compile Include="DireWolfRepository.fs" />
   </ItemGroup>
 
   <ItemGroup />
 
   <ItemGroup>
     <ProjectReference Include="..\faprs.core\faprs.core.fsproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.60.6" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="2.2.3" />
+    <PackageReference Include="Simple.Migrations" Version="0.9.19" />
+    <PackageReference Include="TaskBuilder.fs" Version="2.1.0" />
   </ItemGroup>
 
 </Project>

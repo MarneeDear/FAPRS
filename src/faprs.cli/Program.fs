@@ -6,7 +6,7 @@ open CommandArguments
 open faprs.core.TNC2MON
 open faprs.core
 open faprs.core.APRSData
-open faprs.infrastructure.TNC2MONRepository
+open faprs.infrastructure.DireWolf.KissUtil
 
 (*
 
