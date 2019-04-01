@@ -28,10 +28,10 @@ The code uses a lot of functional programming techniques and F# libraries to get
   * Single case unions
   * Constrained strings
   * Making impossible states impossible
-* [Active patterns]() for string parsing and validation
-* [Argu]() for command line parsing
-* [Expecto]() for testing
-* [Saturn]() for building the web app/web API/web service
+* [Active patterns](https://fsharpforfunandprofit.com/posts/convenience-active-patterns/) for string parsing and validation
+* [Argu](http://fsprojects.github.io/Argu/) for command line parsing
+* [Expecto](https://github.com/haf/expecto) for testing
+* [Saturn](https://saturnframework.org/) for building the web app/web API/web service
 
 
 ## Amateur Radio and APRS
@@ -54,10 +54,6 @@ What Wikipedia thinks it is:
 
 > *Automatic Packet Reporting System* is an amateur radio-based system for real time digital communications of information of immediate value in the local area. Data can include object Global Positioning System coordinates, weather station telemetry, text messages, announcements, queries, and other telemetry.
 
-What I think it is:
-
-> APRS is an amateur radio protocol that is really cool and awesome and makes me look like an real Engineer.
-
 The APRS protocol was developed by [TAPR (Tucson Amateur Packet Radio)](https://www.tapr.org/aprs_information.html). 
 
 The specification versions:
@@ -71,6 +67,27 @@ This video is a nice demonstration of what you can do with APRS. The system demo
 
 > _click the video to watch on You Tube_
 
+## System Design
+
+### Purpose
 
 
 
+### Physical Design
+
+![Imgur](https://i.imgur.com/ECJd3WF.png)
+
+I designed this system with a few things in mind:
+
+* Inexpensive
+* Mobile
+* Possible to use with any radio
+* Use in remote locations
+
+The Raspberry Pi 
+
+
+
+
+* Needs to store received messages and re-broadcast
+* 
