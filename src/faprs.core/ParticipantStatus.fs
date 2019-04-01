@@ -104,6 +104,13 @@ module Participant =
             | Resting m                 -> (3, 3, ParticipantStatusMessage.value m)
             | NeedsEmergencySupport m   -> (4, 4, ParticipantStatusMessage.value m)
             | Unknown m -> (0, 0, ParticipantStatusMessage.value m)
+        member this.ToOptionName =
+            match this with
+            | Continued s               -> "Continued"
+            | Injured s                 -> "Injured"
+            | Resting s                 -> "Resting"
+            | NeedsEmergencySupport s   -> "Needs Emergency Support"
+            | Unknown s                 -> "Unkown"
 
     type ParitcipantStatusReport =
         {

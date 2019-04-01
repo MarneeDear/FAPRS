@@ -6,6 +6,15 @@ module Views =
 
     let index = 
         let content = [
-            encodedText "You are almost there!"
+            encodedText "Status report"
+            br []
+            encodedText "Participant number (bib number)"
+            br []
+            encodedText "Status"
+            br []
+            encodedText "Time through way point"
+            br []
+            encodedText "Status message"
+            br []
         ]
         App.layout content
