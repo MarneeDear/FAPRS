@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="01_create_status_messages.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup />
+
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" Version="4.*" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="2.2.4" />
+    <PackageReference Include="Simple.Migrations" Version="0.9.19" />
+    <PackageReference Include="TaskBuilder.fs" Version="2.1.0" />
+  </ItemGroup>
+
+</Project>

@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sln", "sln", "{1E2F5BB5-634
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "faprs.crc", "src\faprs.crc\faprs.crc.fsproj", "{015623EE-CBA3-499E-AF45-C3FF8772FFDE}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "faprs.migrations", "src\faprs.migrations\faprs.migrations.fsproj", "{C6008DBF-B8E1-4D3D-9781-F9094F9ED734}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,18 @@ Global
 		{015623EE-CBA3-499E-AF45-C3FF8772FFDE}.Release|x64.Build.0 = Release|Any CPU
 		{015623EE-CBA3-499E-AF45-C3FF8772FFDE}.Release|x86.ActiveCfg = Release|Any CPU
 		{015623EE-CBA3-499E-AF45-C3FF8772FFDE}.Release|x86.Build.0 = Release|Any CPU
+		{C6008DBF-B8E1-4D3D-9781-F9094F9ED734}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6008DBF-B8E1-4D3D-9781-F9094F9ED734}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6008DBF-B8E1-4D3D-9781-F9094F9ED734}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C6008DBF-B8E1-4D3D-9781-F9094F9ED734}.Debug|x64.Build.0 = Debug|Any CPU
+		{C6008DBF-B8E1-4D3D-9781-F9094F9ED734}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C6008DBF-B8E1-4D3D-9781-F9094F9ED734}.Debug|x86.Build.0 = Debug|Any CPU
+		{C6008DBF-B8E1-4D3D-9781-F9094F9ED734}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6008DBF-B8E1-4D3D-9781-F9094F9ED734}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6008DBF-B8E1-4D3D-9781-F9094F9ED734}.Release|x64.ActiveCfg = Release|Any CPU
+		{C6008DBF-B8E1-4D3D-9781-F9094F9ED734}.Release|x64.Build.0 = Release|Any CPU
+		{C6008DBF-B8E1-4D3D-9781-F9094F9ED734}.Release|x86.ActiveCfg = Release|Any CPU
+		{C6008DBF-B8E1-4D3D-9781-F9094F9ED734}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -118,6 +132,7 @@ Global
 		{E8DACA06-CDC8-4D91-AF55-052BFC29B29A} = {D22495EB-8649-47C6-9F0F-C077DAF3484C}
 		{7528F932-439E-4B48-899A-38D2F02E564A} = {D22495EB-8649-47C6-9F0F-C077DAF3484C}
 		{015623EE-CBA3-499E-AF45-C3FF8772FFDE} = {D22495EB-8649-47C6-9F0F-C077DAF3484C}
+		{C6008DBF-B8E1-4D3D-9781-F9094F9ED734} = {D22495EB-8649-47C6-9F0F-C077DAF3484C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4C4FED79-10D6-43D7-806A-77E280370AC3}

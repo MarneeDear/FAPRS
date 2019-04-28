@@ -54,5 +54,4 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0" />
     <PackageReference Include="Saturn" Version="0.8.0" />
   </ItemGroup>
-  <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

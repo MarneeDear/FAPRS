@@ -5,6 +5,7 @@
     <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ParticipantStatusRepositoryTests.fs" />
     <Compile Include="ParticipantStatusTests.fs" />
     <Compile Include="CRCTests.fs" />
     <Compile Include="AX25Tests.fs" />
@@ -16,7 +17,7 @@
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Expecto" Version="8.*" />
+    <PackageReference Include="Expecto" Version="8.10.0" />
     <PackageReference Include="Expecto.FsCheck" Version="8.8.0" />
     <PackageReference Include="Expecto.TestResults" Version="8.8.0" />
     <PackageReference Include="FsCheck" Version="2.13.0" />

@@ -60,18 +60,16 @@ module TNC2MONRepository =
         let st1 = int (rpt.Substring(13, 1))
         let st2 = int (rpt.Substring(14, 1))
         let msg = rpt.Substring(15)
+        let c = match rpt.Substring(rpt.Length - 2, 1) with
+                | "C"   -> true
+                | _     -> false
         let psts =
-            match st1, st2, msg with
-            | 1, 1, m -> Continued (ParticipantStatusMessage.create m)
-            | 1, 2, m -> Injured (Continued (ParticipantStatusMessage.create m))
-            | 3, 2, m -> Injured (Resting (ParticipantStatusMessage.create m))
-            | 4, 2, m -> Injured (NeedsEmergencySupport (ParticipantStatusMessage.create m))
-            | 3, 3, m -> Resting (ParticipantStatusMessage.create m)
-            | _, _, m -> Unknown (ParticipantStatusMessage.create m)  
+             ParticipantStatus.fromStatusCombo (st1, st2, msg)
         {
             TimeStamp = timestamp
             ParticipantID = id
             ParticipantStatus = psts
+            Cancelled = c                
         }
         |> ParticipantStatusReport
 

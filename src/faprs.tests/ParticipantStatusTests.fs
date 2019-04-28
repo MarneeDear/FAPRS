@@ -3,7 +3,6 @@
 open Expecto
 open faprs.core.Participant
 open System
-open System.Globalization
 
 (*
 TIMESTAMP
@@ -33,6 +32,7 @@ let ParticipantTests =
                     TimeStamp = RecordedOn.create None
                     ParticipantID = ParticipantID.create "12345"
                     ParticipantStatus = ParticipantStatus.Continued (ParticipantStatusMessage.create "We have a winner!")
+                    Cancelled = false
                 }
             Expect.stringContains (data.ToString()) GOOD_PARTICIPANT_CONTINUED_STATUS "Message worked"
         testCase "Can create specific recorded-on timestamp"  <| fun _ ->

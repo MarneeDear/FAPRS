@@ -51,6 +51,7 @@ Experimental User-Defined types start with {{ (double curly braces)
 *)
 module Participant = 
     open System
+    open System.Linq.Expressions
 
     //TODO return failed state if not correct length 
     type ParticipantID = private ParticipantID of string
@@ -74,7 +75,7 @@ module Participant =
         let create (date:DateTime option) =
             match date with
             | Some d    -> RecordedOn (sprintf "%02i%02i%02i%02i" d.Month d.Day d.Hour d.Minute)
-            | None      -> let utcNow = DateTime.UtcNow
+            | None      -> let utcNow = DateTime.Now
                            RecordedOn (sprintf "%02i%02i%02i%02i" utcNow.Month utcNow.Day utcNow.Hour utcNow.Minute)
         let value (RecordedOn d) = d
 
@@ -91,6 +92,7 @@ module Participant =
         | Injured                   of ParticipantStatus
         | Resting                   of ParticipantStatusMessage
         | NeedsEmergencySupport     of ParticipantStatusMessage
+        | CompletedOrLeftCourse     of ParticipantStatusMessage
         | Unknown                   of ParticipantStatusMessage
         member this.ToStatusCombination() =
             match this with
@@ -100,24 +102,42 @@ module Participant =
                                     | Resting m                 -> (3, 2, ParticipantStatusMessage.value m)
                                     | NeedsEmergencySupport m   -> (4, 2, ParticipantStatusMessage.value m)
                                     | Unknown m                 -> (0, 2, ParticipantStatusMessage.value m) 
-                                    | _                         -> (0, 0, "Unknown participant status.")
+                                    | _                         -> (0, 2, String.Empty)
             | Resting m                 -> (3, 3, ParticipantStatusMessage.value m)
             | NeedsEmergencySupport m   -> (4, 4, ParticipantStatusMessage.value m)
-            | Unknown m -> (0, 0, ParticipantStatusMessage.value m)
-        member this.ToOptionName =
+            | CompletedOrLeftCourse m   -> (5, 5, ParticipantStatusMessage.value m)
+            | Unknown m                 -> (0, 0, ParticipantStatusMessage.value m)
+        member this.ToOptionName () =
             match this with
             | Continued s               -> "Continued"
             | Injured s                 -> "Injured"
             | Resting s                 -> "Resting"
             | NeedsEmergencySupport s   -> "Needs Emergency Support"
+            | CompletedOrLeftCourse s   -> "Completed or Left the Course"
             | Unknown s                 -> "Unkown"
+        static member fromStatusCombo s =
+            match s with
+            | (1, 1, m) -> (Continued (ParticipantStatusMessage.create m))
+            | (1, 2, m) -> (Injured (Continued (ParticipantStatusMessage.create m)))
+            | (3, 2, m) -> (Injured (Resting (ParticipantStatusMessage.create m)))
+            | (4, 2, m) -> (Injured (NeedsEmergencySupport (ParticipantStatusMessage.create m)))
+            | (0, 2, m) -> (Injured (Unknown (ParticipantStatusMessage.create m)))
+            | (3, 3, m) -> (Resting (ParticipantStatusMessage.create m))
+            | (4, 4, m) -> (NeedsEmergencySupport (ParticipantStatusMessage.create m))
+            | (5, 5, m) -> (CompletedOrLeftCourse (ParticipantStatusMessage.create m))
+            | (0, 0, m) -> (Unknown (ParticipantStatusMessage.create m))
+            | (_, _, m) -> (Unknown (ParticipantStatusMessage.create m))
 
     type ParitcipantStatusReport =
         {
-            TimeStamp : RecordedOn
-            ParticipantID : ParticipantID
-            ParticipantStatus : ParticipantStatus
+            TimeStamp           : RecordedOn
+            ParticipantID       : ParticipantID
+            ParticipantStatus   : ParticipantStatus
+            Cancelled           : bool
         }
         override this.ToString() =
-            let status1, status2, msg = this.ParticipantStatus.ToStatusCombination() 
-            sprintf "{{%s%s%i%i%s" (RecordedOn.value this.TimeStamp) (ParticipantID.value this.ParticipantID) status1 status2 msg
+            let (status1, status2, msg) = this.ParticipantStatus.ToStatusCombination()
+            //match this.ParticipantStatus.ToStatusCombination() with
+            //| Some (status1, status2, msg) -> sprintf "{{%s%s%i%i%s%s" (RecordedOn.value this.TimeStamp) (ParticipantID.value this.ParticipantID) status1 status2 msg (if this.Cancelled then "C" else String.Empty)
+            //| None -> String.Empty
+            sprintf "{{%s%s%i%i%s%s" (RecordedOn.value this.TimeStamp) (ParticipantID.value this.ParticipantID) status1 status2 msg (if this.Cancelled then "C" else String.Empty)
