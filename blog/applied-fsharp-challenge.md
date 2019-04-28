@@ -69,8 +69,13 @@ This video is a nice demonstration of what you can do with APRS. The system demo
 
 ## System Design
 
-### Purpose
+### Motivation, purpose, and use cases
 
+Hams often volunteer for middle-of-nowhere long distances races. You know the kind? Where you 20 persons run 50 miles through the desert for fun? The participants need trail support and we Hams are well-equipped to run the communications system. We setup stations with mobile radios at known locations along the trail, make sure we can communicate with each other, and setup a process by which we share participant status and location, so we can keep track of them and request medical support if needed. It's great fun and many of these events wouldn't happen if it weren't for us Hams.
+
+Most of the time we use voice to communicate. This works well enough, but I have worked enough of these races to know that it can be a challenge to keep track of all of the runners. You need a system, and everyone has their own way, of course -- some I like better than others. So, I came up with an idea, a solution, an even better way, maybe ... .
+
+The best race I worked was the one where each station was announcing when a runner came through. Every station knew where 
 
 
 ### Physical Design
@@ -82,9 +87,11 @@ I designed this system with a few things in mind:
 * Inexpensive
 * Mobile
 * Possible to use with any radio
-* Use in remote locations
+* It will be used in remote locations
+* Low power
 
-The Raspberry Pi 
+The Raspberry Pi provides these services
+
 
 
 
