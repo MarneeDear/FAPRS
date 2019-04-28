@@ -35,7 +35,7 @@ See the project files, but here are the highlights.
 * [Argu](https://github.com/fsprojects/Argu) for the CLI
 * [Expecto](https://github.com/haf/expecto) for unit tests
 
-Future enhancements will include a [Fable-based, Elmish, progressive web app](https://elmish.github.io/elmish/).
+Future enhancements will include a [Fable-based, Elmish, progressive web app](https://elmish.github.io/elmish/) and a Saturn based web server.
 
 ### Program
 
