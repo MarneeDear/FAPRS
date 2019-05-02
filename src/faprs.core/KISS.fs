@@ -40,7 +40,7 @@ module KISS =
         | FullDuplex
         | SetHardware 
         | Return
-        member this.ToString () =
+        override this.ToString () =
             match this with
             | TxDelay d     -> sprintf "d %i" d
             | Persistence   -> "p" //TODO
