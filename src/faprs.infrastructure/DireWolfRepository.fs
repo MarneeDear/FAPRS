@@ -14,7 +14,7 @@ module KissUtil =
         let kiss =
             commands
             |> Option.defaultValue []
-            |> List.map (fun c -> string (c.ToChar()))        
+            |> List.map (fun c -> string (c.ToString()))        
         
         let frames = 
             packets 
@@ -25,7 +25,6 @@ module KissUtil =
     //All received frames are displayed in the usual monitor format, preceded with the channel number inside of [ ].
     //[0] K1NRO-1>APDW14,WIDE2-2:!4238.80NS07105.63W#PHG5630
     //See Dire Wolf User Guide 14.6 kissutil – KISS TNC troubleshooting and Application Interface
-    //TODO this needs to process each file not a specific file name -- we wont know file name at runtime
     let processKissUtilFrames path (file: string option) =
         let d = new DirectoryInfo(path);//Assuming Test is your Folder
         let files = d.GetFiles()  //GetFiles("*.txt"); //Getting Text files

@@ -5,6 +5,7 @@ open Argu
 open CommandArguments
 open faprs.core.TNC2MON
 open faprs.core
+open faprs.core.KISS
 open faprs.core.APRSData
 open faprs.infrastructure.DireWolf.KissUtil
 
@@ -89,8 +90,11 @@ module Main =
                     Message = Some messageData
                 }
 
+            let txDelay =                 
+                Some [ TxDelay 40 ] //4 seconds in 10 ms units
+
             match saveTo with
-            | Some path -> writeKissUtilRecord None [packet] path (DateTime.Now.ToString("yyyyMMddHHmmssff")) 
+            | Some path -> writeKissUtilRecord txDelay [packet] path (DateTime.Now.ToString("yyyyMMddHHmmssff")) 
             | None      -> ()
         with e ->
             Console.error <| (sprintf "%s" e.Message)

@@ -33,52 +33,53 @@ module KISS =
 
     type Command =
         | Data
-        | TxDelay
+        | TxDelay of int
         | Persistence
-        | SlotTime
+        | SlotTime 
         | TxTail
         | FullDuplex
         | SetHardware 
         | Return
-        member this.ToChar() =
+        member this.ToString () =
             match this with
-            | TxDelay       -> 'd'
-            | Persistence   -> 'p'
-            | SlotTime      -> 's'
-            | TxTail        -> 't'
-            | FullDuplex    -> 'f'
-            | SetHardware   -> 'h'
-            | _             -> ' '
-        member this.ToHex() =
-            match this with
-            | Data          -> 0x00
-            | TxDelay       -> 0x01
-            | Persistence   -> 0x02
-            | SlotTime      -> 0x03
-            | TxTail        -> 0x04
-            | FullDuplex    -> 0x05
-            | SetHardware   -> 0x06
-            | Return        -> 0xFF
-        member this.ToBytes() =
-            match this with
-            | Data          -> BitConverter.GetBytes(0x00)
-            | TxDelay       -> BitConverter.GetBytes(0x01)
-            | Persistence   -> BitConverter.GetBytes(0x02)
-            | SlotTime      -> BitConverter.GetBytes(0x03)
-            | TxTail        -> BitConverter.GetBytes(0x04)
-            | FullDuplex    -> BitConverter.GetBytes(0x05)
-            | SetHardware   -> BitConverter.GetBytes(0x06)
-            | Return        -> BitConverter.GetBytes(0xFF)
-
-    let getCommand c =
-        match c with
-        | 'd'   -> TxDelay
-        | 'p'   -> Persistence
-        | 's'   -> SlotTime
-        | 't'   -> TxTail
-        | 'f'   -> FullDuplex
-        | 'h'   -> SetHardware
-        | _     -> failwith "Unknown KISS command character."
+            | TxDelay d     -> sprintf "d %i" d
+            | Persistence   -> "p" //TODO
+            | SlotTime      -> "s"
+            | TxTail        -> "t"
+            | FullDuplex    -> "f"
+            | SetHardware   -> "h"
+            | _             -> String.Empty
+        //TODO
+        //member this.ToHex() =
+        //    match this with
+        //    | Data          -> 0x00
+        //    | TxDelay       -> 0x01
+        //    | Persistence   -> 0x02
+        //    | SlotTime      -> 0x03
+        //    | TxTail        -> 0x04
+        //    | FullDuplex    -> 0x05
+        //    | SetHardware   -> 0x06
+        //    | Return        -> 0xFF
+        //member this.ToBytes() =
+        //    match this with
+        //    | Data          -> BitConverter.GetBytes(0x00)
+        //    | TxDelay       -> BitConverter.GetBytes(0x01)
+        //    | Persistence   -> BitConverter.GetBytes(0x02)
+        //    | SlotTime      -> BitConverter.GetBytes(0x03)
+        //    | TxTail        -> BitConverter.GetBytes(0x04)
+        //    | FullDuplex    -> BitConverter.GetBytes(0x05)
+        //    | SetHardware   -> BitConverter.GetBytes(0x06)
+        //    | Return        -> BitConverter.GetBytes(0xFF)
+    //TODO
+    //let getCommand c =
+    //    match c with
+    //    | 'd'   -> TxDelay
+    //    | 'p'   -> Persistence
+    //    | 's'   -> SlotTime
+    //    | 't'   -> TxTail
+    //    | 'f'   -> FullDuplex
+    //    | 'h'   -> SetHardware
+    //    | _     -> failwith "Unknown KISS command character."
 
     (*
     
@@ -137,20 +138,21 @@ module KISS =
             | P02 -> BitConverter.GetBytes(2us)
             | P03 -> BitConverter.GetBytes(3us)
 
-    type Packet =
-        {
-            Port : Port
-            Command : Command
-            //Data : string //TODO AX25 data frame
-            Data : AX25.Packet
-        }
-        member this.ToTx() = //TODO give this a better name
-            //TODO replace payload FEND codes with FESC, TFEND and FESC,TFESC 
-            //TODO I think this needs to be a byte array?
-            // FEND | PORT | COMMAND | DATA (AX.25) | FEND
-            Array.empty 
-            |> Array.append (FEND.ToBytes())
-            |> Array.append (this.Port.ToBytes())
-            |> Array.append (this.Command.ToBytes())
-            //|> Array.append  //(System.Text.ASCIIEncoding.ASCII.GetBytes(this.Data)) TODO get from AX.25
-            |> Array.append (FEND.ToBytes())
+    //TODO
+    //type Packet =
+    //    {
+    //        Port : Port
+    //        Command : Command
+    //        //Data : string //TODO AX25 data frame
+    //        Data : AX25.Packet
+    //    }
+    //    member this.ToTx() = //TODO give this a better name
+    //        //TODO replace payload FEND codes with FESC, TFEND and FESC,TFESC 
+    //        //TODO I think this needs to be a byte array?
+    //        // FEND | PORT | COMMAND | DATA (AX.25) | FEND
+    //        Array.empty 
+    //        |> Array.append (FEND.ToBytes())
+    //        |> Array.append (this.Port.ToBytes())
+    //        |> Array.append (this.Command.ToBytes())
+    //        //|> Array.append  //(System.Text.ASCIIEncoding.ASCII.GetBytes(this.Data)) TODO get from AX.25
+    //        |> Array.append (FEND.ToBytes())
