@@ -89,6 +89,9 @@ module APRSData =
     minutes (to two decimal places), followed by the letter E for east or W for
     west.
 
+    Longitude degrees are in the range 000 to 180. Longitude minutes are
+    expressed as whole minutes and hundredths of a minute, separated by a
+    decimal point.
     For example:
     07201.75W is 72 degrees 1 minute 45 seconds west.
     In generic format examples, the longitude is shown as the 9-character string
@@ -98,7 +101,7 @@ module APRSData =
     module FormattedLongitude =
         let create (d:float) =
             let deg, min, sec = calcDegMinSec d
-            FormattedLongitude (sprintf "%02i%03i.%02i%c" deg min (int ((float sec) / 60.0 * 100.0)) (if d > 0.0 then (East.ToHemisphereChar()) else (West.ToHemisphereChar())))
+            FormattedLongitude (sprintf "%03i%02i.%02i%c" deg min (int ((float sec) / 60.0 * 100.0)) (if d > 0.0 then (East.ToHemisphereChar()) else (West.ToHemisphereChar())))
         let check (d:string) =
             FormattedLongitude d //TODO verify in expected format -- regular expressions?
         let value (FormattedLongitude d) = d
