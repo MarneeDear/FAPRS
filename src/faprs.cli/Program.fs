@@ -91,7 +91,7 @@ module Main =
                 }
 
             let txDelay =                 
-                Some [ TxDelay 40 ] //4 seconds in 10 ms units
+                Some [ TxDelay 100; TxDelay 100; TxDelay 100; TxDelay 100 ] //4 seconds in 10 ms units
 
             match saveTo with
             | Some path -> writeKissUtilRecord txDelay [packet] path (DateTime.Now.ToString("yyyyMMddHHmmssff")) 
