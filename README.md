@@ -119,8 +119,7 @@ OPTIONS:
 #### Create a TNC2MON formatted frame with position report
 
 ```bash
-dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destination APDW15 --path WIDE1-1 --rpt latitude 36.106964 N longitude -112.112999 W symbol b comment "Join Oro Valley Amateur Radio Club"
-
+dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO-7 --destination APDW15 --path WIDE1-1 --rpt latitude 36.106964 longitude -112.112999 symbol b comment "Join Oro Valley Amateur Radio Club"
 ```
 
 This will create a TNC2MON formatted frame with a lat/lon position report that looks like this:
@@ -144,7 +143,7 @@ Let's break this down:
 #### Create a TNC2MON formatted frame with unformatted message (string)
 
 ```bash
-dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destination APDW15 --path WIDE1-1 --msg "Join Oro Valley Amateur Radio Club"
+dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO-7 --destination APDW15 --path WIDE1-1 --msg "Join Oro Valley Amateur Radio Club"
 
 ```
 

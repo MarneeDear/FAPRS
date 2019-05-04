@@ -49,13 +49,13 @@ module APRSData =
     let hemisphereToString degrees hemisphereChar =
         sprintf "%.2f%c" degrees hemisphereChar
 
-    let calcDegMinSec d =
-        let mutable sec = int (Math.Round((d * 3600.00)))
-        let deg = Math.Abs(sec / 3600)
-        sec <- Math.Abs(sec % 3600)
-        let min = Math.Abs(sec / 60)
-        sec <- sec % 60
-        deg, min, sec
+    let calcDegMinSec (d:float) =
+        let dd = Math.Abs(d)        
+        let deg = Math.Truncate(dd) 
+        let min_temp = (dd - deg) * 60.0 
+        let min = Math.Truncate(min_temp) 
+        let sec = Math.Truncate((min_temp - min) * 60.0) 
+        int deg, int min, int sec
 
 
     //TODO constrain the size of the Degrees field
@@ -78,7 +78,7 @@ module APRSData =
     module FormattedLatitude =
         let create (d:float) =
             let deg, min, sec = calcDegMinSec d
-            FormattedLatitude (sprintf "%02i%02i.%02i%c" deg min (int ((float sec) / 60.0 * 100.0)) (if d > 0.0 then (North.ToHemisphereChar()) else (South.ToHemisphereChar())))
+            FormattedLatitude (sprintf "%02i%02i.%02i%c" deg min sec (if d > 0.0 then (North.ToHemisphereChar()) else (South.ToHemisphereChar())))
         let check (d:string) =
             FormattedLatitude d //TODO verify in expected format -- regular expressions?
         let value (FormattedLatitude d) = d

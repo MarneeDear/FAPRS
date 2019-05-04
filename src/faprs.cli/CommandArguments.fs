@@ -15,8 +15,8 @@ with
     interface IArgParserTemplate with
         member s.Usage =
             match s with
-            | Latitude _    -> "Your current latitude in DD (decimal degrees) format"
-            | Longitude _   -> "Your current longitude in DD (decimal degrees) format"
+            | Latitude _    -> "Your current latitude in decimal coordinates (simple standard) format"
+            | Longitude _   -> "Your current longitude in decimal coordinates (simple standard) format"
             | Symbol _      -> "Optional. Default is House (-). If you want to use House, do not use the symbol argument because dashes do not parse."
             | Comment _     -> "Optional. What do you want to say? <comment> must be 43 characters or fewer."
 and SourcePathArguments =
