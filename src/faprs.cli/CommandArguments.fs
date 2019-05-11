@@ -9,8 +9,8 @@ open Argu
 type PositionReportArguments =
     | [<Mandatory>] Latitude    of latitude:float //* hemisphere:char
     | [<Mandatory>] Longitude   of longitude:float //* hemisphere:char
-    | Symbol                    of symbol:char
-    | Comment                   of comment:string
+    |               Symbol      of symbol:char
+    |               Comment     of comment:string
 with
     interface IArgParserTemplate with
         member s.Usage =
@@ -20,12 +20,12 @@ with
             | Symbol _      -> "Optional. Default is House (-). If you want to use House, do not use the symbol argument because dashes do not parse."
             | Comment _     -> "Optional. What do you want to say? <comment> must be 43 characters or fewer."
 and SourcePathArguments =
-    | [<Mandatory>] [<AltCommandLine("-s")>] Sender         of sender:string
-    | [<Mandatory>] [<AltCommandLine("-d")>] Destination    of destination:string
-    | Path                                                  of path:string
-    | [<AltCommandLine("--rpt")>] PositionReport            of rpt:ParseResults<PositionReportArguments>
-    | [<AltCommandLine("--msg")>] CustomMessage             of msg:string
-    | [<AltCommandLine("--save-to")>] SaveFilePath          of save:string
+    | [<Mandatory>] [<AltCommandLine("-s")>]    Sender         of sender:string
+    | [<AltCommandLine("-d")>]                  Destination     of destination:string
+    | [<AltCommandLine("-p")>]                  Path            of path:string
+    | [<AltCommandLine("--rpt")>]               PositionReport  of rpt:ParseResults<PositionReportArguments>
+    | [<AltCommandLine("--msg")>]               CustomMessage   of msg:string
+    | [<AltCommandLine("--save-to")>]           SaveFilePath    of save:string
 with
     interface IArgParserTemplate with
         member s.Usage =

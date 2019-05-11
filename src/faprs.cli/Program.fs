@@ -69,7 +69,11 @@ module Main =
             let saveTo = results.TryGetResult(CommandArguments.SaveFilePath)
             
             let sender = results.GetResult(Sender)
-            let destination = results.GetResult(Destination)
+            let destination = 
+                let r = results.TryGetResult(Destination)
+                match r with
+                | Some d    -> d
+                | None      -> "APDW15"
             let path = Common.Path.WIDEnN //only this for now TODO
 
             let pRpt = results.TryGetResult(CommandArguments.PositionReport)
@@ -91,7 +95,7 @@ module Main =
                 }
 
             let txDelay =                 
-                Some [ TxDelay 100; TxDelay 100; TxDelay 100; TxDelay 100 ] //4 seconds in 10 ms units
+                Some [ TxDelay 100; TxDelay 100; ] //2 seconds in 10 ms units
 
             match saveTo with
             | Some path -> writeKissUtilRecord txDelay [packet] path (DateTime.Now.ToString("yyyyMMddHHmmssff")) 
