@@ -84,7 +84,7 @@ module TNC2MONRepository =
     //[0] K1NRO-1>APDW14,WIDE2-2:!4238.80NS07105.63W#PHG5630
     //[0] KG7SIO-7>APRD15,WIDE1-1:=3216.4N/11057.3Wb
     //TODO use ROP and a pipeline -- how best to do that?
-    let parseIntoAPRSMessage (record:string) =
+    let convertRecordToAPRSData (record:string) =
         let frame rcrd =
             match (|Frame|_|) rcrd with
             | Some f    -> f |> Ok
@@ -118,7 +118,7 @@ module TNC2MONRepository =
         let files = d.GetFiles()  //GetFiles("*.txt"); //Getting Text files
         let getFrames fileName = 
             File.ReadAllLines (Path.Combine(path, fileName))
-            |> Array.map (fun f -> parseIntoAPRSMessage f)
+            |> Array.map (fun f -> convertRecordToAPRSData f)
         match file with
         | Some f    -> getFrames f
         | None      -> files 

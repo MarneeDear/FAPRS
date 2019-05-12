@@ -30,7 +30,7 @@ module KissUtil =
         let files = d.GetFiles()  //GetFiles("*.txt"); //Getting Text files
         let getFrames fileName = 
             File.ReadAllLines (Path.Combine(path, fileName))
-            |> Array.map (fun f -> parseIntoAPRSMessage f)
+            |> Array.map (fun f -> convertRecordToAPRSData f)
         match file with
         | Some f    -> getFrames f
         | None      -> files 
