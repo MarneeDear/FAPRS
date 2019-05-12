@@ -15,7 +15,7 @@ type CreateStatusMessage() =
       status_message TEXT NOT NULL,
       created_date INTEGER NOT NULL,
       created_by TEXT NULL,
-      UNIQUE (timestamp, tx_station_callsign, participant_id)
+      UNIQUE (created_date, tx_station_callsign, participant_id)
     );
     
     CREATE TABLE cancelled_message(
