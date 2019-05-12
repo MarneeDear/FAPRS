@@ -86,12 +86,22 @@ module Main =
                 | None _, Some msg      -> Unformatted (UnformattedMessage.create msg)
                 | None, None            -> failwith "Must provide a position report or a custom message."
             
+            let senderCallSign = 
+                match CallSign.create sender with
+                | Some c -> c
+                | None -> failwith "SENDER cannot be empty and must be 1 - 9 characters. See APRS 1.01."
+
+            let destCall =
+                match CallSign.create destination with
+                | Some c -> c
+                | None -> failwith "DESTINATION cannot be empty and must be 1 - 9 characters. See APRS 1.01."
+
             let packet =
                 {
-                    Sender = CallSign.create sender
-                    Destination = CallSign.create destination
-                    Path = path
-                    Message = Some messageData
+                    Sender      = senderCallSign
+                    Destination = destCall
+                    Path        = WIDEnN WIDE11
+                    Message     = Some messageData
                 }
 
             let txDelay =                 

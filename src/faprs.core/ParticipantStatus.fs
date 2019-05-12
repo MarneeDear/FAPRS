@@ -58,8 +58,9 @@ module Participant =
     module ParticipantID =
         let create (nbr:string) =
             match nbr with 
-            | n when nbr.Length < 6 -> ParticipantID (sprintf "%5s" n) //Fixed width 5 chars
-            | n -> ParticipantID (n.Substring(0, 5)) //TODO should probably return an error
+            | n when String.IsNullOrWhiteSpace(n)   -> None
+            | n when nbr.Length < 6                 -> Some (ParticipantID (sprintf "%5s" n)) //Fixed width 5 chars
+            | _                                     -> None 
         let value (ParticipantID n) = n
 
     //10092345 is 23 hours 45 minutes zulu on October 9th.
@@ -92,20 +93,23 @@ module Participant =
         | Injured                   of ParticipantStatus
         | Resting                   of ParticipantStatusMessage
         | NeedsEmergencySupport     of ParticipantStatusMessage
-        | CompletedOrLeftCourse     of ParticipantStatusMessage
+        | Completed                 of ParticipantStatusMessage
+        | DroppedOut                of ParticipantStatusMessage
         | Unknown                   of ParticipantStatusMessage
         member this.ToStatusCombination() =
             match this with
             | Continued m       -> (1, 1, ParticipantStatusMessage.value m)
             | Injured s         ->  match s with
-                                    | Continued m               -> (1, 2, ParticipantStatusMessage.value m)
-                                    | Resting m                 -> (3, 2, ParticipantStatusMessage.value m)
-                                    | NeedsEmergencySupport m   -> (4, 2, ParticipantStatusMessage.value m)
-                                    | Unknown m                 -> (0, 2, ParticipantStatusMessage.value m) 
-                                    | _                         -> (0, 2, String.Empty)
+                                    | Continued m               -> (2, 1, ParticipantStatusMessage.value m)
+                                    | Resting m                 -> (2, 3, ParticipantStatusMessage.value m)
+                                    | NeedsEmergencySupport m   -> (2, 4, ParticipantStatusMessage.value m)
+                                    | DroppedOut m              -> (2, 6, ParticipantStatusMessage.value m)
+                                    | Unknown m                 -> (2, 0, ParticipantStatusMessage.value m) 
+                                    | _                         -> (2, 0, String.Empty)
             | Resting m                 -> (3, 3, ParticipantStatusMessage.value m)
             | NeedsEmergencySupport m   -> (4, 4, ParticipantStatusMessage.value m)
-            | CompletedOrLeftCourse m   -> (5, 5, ParticipantStatusMessage.value m)
+            | Completed m               -> (5, 5, ParticipantStatusMessage.value m)
+            | DroppedOut m
             | Unknown m                 -> (0, 0, ParticipantStatusMessage.value m)
         member this.ToOptionName () =
             match this with
@@ -113,18 +117,20 @@ module Participant =
             | Injured s                 -> "Injured"
             | Resting s                 -> "Resting"
             | NeedsEmergencySupport s   -> "Needs Emergency Support"
-            | CompletedOrLeftCourse s   -> "Completed or Left the Course"
-            | Unknown s                 -> "Unkown"
+            | Completed s               -> "Completed"
+            | DroppedOut s              -> "Dropped Out"
+            | Unknown s                 -> "Unknown"
         static member fromStatusCombo s =
             match s with
             | (1, 1, m) -> (Continued (ParticipantStatusMessage.create m))
-            | (1, 2, m) -> (Injured (Continued (ParticipantStatusMessage.create m)))
-            | (3, 2, m) -> (Injured (Resting (ParticipantStatusMessage.create m)))
-            | (4, 2, m) -> (Injured (NeedsEmergencySupport (ParticipantStatusMessage.create m)))
-            | (0, 2, m) -> (Injured (Unknown (ParticipantStatusMessage.create m)))
+            | (2, 1, m) -> (Injured (Continued (ParticipantStatusMessage.create m)))
+            | (2, 3, m) -> (Injured (Resting (ParticipantStatusMessage.create m)))
+            | (2, 4, m) -> (Injured (NeedsEmergencySupport (ParticipantStatusMessage.create m)))
+            | (2, 0, m) -> (Injured (Unknown (ParticipantStatusMessage.create m)))
             | (3, 3, m) -> (Resting (ParticipantStatusMessage.create m))
             | (4, 4, m) -> (NeedsEmergencySupport (ParticipantStatusMessage.create m))
-            | (5, 5, m) -> (CompletedOrLeftCourse (ParticipantStatusMessage.create m))
+            | (5, 5, m) -> (Completed (ParticipantStatusMessage.create m))
+            | (6, 6, m) -> (DroppedOut (ParticipantStatusMessage.create m))
             | (0, 0, m) -> (Unknown (ParticipantStatusMessage.create m))
             | (_, _, m) -> (Unknown (ParticipantStatusMessage.create m))
 

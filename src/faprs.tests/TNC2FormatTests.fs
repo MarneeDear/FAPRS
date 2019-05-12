@@ -28,7 +28,7 @@ let PACKET_POSITION_REPORT_HOUSE =
             Longitude = FormattedLongitude.create LONGITUDE 
         } 
         Symbol = SymbolCode.House
-        Comment = PositionReportComment.create String.Empty
+        Comment = (PositionReportComment.create String.Empty).Value
     }
 
 //TODO introduce property based testsing?
@@ -39,9 +39,9 @@ let TNC2MONFormatTests =
         testCase "Can build a packet with Position Report with latitude and longitude and upper call sign" <| fun _ ->
             let packet = 
                 {
-                    Sender      = CallSign.create (SENDER.ToUpper())
-                    Destination = CallSign.create (DESTINATION.ToUpper())
-                    Path        = WIDEnN //"WIDE1-1"
+                    Sender      = (CallSign.create (SENDER.ToUpper())).Value
+                    Destination = (CallSign.create (DESTINATION.ToUpper())).Value
+                    Path        = WIDEnN WIDE11 //"WIDE1-1"
                     Message     = Some (PositionReportWithoutTimeStamp PACKET_POSITION_REPORT_HOUSE)
                 }.ToString()
             // Console.WriteLine packet
@@ -49,9 +49,9 @@ let TNC2MONFormatTests =
         testCase "Can build a packet with Position Report with latitude and longitude and lower callsign goes to upper" <| fun _ ->
             let packet = 
                 {
-                    Sender      = CallSign.create SENDER
-                    Destination = CallSign.create DESTINATION
-                    Path        = WIDEnN //"WIDE1-1"
+                    Sender      = (CallSign.create SENDER).Value
+                    Destination = (CallSign.create DESTINATION).Value
+                    Path        = WIDEnN WIDE11 //"WIDE1-1"
                     Message     = Some (PositionReportWithoutTimeStamp PACKET_POSITION_REPORT_HOUSE)
                 }.ToString()
             // Console.WriteLine packet

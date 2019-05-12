@@ -19,7 +19,7 @@ let ParticipantStatusRepoTests =
                 let data =
                     {
                         TimeStamp = RecordedOn.create None
-                        ParticipantID = ParticipantID.create "00TEST"
+                        ParticipantID = (ParticipantID.create "TEST").Value
                         ParticipantStatus = ParticipantStatus.Continued (ParticipantStatusMessage.create "We have a winner!")
                         Cancelled = false
                     }

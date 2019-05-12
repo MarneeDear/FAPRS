@@ -12,11 +12,6 @@ module TNC2MonActivePatterns =
         | r when r.IndexOf(" ") < 1 -> None //maybe return r because there was no channel and that's ok?
         | r when (r.Substring(r.IndexOf(" "))).Trim().Length > 0 -> Some ((r.Substring(r.IndexOf(" "))).Trim())
         | _ -> None
-        //if String.IsNullOrWhiteSpace(record) then None
-        //else if record.IndexOf(" ") < 1 then None
-        //else
-        //    let frame = (record.Substring(record.IndexOf(" "))).Trim()
-        //    if frame.Length > 0 then Some frame else None
 
     let (|Address|_|) (frame:string) =
         if frame.IndexOf(":") < 1 then 
@@ -86,8 +81,8 @@ module TNC2MonActivePatterns =
     let (|Symbol|_|) (msg:string) =
         //TODO check that the previous char was a W or E meaning that it was probably and APRS lat/lon
         match msg.Substring(18,1) with
-        | "W" -> getSymbolCode (msg.Substring(19,1).ToCharArray().[0])
-        | "E" -> getSymbolCode (msg.Substring(19,1).ToCharArray().[0])
+        | "W" -> SymbolCode.fromSymbol (msg.Substring(19,1).ToCharArray().[0]) //  getSymbolCode (msg.Substring(19,1).ToCharArray().[0])
+        | "E" -> SymbolCode.fromSymbol (msg.Substring(19,1).ToCharArray().[0])
         | _ -> None
 
     let (|Comment|_|) (symbol:char) (msg:string) =

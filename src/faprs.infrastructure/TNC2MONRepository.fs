@@ -41,9 +41,13 @@ module TNC2MONRepository =
             | Some s    -> s //Defaults to house if no match found -- TODO do I want to do this?
             | None      -> Common.SymbolCode.House
         let comment =
-            match (|Comment|_|) (sym.ToChar()) rpt with
-            | Some c    -> PositionReportComment.create c
-            | None      -> PositionReportComment.create String.Empty
+            let c =
+                match (|Comment|_|) (sym.ToChar()) rpt with
+                | Some c    -> PositionReportComment.create c
+                | None      -> PositionReportComment.create String.Empty
+            match c with
+            | Some c    -> c
+            | None      -> failwith "Position Report Comment must be less than 43 characters long."
         {
             Position = pos
             Symbol = sym
@@ -55,23 +59,26 @@ module TNC2MONRepository =
         Unformatted (UnformattedMessage.create msg)
 
     let mapParticipantReport (rpt:string) =
-        let timestamp = RecordedOn.create (Some (RecordedOn.revert (rpt.Substring(0, 8))))
-        let id = ParticipantID.create (rpt.Substring(8, 5))
-        let st1 = int (rpt.Substring(13, 1))
-        let st2 = int (rpt.Substring(14, 1))
-        let msg = rpt.Substring(15)
-        let c = match rpt.Substring(rpt.Length - 2, 1) with
-                | "C"   -> true
-                | _     -> false
-        let psts =
-             ParticipantStatus.fromStatusCombo (st1, st2, msg)
-        {
-            TimeStamp = timestamp
-            ParticipantID = id
-            ParticipantStatus = psts
-            Cancelled = c                
-        }
-        |> ParticipantStatusReport
+        if rpt.Length = 255 then
+            let timestamp = RecordedOn.create (Some (RecordedOn.revert (rpt.Substring(0, 8))))
+            let id = ParticipantID.create (rpt.Substring(8, 5))
+            let st1 = int (rpt.Substring(13, 1))
+            let st2 = int (rpt.Substring(14, 1))
+            let msg = rpt.Substring(15)
+            let c = match rpt.Substring(rpt.Length - 2, 1) with
+                    | "C"   -> true
+                    | _     -> false
+            let psts =
+                 ParticipantStatus.fromStatusCombo (st1, st2, msg)
+            {
+                TimeStamp = timestamp
+                ParticipantID = id.Value
+                ParticipantStatus = psts
+                Cancelled = c                
+            }
+            |> ParticipantStatusReport |> Some
+        else 
+            None
 
     //Examples
     //[0] K1NRO-1>APDW14,WIDE2-2:!4238.80NS07105.63W#PHG5630
@@ -92,7 +99,11 @@ module TNC2MONRepository =
             match msg.Substring(0, 1) with
             | id when id.Equals("=") -> Ok (mapPositionReport (msg.Substring(1))) //We have a lat/lon position report without timestamot. Let's try to parse it.
             | id when id.Equals(":") -> Ok (mapUnformattedMessage (msg.Substring(1))) //we have an unformatted messsage. Let's try to parse it
-            | id when id.Equals("{") -> Ok (mapParticipantReport (msg.Substring(1))) //We have a participant report. Let's try to parse it
+            | id when id.Equals("{") -> //Ok (mapParticipantReport (msg.Substring(1))) //We have a participant report. Let's try to parse it
+                                        let pRpt = (mapParticipantReport (msg.Substring(1)))
+                                        match pRpt with
+                                        | Some r -> Ok r
+                                        | None -> Error "Participant report not in expected format"
             | _                      -> Error "Message does not start with a recognized APRS data identifier" //TODO Maybe we just want to log this
         
         frame record

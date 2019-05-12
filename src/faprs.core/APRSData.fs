@@ -13,8 +13,8 @@ module APRSData =
     module PositionReportComment =
         let create (s:string) =
             match (s.Trim()) with
-            | s when s.Length < 44  -> PositionReportComment s
-            | _                     -> failwith "Position Report Comment must be less than 43 characters long."
+            | s when s.Length < 44  -> Some (PositionReportComment s)
+            | _                     -> None //failwith "Position Report Comment must be less than 43 characters long."
 
         let value (PositionReportComment c) = c //Was trimmed during create
 
@@ -25,12 +25,11 @@ module APRSData =
             match this with
             | North _   -> 'N'
             | South _   -> 'S'
-
-    let getLatHemisphere h =
-        match h with
-        | 'N' -> LatitiudeHemisphere.North
-        | 'S' -> LatitiudeHemisphere.South
-        | _ -> failwith "Latitude must be in northern (N) or southern (S) hemisphere."
+        static member fromHemisphere h =
+            match h with
+            | 'N'   -> Some LatitiudeHemisphere.North
+            | 'S'   -> Some LatitiudeHemisphere.South
+            | _     -> None //"Latitude must be in northern (N) or southern (S) hemisphere."
 
     type LongitudeHemisphere = 
         | East      
@@ -39,12 +38,11 @@ module APRSData =
             match this with
             | East _    -> 'E'
             | West _    -> 'W'
-
-    let getLonHemisphere h =
-        match h with
-        | 'E' -> LongitudeHemisphere.East
-        | 'W' -> LongitudeHemisphere.West
-        | _ -> failwith "Longitude must be in eastern (E) or western (W) hemisphere."
+        static member fromHemisphere h =
+            match h with
+            | 'E'   -> Some LongitudeHemisphere.East
+            | 'W'   -> Some LongitudeHemisphere.West
+            | _     -> None //failwith "Longitude must be in eastern (E) or western (W) hemisphere."
 
     let hemisphereToString degrees hemisphereChar =
         sprintf "%.2f%c" degrees hemisphereChar
@@ -121,9 +119,9 @@ module APRSData =
     *)
     type PositionReportWithoutTimeStamp =
         {
-            Position : Position
-            Symbol : SymbolCode
-            Comment : PositionReportComment
+            Position    : Position
+            Symbol      : SymbolCode
+            Comment     : PositionReportComment
         }
         override this.ToString() =
             sprintf "=%s/%s%c%s" (FormattedLatitude.value this.Position.Latitude) (FormattedLongitude.value this.Position.Longitude) (this.Symbol.ToChar()) (PositionReportComment.value this.Comment)
@@ -132,8 +130,8 @@ module APRSData =
     module UnformattedMessage =
         let create (m:string) =
             match (m.Trim()) with
-            | m when m.Length <= 255 -> UnformattedMessage m //AX.25 field is 256 chars but the message has to accomodate the { for user defined messages
-            | _ -> UnformattedMessage (m.Substring(0, 255)) //TODO or throw an exception?
+            | m when m.Length <= 255    -> UnformattedMessage m //AX.25 field is 256 chars but the message has to accomodate the { for user defined messages
+            | _                         -> UnformattedMessage (m.Substring(0, 255)) //TODO or throw an exception?
         let value (UnformattedMessage m) = sprintf ":%s" m
 
     type Message =

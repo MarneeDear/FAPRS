@@ -36,14 +36,14 @@ let PACKET_POSITION_REPORT_HOUSE =
             Longitude = FormattedLongitude.create LONGITUDE //{ Degrees = LONGITUDE; Hemisphere = LONGITUDE_HEMISPHERE} 
         } 
         Symbol = SymbolCode.House
-        Comment = PositionReportComment.create String.Empty
+        Comment = (PositionReportComment.create String.Empty).Value
     }
 
 let PACKET = 
     {
-        Sender      = CallSign.create (SENDER.ToUpper())
-        Destination = CallSign.create (DESTINATION.ToUpper())
-        Path        = WIDEnN //"WIDE1-1"
+        Sender      = (CallSign.create (SENDER.ToUpper())).Value
+        Destination = (CallSign.create (DESTINATION.ToUpper())).Value
+        Path        = WIDEnN WIDE11 //"WIDE1-1"
         Message     = Some (PositionReportWithoutTimeStamp PACKET_POSITION_REPORT_HOUSE)
     }
 

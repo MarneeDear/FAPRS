@@ -90,5 +90,5 @@ let LocationTests =
 let APRSDataTests =
     testList "Position Report Tests" [
         testCase "Position Report comment longer than 43 characters fails" <| fun _ ->
-            Expect.throws (fun _ -> (PositionReportComment.create BIG_MESSAGE) |> ignore) "Comment was longer than 43 characters but it dit not fail"
+            Expect.isNone (PositionReportComment.create BIG_MESSAGE) "Comment was longer than 43 characters but it dit not fail"
     ]

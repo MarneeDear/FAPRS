@@ -28,20 +28,20 @@ let SymbolCodeTests =
 let CallSignTests =
     testList "Call Sign Tests" [
         testCase "Fail to create a too short call sign" <| fun _ ->
-            Expect.throws (fun _ -> (CallSign.create "") |> ignore) "Call Sign is too short but was not caught"
+            Expect.isNone (CallSign.create "") "Call Sign is too short but was not caught"
         testCase "Fail to create too long call sign" <| fun _ ->
-            Expect.throws (fun _ -> ((CallSign.create "1234567890") |> ignore)) "Call Sign is too long but was not caught"
+            Expect.isNone (CallSign.create "1234567890") "Call Sign is too long but was not caught"
         testCase "Can create a call sign with 1 to 9 characters" <| fun _ ->
-            Expect.equal (CallSign.value((CallSign.create "KG7SIO"))) "KG7SIO" "Call Sign was not created"
+            Expect.equal (CallSign.value((CallSign.create "KG7SIO").Value)) "KG7SIO" "Call Sign was not created"
     ]
 
 [<Tests>]
 let PathTests =
     testList "Path Tests" [
-        testCase "WIDEnN return WIDE1-1" <| fun _ ->
-            Expect.equal (Path.WIDEnN.ToString()) "WIDE1-1" "WIDE1-1 only supported"
-        testCase "Non-WIDEnN fails - ECHO" <| fun _ ->
-            Expect.throws (fun _ -> Path.ECHO.ToString() |> ignore) "ECHO is not supported but it did not fail"
-        testCase "Non-WIDEnN fails - GATE" <| fun _ ->
-            Expect.throws (fun _ -> Path.GATE.ToString() |> ignore) "GATE is not supported but it did not fail"
+        testCase "WIDE11 return WIDE1-1" <| fun _ ->
+            Expect.equal (WIDE11.ToString()) "WIDE1-1" "Did not return the expected string representation"
+        testCase "WIDE21 return WIDE2-1" <| fun _ ->
+            Expect.equal (WIDE21.ToString()) "WIDE2-1" "Did not return the expected string representation"
+        testCase "WIDE22 return WIDE2-2" <| fun _ ->
+            Expect.equal (WIDE22.ToString()) "WIDE2-2" "Did not return the expected string representation"
     ]
