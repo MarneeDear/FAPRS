@@ -48,13 +48,12 @@ module APRSData =
         sprintf "%.2f%c" degrees hemisphereChar
 
     let calcDegMinSec (d:float) =
-        let dd = Math.Abs(d)        
-        let deg = Math.Truncate(dd) 
-        let min_temp = (dd - deg) * 60.0 
-        let min = Math.Truncate(min_temp) 
-        let sec = Math.Truncate((min_temp - min) * 60.0) 
-        int deg, int min, int sec
-
+        let dd = Math.Abs(d)
+        let deg = Math.Floor(dd)
+        let min = (dd - deg) * 60.0
+        let sec = (dd - deg - (Math.Floor(min) / 60.0)) * 3600.0
+        let rsec = Math.Round((decimal sec), 0)
+        int deg, int min, int rsec
 
     //TODO constrain the size of the Degrees field
     (* 
@@ -99,7 +98,7 @@ module APRSData =
     module FormattedLongitude =
         let create (d:float) =
             let deg, min, sec = calcDegMinSec d
-            FormattedLongitude (sprintf "%03i%02i.%02i%c" deg min (int ((float sec) / 60.0 * 100.0)) (if d > 0.0 then (East.ToHemisphereChar()) else (West.ToHemisphereChar())))
+            FormattedLongitude (sprintf "%03i%02i.%02i%c" deg min sec (if d > 0.0 then (East.ToHemisphereChar()) else (West.ToHemisphereChar())))
         let check (d:string) =
             FormattedLongitude d //TODO verify in expected format -- regular expressions?
         let value (FormattedLongitude d) = d

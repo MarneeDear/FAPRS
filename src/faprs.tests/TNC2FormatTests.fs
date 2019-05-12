@@ -17,7 +17,7 @@ let LONGITUDE = -112.1093343 //DD decimal degrees
 let LONGITUDE_HEMISPHERE = LongitudeHemisphere.East // 'E'
 let LATITUDE_HEMISPHERE =  LatitiudeHemisphere.North // 'N'
 let POSITION_REPORT_HOUSE = sprintf "=%.2f%c/%.2f%c-" LATITUDE (LATITUDE_HEMISPHERE.ToHemisphereChar()) LONGITUDE (LONGITUDE_HEMISPHERE.ToHemisphereChar())
-let FINAL_POSITION_REPORT = "=3603.32N/11206.55W-"
+let FINAL_POSITION_REPORT = "=3603.33N/11206.34W-"
 let TNC2_FINAL = (sprintf "%s>%s,%s:%s" (SENDER.ToUpper()) (DESTINATION.ToUpper()) PATH FINAL_POSITION_REPORT)
 
 
