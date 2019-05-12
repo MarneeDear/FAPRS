@@ -95,7 +95,7 @@ module TNC2MONRepository =
             | Some m    -> m |> Ok
             | None      -> "No message part found." |> Error
 
-        let participant (msg:string) =
+        let data (msg:string) =
             match msg.Substring(0, 1) with
             | id when id.Equals("=") -> Ok (mapPositionReport (msg.Substring(1))) //We have a lat/lon position report without timestamot. Let's try to parse it.
             | id when id.Equals(":") -> Ok (mapUnformattedMessage (msg.Substring(1))) //we have an unformatted messsage. Let's try to parse it
@@ -108,7 +108,7 @@ module TNC2MONRepository =
         
         frame record
         |> Result.bind msg
-        |> Result.bind participant
+        |> Result.bind data
             //All received frames are displayed in the usual monitor format, preceded with the channel number inside of [ ].
     //[0] K1NRO-1>APDW14,WIDE2-2:!4238.80NS07105.63W#PHG5630
     //See Dire Wolf User Guide 14.6 kissutil – KISS TNC troubleshooting and Application Interface
