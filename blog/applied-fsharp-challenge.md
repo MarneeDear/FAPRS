@@ -564,9 +564,134 @@ FAPRS can produce an APRS message, and it can parse a TNC2MON formatted frame wi
 
 This is the same as what FAPRS produces for the `kissutil`, but includes the channel on which the message was received -- `[0]`.
 
+### Start by getting the frame without the channel
 
+```fsharp
+//Remove the channel from the frame
+let (|Frame|_|) (record:string) =
+    match record with
+    | r when String.IsNullOrWhiteSpace(r) -> None
+    | r when r.IndexOf(" ") < 1 -> None //maybe return r because there was no channel and that's ok?
+    | r when (r.Substring(r.IndexOf(" "))).Trim().Length > 0 -> Some ((r.Substring(r.IndexOf(" "))).Trim())
+    | _ -> None
+```
 
-### 
+### Get the address field -- the sender and destination
+
+```fsharp
+let (|Address|_|) (frame:string) =
+    if frame.IndexOf(":") < 1 then 
+        None
+    else
+        Some (frame.Substring(0, frame.IndexOf(":")))
+```
+
+### Get the sender and destination out of the Address
+
+```fsharp
+let (|Sender|_|) (address:string) =
+    if address.IndexOf(">") < 1 then None
+    else Some (address.Substring(0, address.IndexOf(">")))
+
+let (|Destination|_|) (address:string) =
+    if address.IndexOf(">") < 1 || address.IndexOf(",") < 1 then None
+    else Some (address.Substring(address.IndexOf(">") + 1, address.IndexOf(",") - address.IndexOf(">") - 1))
+```
+
+### Get the Path out of the Frame
+
+```fsharp
+let (|Path|_|) (address:string) =
+    if not (address.IndexOf(">") = -1) && address.IndexOf(",") > address.IndexOf(">") then
+        Some (address.Substring(address.IndexOf(",") + 1).Split(','))
+    else
+        None
+```
+
+### Get the Message out of the Frame
+
+```fsharp
+let (|Message|_|) (frame:string) =
+    if frame.IndexOf(":") < 1 then 
+        None
+    else
+        Some (frame.Substring(frame.IndexOf(":") + 1))
+```
+
+### Parse a position report
+
+#### Get the Latitude out of the Message
+
+```fsharp
+let (|Latitude|_|) (msg:string) = 
+    let parseLatitude (posRpt:string) =
+        let lat = posRpt.Substring(1, 8)
+        match lat.EndsWith("N"), lat.EndsWith("S") with
+        | true, false   -> Some lat
+        | false, true   -> Some lat
+        | _             -> None
+    match getAPRSDataTypeIdentifier (msg.Substring(0,1)) with
+    | Some id   ->  match id with
+                    | PositionReportWithoutTimeStampWithMessaging   -> (parseLatitude msg)
+                    | PositionReportWithoutTimeStampNoMessaging     -> (parseLatitude msg)
+                    | _                                             -> None
+        | None     -> None //We do not have a position report and therefore no latitude
+```
+
+#### Get the Longitude out of the Message
+
+```fsharp
+let (|Longitude|_|) (msg:string) =
+    let parseLongitude (posRpt:string) =
+        let lon = posRpt.Substring(10, 9) 
+        match lon.EndsWith("W"), lon.EndsWith("E") with 
+        | true, false   -> Some lon
+        | false, true   -> Some lon
+        | _             -> None
+        
+    match msg.Substring(9,1) with
+    | "/" -> parseLongitude msg
+    | _ -> None
+```
+
+#### Get the Symbol out of the Message
+
+```fsharp
+let (|Symbol|_|) (msg:string) =
+    //TODO check that the previous char was a W or E meaning that it was probably and APRS lat/lon
+    match msg.Substring(18,1) with
+    | "W" -> SymbolCode.fromSymbol (msg.Substring(19,1).ToCharArray().[0]) //  getSymbolCode (msg.Substring(19,1).ToCharArray().[0])
+    | "E" -> SymbolCode.fromSymbol (msg.Substring(19,1).ToCharArray().[0])
+    | _ -> None
+```
+
+#### Get the Comment out of the Message
+
+```fsharp
+let (|Comment|_|) (symbol:char) (msg:string) =
+    let comment = msg.Substring(msg.IndexOf(symbol) + 1).Trim()
+    if comment = 
+        String.Empty 
+    then    
+        None 
+    else 
+        Some comment
+```
+
+#### The Tests
+
+To see the active patterns in action, check out `faprs.tests` `TNC2MONActivePatternsTests`.
+
+For example
+
+```fsharp
+testCase "Can get message part of well formed frame with message" <| fun _ ->
+    let result =
+        match "[0] KG7SIO-7>APRD15,WIDE1-1,TCPXX*,qAX,CWOP-2:=03216.4N/011057.3Wb,b>,lah:blah /fishcakes" with
+        | TNC2MonActivePatterns.Message m -> m
+        | _ -> String.Empty
+    Expect.equal result "=03216.4N/011057.3Wb,b>,lah:blah /fishcakes" "Message does not match"
+```
 
 ## Other Resources
 
