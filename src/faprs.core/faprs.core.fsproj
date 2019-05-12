@@ -4,9 +4,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Common.fs" />
-    <Compile Include="TNC2MONActivePatterns.fs" />
     <Compile Include="ParticipantStatus.fs" />
     <Compile Include="APRSData.fs" />
+    <Compile Include="TNC2MONActivePatterns.fs" />
     <Compile Include="TNC2MON.fs" />
     <Compile Include="AX25.fs" />
     <Compile Include="KISS.fs" />
