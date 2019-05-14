@@ -40,14 +40,15 @@ module TNC2MONRepository =
             match (|Symbol|_|) rpt with
             | Some s    -> s //Defaults to house if no match found -- TODO do I want to do this?
             | None      -> Common.SymbolCode.House
-        let comment =
-            let c =
-                match (|Comment|_|) (sym.ToChar()) rpt with
-                | Some c    -> PositionReportComment.create c
-                | None      -> PositionReportComment.create String.Empty
-            match c with
-            | Some c    -> c
-            | None      -> failwith "Position Report Comment must be less than 43 characters long."
+        let comment = //TODO handle the case where the comment is not accepted length
+            //let c =
+            match (|Comment|_|) (sym.ToChar()) rpt with
+            | Some c    -> PositionReportComment.create c
+            | None      -> None //PositionReportComment.create String.Empty
+            //c
+            //match c with
+            //| Some c    -> c
+            //| None      -> failwith "Position Report Comment must be less than 43 characters long."
         {
             Position = pos
             Symbol = sym
@@ -84,6 +85,31 @@ module TNC2MONRepository =
     //[0] K1NRO-1>APDW14,WIDE2-2:!4238.80NS07105.63W#PHG5630
     //[0] KG7SIO-7>APRD15,WIDE1-1:=3216.4N/11057.3Wb
     //TODO use ROP and a pipeline -- how best to do that?
+    (*
+        APRS Data Type Identifiers
+        0x1c Current Mic-E Data (Rev 0 beta) < Station Capabilities
+
+        0x1d Old Mic-E Data (Rev 0 beta) = Position without timestamp (with APRS
+        messaging)
+        ! Position without timestamp (no APRS
+        messaging), or Ultimeter 2000 WX Station
+        > Status
+        '' [Unused] ? Query
+        # Peet Bros U-II Weather Station @ Position with timestamp (with APRS messaging)
+        $ Raw GPS data or Ultimeter 2000 A–S [Do not use]
+        % Agrelo DFJr / MicroFinder T Telemetry data
+        & [Reserved — Map Feature] U–Z [Do not use]
+        ' Old Mic-E Data (but Current data for TM-D700) [ Maidenhead grid locator beacon (obsolete)
+        ( [Unused] \ [Unused]
+        ) Item ] [Unused]
+        * Peet Bros U-II Weather Station ^ [Unused]
+        + [Reserved — Shelter data with time] _ Weather Report (without position)
+        , Invalid data or test data ‘ Current Mic-E Data (not used in TM-D700)
+        - [Unused] a–z [Do not use]
+        . [Reserved — Space weather] { User-Defined APRS packet format
+        / Position with timestamp (no APRS messaging) | [Do not use — TNC stream switch character]
+        0–9 [Do not use] } Third-party traffic
+    *)
     let convertRecordToAPRSData (record:string) =
         let frame rcrd =
             match (|Frame|_|) rcrd with
@@ -104,7 +130,7 @@ module TNC2MONRepository =
                                         match pRpt with
                                         | Some r -> Ok r
                                         | None -> Error "Participant report not in expected format"
-            | _                      -> Error "Message does not start with a recognized APRS data identifier" //TODO Maybe we just want to log this
+            | _                      -> Error "Message does not start with a supported APRS data identifier" //TODO Maybe we just want to log this
         
         frame record
         |> Result.bind msg

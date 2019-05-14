@@ -120,10 +120,14 @@ module APRSData =
         {
             Position    : Position
             Symbol      : SymbolCode
-            Comment     : PositionReportComment
+            Comment     : PositionReportComment option
         }
         override this.ToString() =
-            sprintf "=%s/%s%c%s" (FormattedLatitude.value this.Position.Latitude) (FormattedLongitude.value this.Position.Longitude) (this.Symbol.ToChar()) (PositionReportComment.value this.Comment)
+            let comment =
+                match this.Comment with
+                | Some c    -> PositionReportComment.value c
+                | None      -> String.Empty
+            sprintf "=%s/%s%c%s" (FormattedLatitude.value this.Position.Latitude) (FormattedLongitude.value this.Position.Longitude) (this.Symbol.ToChar()) comment
     
     type UnformattedMessage = private UnformattedMessage of string
     module UnformattedMessage =
@@ -143,6 +147,12 @@ module APRSData =
             | PositionReportWithoutTimeStamp r  -> r.ToString()
             | ParticipantStatusReport r         -> r.ToString()
 
+    (*
+    http://www.aprs.org/aprs11/SSIDs.txt
+    SSID RECOMMENDATIONS:  It is very convenient to other mobile 
+    operators or others looking at callsigns flashing by, to be able to 
+    recognize some common applications at a glance.
+    *)
     type SSID =
         | PrimaryStation 
         | Generic_1

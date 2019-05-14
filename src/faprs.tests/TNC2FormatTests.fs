@@ -28,7 +28,7 @@ let PACKET_POSITION_REPORT_HOUSE =
             Longitude = FormattedLongitude.create LONGITUDE 
         } 
         Symbol = SymbolCode.House
-        Comment = (PositionReportComment.create String.Empty).Value
+        Comment = None //(PositionReportComment.create String.Empty).Value
     }
 
 //TODO introduce property based testsing?

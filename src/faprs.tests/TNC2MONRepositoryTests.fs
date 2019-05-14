@@ -36,7 +36,7 @@ let PACKET_POSITION_REPORT_HOUSE =
             Longitude = FormattedLongitude.create LONGITUDE //{ Degrees = LONGITUDE; Hemisphere = LONGITUDE_HEMISPHERE} 
         } 
         Symbol = SymbolCode.House
-        Comment = (PositionReportComment.create String.Empty).Value
+        Comment = None //(PositionReportComment.create String.Empty).Value
     }
 
 let PACKET = 
@@ -58,6 +58,7 @@ let WriteTNC2RecordTests =
 
 [<Tests>]
 let ProcessTNC2RecordTests =
+    //TODO FAPRS only accepts certain formats
     testList "Read records in a received kissutil file" [
         //testCase "Can read files created by faprs and create an array of valid aprs messages" <| fun _ ->
         //    let timestamp = (DateTime.Now.ToString("yyyyMMddHHmmssff"))
