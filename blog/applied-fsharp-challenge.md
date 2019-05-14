@@ -121,6 +121,7 @@ The Raspberry Pi 3 provides these services
     * Need both an audio-in and audio-out (mic and speaker) so that messages can both be received and transmitted.
 
 ### My equipment
+
  * [RaspberryPi 3](https://www.raspberrypi.org/products/raspberry-pi-3-model-b/)
  * [Baofeng UV-82](https://baofengtech.com/uv82)
  * [BTech APRS K2 Cable (connect radio to RaspberryPi or laptop via the audio port)](https://baofengtech.com/aprs-k2-trrs-cable)
@@ -133,7 +134,7 @@ The DireWolf integration ended up being really simple because the developer prov
 
 #### kissutil
 
-The DireWolf `kissutil` makes it easy to send and receive messages. The `kissutil` reads TNC2MON formated messages from files in a folder you specify and then sends them to the DireWolf TNC for sending out over the radio. The `kissutil` also writes received packets to a folder you specify. The Direwolf integration reads from, and writes to, these files.
+The DireWolf `kissutil` makes it easy to send and receive messages. The `kissutil` reads TNC2MON formated messages from files in a folder you specify and then sends them to the DireWolf TNC for sending out over the radio. The `kissutil` also writes received packets to a folder you specify. The Direwolf integration reads from, and writes to, these folders.
 
 The records are in the TNC2MON format, which I will talk about more later.
 
@@ -212,8 +213,6 @@ Since destination is also a call sign, I can use the CallSign type.
 The `PATH`` is also known as the digipath, and specifies if and how an APRS package should be repeated (re-transmitted) when received by a digital repeater (digipeater). This is intended to avoid repeating packets redundantly, and reduce the amount of traffic on the APRS network. The digipeater will be configured to re-transmit according to the PATH depending on its location and general network conditions in order to help prevent network congestion. 
 
 > PATH settings determine what kind and how many digipeaters will be used to deliver your packets to their destination.
-
-FAPRS only supports `WIDE1-1` at the moment, which means (from [this Stack Overflow answer](https://ham.stackexchange.com/questions/6213/help-understanding-path-taken-by-aprs-packet?rq=1))
 
 > It requests that a "wide" digipeater (one with a wide coverage area, like on a mountaintop) repeat the packet, but only once; if a second "wide" digipeater should hear the rebroadcast packet, then the second digipeater wouldn't repeat it.
 
