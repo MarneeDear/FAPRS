@@ -49,7 +49,7 @@ module Main =
         let lonArgu = pRpt.GetResult(CommandArguments.Longitude)
         let lat = FormattedLatitude.create latArgu
         let lon = FormattedLongitude.create lonArgu
-        let symbol = getSymbolCode ((pRpt.TryGetResult(CommandArguments.Symbol)) |> Option.defaultValue '-')
+        let symbol = SymbolCode.fromSymbol ((pRpt.TryGetResult(CommandArguments.Symbol)) |> Option.defaultValue '-')
         let comment = pRpt.TryGetResult(CommandArguments.Comment) |> Option.defaultValue String.Empty
         { 
             Position = { Latitude = lat; Longitude = lon }
