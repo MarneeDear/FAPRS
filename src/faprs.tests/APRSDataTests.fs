@@ -4,6 +4,9 @@ open Expecto
 open faprs.core.APRSData
 open System
 
+[<Literal>] 
+let BIG_MESSAGE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
 (*
 TIMESTAMP
 Month/Day/Hours/Minutes (MDHM) format is a fixed 8-character field,
@@ -24,58 +27,68 @@ let TOO_LONG_STATUS_MSG = "Lorem ipsum dolor sit amet, consectetuer adipiscing e
 let GOOD_PARTICIPANT_NBR = "12345"
 
              //latitidue   longitude
-let N_E_DC = ((32.0616684, 118.7777786), ("3203.42N", "11846.40E")) //Nanking, China
-let S_E_DC = ((-33.8678513, 151.2073212) , ("2516.27S", "13346.30E")) //Sydney, Australia
+let N_E_DC = ((32.0616684, 118.7777786),   ("3203.42N", "11846.40E")) //Nanking, China
+let S_E_DC = ((-33.8678513, 151.2073212) , ("3352.04S", "15112.26E")) //Sydney, Australia
 
-let N_W_DC = ((33.4483795, -112.0740433), ("3326.54N", "11204.26W")) //Phoenix, Arizona
-let S_W_DC = ((-33.4569397, -70.6482697), ("3327.25S", "7038.54W")) //Santiago, Chile
+let N_W_DC = ((33.4483795, -112.0740433), ("3326.54N", "11204.27W")) //Phoenix, Arizona
+let S_W_DC = ((-33.4569397, -70.6482697), ("3327.25S", "07038.54W")) //Santiago, Chile
 
 [<Tests>]
 let LocationTests =
     testList "Location tests" [
-        testCase "Can convert good north longitude to APRS formatted longitude" <| fun _ -> 
-            let dc, dms = N_E_DC
-            let _, dc_long = dc
-            let _, dms_long = dms
-            "Longitude not converted to expected format."
-            |> Expect.equal (FormattedLongitude.value (FormattedLongitude.create dc_long) ) dms_long
-            let dc, dms = N_W_DC
-            let _, dc_long = dc
-            let _, dms_long = dms
-            "Longitude not converted to expected format."
-            |> Expect.equal (FormattedLongitude.value (FormattedLongitude.create dc_long) ) dms_long
-        testCase "Can convert good south longitude to APRS formatted longitude" <| fun _ -> 
-            let dc, dms = S_E_DC
-            let _, dc_long = dc
-            let _, dms_long = dms
-            "Longitude not converted to expected format."
-            |> Expect.equal (FormattedLongitude.value (FormattedLongitude.create dc_long) ) dms_long
-            let dc, dms = S_W_DC
-            let _, dc_long = dc
-            let _, dms_long = dms
-            "Longitude not converted to expected format."
-            |> Expect.equal (FormattedLongitude.value (FormattedLongitude.create dc_long) ) dms_long
-        testCase "Can convert good east latitiude to APRS formatted longitude" <| fun _ -> 
+        testCase "Can convert Nanking latitiude to APRS formatted longitude" <| fun _ -> 
             let dc, dms = N_E_DC
             let dc_lat, _ = dc
             let dms_lat, _ = dms
-            "Latitude not converted to expected format."
-            |> Expect.equal (FormattedLongitude.value (FormattedLongitude.create dc_lat) ) dms_lat
+            "Nanking latitude not converted to expected format."
+            |> Expect.equal (FormattedLatitude.value (FormattedLatitude.create dc_lat) ) dms_lat
+        testCase "Can convert Phoenix latitude to APRS format" <| fun _ ->
             let dc, dms = S_E_DC
             let dc_lat, _ = dc
             let dms_lat, _ = dms
-            "Latitude not converted to expected format."
-            |> Expect.equal (FormattedLongitude.value (FormattedLongitude.create dc_lat) ) dms_lat
-        testCase "Can convert good west latitude to APRS formatted longitude" <| fun _ -> 
+            "Phoenix latitude not converted to expected format."
+            |> Expect.equal (FormattedLatitude.value (FormattedLatitude.create dc_lat) ) dms_lat
+        testCase "Can convert Sydney latitude to APRS formatted longitude" <| fun _ -> 
             let dc, dms = N_W_DC
             let dc_lat, _ = dc
             let dms_lat, _ = dms
-            "Latitude not converted to expected format."
-            |> Expect.equal (FormattedLongitude.value (FormattedLongitude.create dc_lat) ) dms_lat
+            "Sydney latitude not converted to expected format."
+            |> Expect.equal (FormattedLatitude.value (FormattedLatitude.create dc_lat) ) dms_lat
+        testCase "Can convert Santiago latitude to APRS format" <| fun _ ->
             let dc, dms = S_W_DC
             let dc_lat, _ = dc
             let dms_lat, _ = dms
-            "Latitude not converted to expected format."
-            |> Expect.equal (FormattedLongitude.value (FormattedLongitude.create dc_lat) ) dms_lat
+            "Santiago latitude not converted to expected format."
+            |> Expect.equal (FormattedLatitude.value (FormattedLatitude.create dc_lat) ) dms_lat
+        testCase "Can convert Nanking longitude to APRS formatted longitude" <| fun _ -> 
+            let dc, dms = N_E_DC
+            let _, dc_long = dc
+            let _, dms_long = dms
+            "Nanking longitude not converted to expected format."
+            |> Expect.equal (FormattedLongitude.value (FormattedLongitude.create dc_long) ) dms_long
+        testCase "Can convert Phoenix longitude to expected format." <| fun _ ->
+            let dc, dms = N_W_DC
+            let _, dc_long = dc
+            let _, dms_long = dms
+            "Phoenix longitude not converted to expected format."
+            |> Expect.equal (FormattedLongitude.value (FormattedLongitude.create dc_long) ) dms_long
+        testCase "Can convert Sydney longitude to APRS formatted longitude" <| fun _ -> 
+            let dc, dms = S_E_DC
+            let _, dc_long = dc
+            let _, dms_long = dms
+            "Sydney longitude not converted to expected format."
+            |> Expect.equal (FormattedLongitude.value (FormattedLongitude.create dc_long) ) dms_long
+        testCase "Can convert Santiago longitude to expecte format." <| fun _ ->
+            let dc, dms = S_W_DC
+            let _, dc_long = dc
+            let _, dms_long = dms
+            "Santiago longitude not converted to expected format."
+            |> Expect.equal (FormattedLongitude.value (FormattedLongitude.create dc_long) ) dms_long
         ]
 
+[<Tests>]
+let APRSDataTests =
+    testList "Position Report Tests" [
+        testCase "Position Report comment longer than 43 characters fails" <| fun _ ->
+            Expect.isNone (PositionReportComment.create BIG_MESSAGE) "Comment was longer than 43 characters but it dit not fail"
+    ]
