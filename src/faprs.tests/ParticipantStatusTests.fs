@@ -3,6 +3,8 @@
 open Expecto
 open faprs.core.Participant
 open System
+open faprs.infrastructure
+open faprs.core
 
 (*
 TIMESTAMP
@@ -23,6 +25,9 @@ let TOO_LONG_STATUS_MSG = "Lorem ipsum dolor sit amet, consectetuer adipiscing e
 [<Literal>]
 let GOOD_PARTICIPANT_NBR = "12345"
 
+let REC_RPT identifier message =
+    sprintf "[0] KG7SIO>APDW15,WIDE1-1:%s010100000000511%s" identifier message
+
 [<Tests>]
 let ParticipantTests =
     testList "Participant status tests" [
@@ -32,7 +37,7 @@ let ParticipantTests =
                     TimeStamp = RecordedOn.create None
                     ParticipantID = (ParticipantID.create "12345").Value
                     ParticipantStatus = ParticipantStatus.Continued (ParticipantStatusMessage.create "We have a winner!")
-                    Cancelled = false
+                    //Cancelled = false
                 }
             Expect.stringContains (data.ToString()) GOOD_PARTICIPANT_CONTINUED_STATUS "Message worked"
         testCase "Can create specific recorded-on timestamp"  <| fun _ ->
@@ -51,7 +56,7 @@ let ParticipantTests =
                 (ParticipantStatusMessage.create TOO_LONG_STATUS_MSG)
                 |> ParticipantStatusMessage.value
                 |> String.length
-            Expect.equal msg_len 239 "Message character count was shortened"
+            Expect.equal msg_len 238 "Message character count was shortened"
         testCase "Can create participant number" <| fun _ ->
             let result = ParticipantID.create GOOD_PARTICIPANT_NBR
             Expect.equal (ParticipantID.value result.Value) GOOD_PARTICIPANT_NBR "Participant number string was created"
@@ -59,4 +64,14 @@ let ParticipantTests =
             Expect.equal (ParticipantID.value (ParticipantID.create "9").Value) "    9" "Participant number is not fixed-length of 5"
         testCase "Can revert a properly formated timestamp to datetime" <| fun _ ->
             Expect.equal (RecordedOn.revert TEST_TIMESTAMP) TEST_DATE "Reverted timestamp equals input datetime"
+        testCase "Can parse good participant report" <| fun _ ->
+            match TNC2MONRepository.convertRecordToAPRSData (REC_RPT "{{P" GOOD_PARTICIPANT_STATUS_MSG) with
+            | Ok m ->   match m with
+                        | Message.ParticipantStatusReport r -> ()
+                        | _ -> failwith "Message was not converted to a Participant Report"
+            | Error msg -> failwith msg
+        testCase "Participant report with bad identifier is Error result" <| fun _ ->
+            Expect.isError (TNC2MONRepository.convertRecordToAPRSData (REC_RPT "{{G" GOOD_PARTICIPANT_STATUS_MSG)) "Postion report starting with {{G should have been Error"
+            Expect.isError (TNC2MONRepository.convertRecordToAPRSData (REC_RPT "{" GOOD_PARTICIPANT_STATUS_MSG)) "Postion report starting with { should have been Error"
+            Expect.isError (TNC2MONRepository.convertRecordToAPRSData (REC_RPT "{UP" GOOD_PARTICIPANT_STATUS_MSG)) "Postion report starting with { should have been Error"
     ]

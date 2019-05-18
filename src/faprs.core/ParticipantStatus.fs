@@ -16,13 +16,15 @@ Generic APRS Information Field
         DataTypeID  APRSData    APRSDataExtension   Comment
 Bytes:  1           n           7                   n
 
+The AX.25 information field size is defined as 1-256 bytes
+
 APRS Data Type Identifier
 Every APRS packet contains an APRS Data Type Identifier (DTI). This
 determines the format of the remainder of the data in the Information field
 
 Participant Status 
 * User-defined data type
-* 255 chars max
+* 253 chars max (to accomodate the user defined message identifiers
 * Participant #
 * Time last seen at comm station
 * Status (Continued, injured, waiting for help, taking a break) -- this will need status codes
@@ -32,9 +34,9 @@ Participant Status
 
 Participant Status Field
         TIMESTAMP   PARTICIPANT-ID      STATUS-1    STATUS-2    MESSAGE
-BYTES   8-fixed     5-fixed             1-fixed     1-fixed     0-239 
+BYTES   8-fixed     5-fixed             1-fixed     1-fixed     0-238 
 
- NOT USING THIS PROBABLY Date/Time format 2009-06-15T13:45:30 -- yyyy-MM-ddTHH:mm:ss
+NOT USING THIS PROBABLY Date/Time format 2009-06-15T13:45:30 -- yyyy-MM-ddTHH:mm:ss
 
 TIMESTAMP
 Month/Day/Hours/Minutes (MDHM) format is a fixed 8-character field,
@@ -47,6 +49,19 @@ If cycling through messages, participantStatus expires at midnight,
 but can be renewed for the next day 
 
 Experimental User-Defined types start with {{ (double curly braces)
+
+The data in the AX.25 Information field consists of a three-character header:
+{ APRS Data Type Identifier.
+U A one-character User ID.
+X A one-character user-defined packet type.
+
+Position Reports will be identified like this:
+
+{{P
+
+Userdefined | experimental | P for position report
+
+Since the field is limited to 256 bytes total, the position report must be 256 - 3 = 253
 
 *)
 module Participant = 
@@ -84,8 +99,8 @@ module Participant =
     module ParticipantStatusMessage =
         let create (s:string) =
             match (s.Trim()) with
-            | s when s.Length <= 239 -> ParticipantStatusMessage s
-            | _ -> ParticipantStatusMessage (s.Substring(0, 239))
+            | s when s.Length <= 238 -> ParticipantStatusMessage s
+            | _ -> ParticipantStatusMessage (s.Substring(0, 238))
         let value (ParticipantStatusMessage s) = s
 
     type ParticipantStatus =
@@ -139,11 +154,8 @@ module Participant =
             TimeStamp           : RecordedOn
             ParticipantID       : ParticipantID
             ParticipantStatus   : ParticipantStatus
-            Cancelled           : bool
+            //Cancelled           : bool
         }
         override this.ToString() =
             let (status1, status2, msg) = this.ParticipantStatus.ToStatusCombination()
-            //match this.ParticipantStatus.ToStatusCombination() with
-            //| Some (status1, status2, msg) -> sprintf "{{%s%s%i%i%s%s" (RecordedOn.value this.TimeStamp) (ParticipantID.value this.ParticipantID) status1 status2 msg (if this.Cancelled then "C" else String.Empty)
-            //| None -> String.Empty
-            sprintf "{{%s%s%i%i%s%s" (RecordedOn.value this.TimeStamp) (ParticipantID.value this.ParticipantID) status1 status2 msg (if this.Cancelled then "C" else String.Empty)
+            sprintf "{{P%s%s%i%i%s" (RecordedOn.value this.TimeStamp) (ParticipantID.value this.ParticipantID) status1 status2 msg //(if this.Cancelled then "C" else String.Empty)

@@ -21,7 +21,7 @@ let ParticipantStatusRepoTests =
                         TimeStamp = RecordedOn.create None
                         ParticipantID = (ParticipantID.create "TEST").Value
                         ParticipantStatus = ParticipantStatus.Continued (ParticipantStatusMessage.create "We have a winner!")
-                        Cancelled = false
+                        //Cancelled = false
                     }
 
                 let (st1:int, st2:int, m:string) = data.ParticipantStatus.ToStatusCombination()

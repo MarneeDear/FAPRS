@@ -2,7 +2,6 @@
 
 open faprs.core
 open faprs.core.TNC2MonActivePatterns
-open faprs.core.APRSData
 open faprs.core.Participant
 
 //TODO Kiss settings
@@ -25,17 +24,17 @@ module TNC2MONRepository =
     open System
         
     let mapPositionReport rpt =
-        let pos =
+        let posResult =
             let posRec lat lon = 
                 {
                     Latitude = FormattedLatitude.check lat //TODO how to create this when the latiude should have already been formatted? How to check?
                     Longitude = FormattedLongitude.check lon 
                 }
             match (|Latitude|_|) rpt, (|Longitude|_|) rpt with
-            | Some lat, Some lon    -> posRec lat lon
-            | None, Some _          -> failwith "Latitude was not in expected format."
-            | Some _, None          -> failwith "Longitude was not in exptected format."
-            | None, None            -> failwith "Neither Latitude nor Longitude were in expected format."
+            | Some lat, Some lon    -> Ok (posRec lat lon)
+            | None, Some _          -> Error "Latitude was not in expected format."
+            | Some _, None          -> Error "Longitude was not in exptected format."
+            | None, None            -> Error "Neither Latitude nor Longitude were in expected format."
         let sym =
             match (|Symbol|_|) rpt with
             | Some s    -> s //Defaults to house if no match found -- TODO do I want to do this?
@@ -45,70 +44,92 @@ module TNC2MONRepository =
             match (|Comment|_|) (sym.ToChar()) rpt with
             | Some c    -> PositionReportComment.create c
             | None      -> None //PositionReportComment.create String.Empty
-            //c
-            //match c with
-            //| Some c    -> c
-            //| None      -> failwith "Position Report Comment must be less than 43 characters long."
-        {
-            Position = pos
-            Symbol = sym
-            Comment = comment
-        }
-        |> PositionReportWithoutTimeStamp
+
+        match posResult with
+        | Ok p ->   {
+                        Position = p
+                        Symbol = sym
+                        Comment = comment
+                    } |> PositionReportWithoutTimeStamp |> Ok
+        | Error msg -> Error msg
 
     let mapUnformattedMessage (msg:string) =
         Unformatted (UnformattedMessage.create msg)
 
+    let mapUnsupportedMessage (msg:string) =
+        Unsupported (UnformattedMessage.create msg)
+
+    //18 USER-DEFINED DATA FORMAT --experimental designator
+    //APRS 1.01 For experimentation, or prior to being issued a User ID, anyone may utilize
+    //the User ID character of { without prior notification or approval (i.e. packets
+    //beginning with {{ are experimental, and may be sent by anyone).
     let mapParticipantReport (rpt:string) =
-        if rpt.Length = 255 then
-            let timestamp = RecordedOn.create (Some (RecordedOn.revert (rpt.Substring(0, 8))))
-            let id = ParticipantID.create (rpt.Substring(8, 5))
-            let st1 = int (rpt.Substring(13, 1))
-            let st2 = int (rpt.Substring(14, 1))
-            let msg = rpt.Substring(15)
-            let c = match rpt.Substring(rpt.Length - 2, 1) with
-                    | "C"   -> true
-                    | _     -> false
-            let psts =
-                 ParticipantStatus.fromStatusCombo (st1, st2, msg)
-            {
-                TimeStamp = timestamp
-                ParticipantID = id.Value
-                ParticipantStatus = psts
-                Cancelled = c                
-            }
-            |> ParticipantStatusReport |> Some
-        else 
-            None
+        match rpt.Substring(0, 2) with
+        | id when id.Equals("{P")    ->
+                                        if rpt.Length >= 15 && rpt.Length <= 253 then
+                                            let timestamp = RecordedOn.create (Some (RecordedOn.revert (rpt.Substring(2, 8))))
+                                            let id = ParticipantID.create (rpt.Substring(10, 5))
+                                            let st1 = int (rpt.Substring(15, 1))
+                                            let st2 = int (rpt.Substring(16, 1))
+                                            let msg = rpt.Substring(17)
+
+                                            //let cancelled = match rpt.Substring(rpt.Length - 2, 1) with
+                                            //                | "C"   -> true 
+                                            //                | _     -> false
+
+                                            let psts =
+                                                 ParticipantStatus.fromStatusCombo (st1, st2, msg)
+                                            {
+                                                TimeStamp = timestamp
+                                                ParticipantID = id.Value
+                                                ParticipantStatus = psts
+                                                //Cancelled = false                
+                                            }
+                                            |> ParticipantStatusReport |> Ok
+                                        else 
+                                            Error "Participant report not in expected format. Message length exceeded 253 characters."
+        | _                         -> Error "Participant report not in expected format. Message did not start with expected identifier -- {P."
 
     //Examples
     //[0] K1NRO-1>APDW14,WIDE2-2:!4238.80NS07105.63W#PHG5630
     //[0] KG7SIO-7>APRD15,WIDE1-1:=3216.4N/11057.3Wb
     //TODO use ROP and a pipeline -- how best to do that?
     (*
-        APRS Data Type Identifiers
-        0x1c Current Mic-E Data (Rev 0 beta) < Station Capabilities
-
-        0x1d Old Mic-E Data (Rev 0 beta) = Position without timestamp (with APRS
-        messaging)
-        ! Position without timestamp (no APRS
-        messaging), or Ultimeter 2000 WX Station
+        Ident Data Type 
+        0x1c Current Mic-E Data (Rev 0 beta) 
+        < Station Capabilities
+        0x1d Old Mic-E Data (Rev 0 beta) 
+        = Position without timestamp (with APRS messaging)
+        ! Position without timestamp (no APRS messaging), or Ultimeter 2000 WX Station
         > Status
-        '' [Unused] ? Query
-        # Peet Bros U-II Weather Station @ Position with timestamp (with APRS messaging)
+        double-quote [Unused] 
+        ? Query
+        # Peet Bros U-II Weather Station 
+        @ Position with timestamp (with APRS messaging)
         $ Raw GPS data or Ultimeter 2000 A–S [Do not use]
         % Agrelo DFJr / MicroFinder T Telemetry data
         & [Reserved — Map Feature] U–Z [Do not use]
-        ' Old Mic-E Data (but Current data for TM-D700) [ Maidenhead grid locator beacon (obsolete)
-        ( [Unused] \ [Unused]
-        ) Item ] [Unused]
-        * Peet Bros U-II Weather Station ^ [Unused]
-        + [Reserved — Shelter data with time] _ Weather Report (without position)
-        , Invalid data or test data ‘ Current Mic-E Data (not used in TM-D700)
+        ' Old Mic-E Data (but Current data for TM-D700) 
+        [ Maidenhead grid locator beacon (obsolete)
+        ( [Unused]  //
+        \ [Unused]
+        ) Item 
+        ] [Unused]
+        * Peet Bros U-II Weather Station 
+        ^ [Unused]
+        + [Reserved — Shelter data with time] 
+        _ Weather Report (without position)
+        , Invalid data or test data 
+        ‘ Current Mic-E Data (not used in TM-D700)
         - [Unused] a–z [Do not use]
-        . [Reserved — Space weather] { User-Defined APRS packet format
-        / Position with timestamp (no APRS messaging) | [Do not use — TNC stream switch character]
-        0–9 [Do not use] } Third-party traffic
+        . [Reserved — Space weather] 
+        { User-Defined APRS packet format
+        / Position with timestamp (no APRS messaging) 
+        | [Do not use — TNC stream switch character]
+        0–9 [Do not use] 
+        } Third-party traffic
+        : Message ~ [Do not use — TNC stream switch character]
+        ; Object
     *)
     let convertRecordToAPRSData (record:string) =
         let frame rcrd =
@@ -123,19 +144,21 @@ module TNC2MONRepository =
 
         let data (msg:string) =
             match msg.Substring(0, 1) with
-            | id when id.Equals("=") -> Ok (mapPositionReport (msg.Substring(1))) //We have a lat/lon position report without timestamot. Let's try to parse it.
-            | id when id.Equals(":") -> Ok (mapUnformattedMessage (msg.Substring(1))) //we have an unformatted messsage. Let's try to parse it
-            | id when id.Equals("{") -> //Ok (mapParticipantReport (msg.Substring(1))) //We have a participant report. Let's try to parse it
-                                        let pRpt = (mapParticipantReport (msg.Substring(1)))
-                                        match pRpt with
-                                        | Some r -> Ok r
-                                        | None -> Error "Participant report not in expected format"
-            | _                      -> Error "Message does not start with a supported APRS data identifier" //TODO Maybe we just want to log this
-        
+            | id when id.Equals("=") -> mapPositionReport (msg.Substring 1) //We have a lat/lon position report without timestamot. Let's try to parse it.
+            | id when id.Equals(":") -> mapUnformattedMessage (msg.Substring 1) |> Ok //we have an unformatted messsage. Let's try to parse it
+            | id when id.Equals("{") -> //Ok (mapParticipantReport (msg.Substring(1))) //We have user-defined data. Maybe it's a participant report. Let's try to parse it
+                                        mapParticipantReport (msg.Substring 1)
+                                        //let pRpt = (mapParticipantReport (msg.Substring 1))
+                                        //match pRpt with
+                                        //| Some r -> Ok r
+                                        //| None -> Error "Participant report not in expected format"
+            | _                      -> mapUnsupportedMessage(msg.Substring 1) |> Ok //if not in supported format just turn it into a message so it can be logged
+
         frame record
         |> Result.bind msg
         |> Result.bind data
-            //All received frames are displayed in the usual monitor format, preceded with the channel number inside of [ ].
+    
+    //All received frames are displayed in the usual monitor format, preceded with the channel number inside of [ ].
     //[0] K1NRO-1>APDW14,WIDE2-2:!4238.80NS07105.63W#PHG5630
     //See Dire Wolf User Guide 14.6 kissutil – KISS TNC troubleshooting and Application Interface
     //TODO this needs to process each file not a specific file name -- we wont know file name at runtime

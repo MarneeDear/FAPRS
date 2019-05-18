@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="ParseFrames.fsx" />
     <Compile Include="Database.fs" />
     <Compile Include="ParticipantStatusRepository.fs" />
     <Compile Include="TNC2MONRepository.fs" />
