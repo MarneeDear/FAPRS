@@ -260,6 +260,22 @@ FAPRS supports a number of message formats. I will describe three of them
 
 ### APRS data formats
 
+All of the support message formats are defined by a union type. Each of the options has its own type.
+
+```fsharp
+type Message =
+    | Unformatted                       of UnformattedMessage
+    | PositionReportWithoutTimeStamp    of PositionReportWithoutTimeStamp
+    | ParticipantStatusReport           of Participant.ParitcipantStatusReport
+    | Unsupported                       of UnformattedMessage
+    override this.ToString() =
+        match this with 
+        | Unformatted m                     -> UnformattedMessage.value m // (:) is the aprs data type ID for message
+        | PositionReportWithoutTimeStamp r  -> r.ToString()
+        | ParticipantStatusReport r         -> r.ToString()
+        | Unsupported u                     -> UnformattedMessage.value u //This is where anything that cant be parsed will end up
+```
+
 #### Unformatted Message
 
 An unformatted message must start with `:`, and has a size constraint, but otherwise can contain anything. I used a single case union type for this one, too.

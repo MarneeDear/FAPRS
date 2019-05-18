@@ -141,11 +141,13 @@ module APRSData =
         | Unformatted                       of UnformattedMessage
         | PositionReportWithoutTimeStamp    of PositionReportWithoutTimeStamp
         | ParticipantStatusReport           of Participant.ParitcipantStatusReport
+        | Unsupported                       of UnformattedMessage
         override this.ToString() =
             match this with 
             | Unformatted m                     -> UnformattedMessage.value m // (:) is the aprs data type ID for message
             | PositionReportWithoutTimeStamp r  -> r.ToString()
             | ParticipantStatusReport r         -> r.ToString()
+            | Unsupported u                     -> UnformattedMessage.value u //This is where anything that cant be parsed will end up
 
     (*
     http://www.aprs.org/aprs11/SSIDs.txt
