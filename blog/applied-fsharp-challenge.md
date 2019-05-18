@@ -282,8 +282,8 @@ It looks like this:
 
 ```text
         ! or |
-        =    | Latitude | / | Longitude | Symbol | Comment (max 43 chars)
-Bytes    1          8            9           1           0-43
+        =    | Latitude |  /  | Longitude | Symbol | Comment (max 43 chars)
+Bytes    1         8       1        9          1           0-43
 ```
 
 Example:
@@ -406,12 +406,20 @@ module PositionReportComment =
 
 The `Participant Status Report` is a user-defined format that I created in order to facilitate tracking race participant. 
 
-User-defined formating is defined in APRS 1.01 `18 USER DEFINED FORMATS`. The APRS spec makes allowances for experimental user-defined formats. Experimental formats must start with `{{`. 
+User-defined formating is defined in APRS 1.01 `18 USER DEFINED FORMATS`. The first 3 characters of a user-defined data format are the data identifiers. 
+
+* { APRS Data Type Identifier.
+* U A one-character User ID.
+* X A one-character user-defined packet type.
+
+The APRS spec makes allowances for experimental user-defined formats. Experimental formats must start with `{{`. I chose `P` as the experimental user-defined data identifier. This makes the full identifier `{{P`.
+
+The APRS data needs to fit inside the [AX.25 information field](https://en.wikipedia.org/wiki/AX.25), which is defined as 1-256 bytes. 
 
 Participant Status should include these parts:
 * User-defined data type
-* 255 chars max
-* Participant #
+* 253 chars max
+* Participant number (bib number)
 * Time last seen at comm station
 * Status (continued, injured, waiting for help, taking a break) 
 * Sender should identify the transmitting station
@@ -420,17 +428,18 @@ Participant Status should include these parts:
 ```text
 Participant Status Field
         TIMESTAMP   PARTICIPANT-ID      STATUS-1    STATUS-2    MESSAGE
-BYTES   8-fixed     5-fixed             1-fixed     1-fixed     0-239 
+BYTES   8-fixed     5-fixed             1-fixed     1-fixed     0-238 
 ```
 
-Example:
+Example including the data identifier:
 
 ```text
-100923450000111In good shape!
+{{P100923450004211In good shape!
 ```
 
-TIMESTAMP   PARTICIPANT-ID      STATUS-1    STATUS-2    MESSAGE
-10092345    00001               1           1           In good shape!
+    IDENTIFIER  TIMESTAMP           PARTICIPANT-ID      STATUS-1    STATUS-2    MESSAGE
+    {{P         10092345            00042               1           1           In good shape!
+                2019-10-09 23:34                        Continued   Continued
 
 The `TIMESTAMP` field is an APRS formatted timestamp.
 
@@ -447,11 +456,10 @@ type ParitcipantStatusReport =
         TimeStamp           : RecordedOn
         ParticipantID       : ParticipantID
         ParticipantStatus   : ParticipantStatus
-        Cancelled           : bool
     }
     override this.ToString() =
         let (status1, status2, msg) = this.ParticipantStatus.ToStatusCombination()
-        sprintf "{{%s%s%i%i%s%s" (RecordedOn.value this.TimeStamp) (ParticipantID.value this.ParticipantID) status1 status2 msg (if this.Cancelled then "C" else String.Empty)
+        sprintf "{{P%s%s%i%i%s%s" (RecordedOn.value this.TimeStamp) (ParticipantID.value this.ParticipantID) status1 status2 msg
 ```
 
 `RecordedOn` is a single case union type that converts a DateTime value to an APRS formatted timestamp. It creates a timestamp, and it will revert a timestamp back to a DateTime.
@@ -547,13 +555,11 @@ type ParticipantStatus =
         | (_, _, m) -> (Unknown (ParticipantStatusMessage.create m))
 ```
 
-`Cancelled` is the status of the message in the system. Messages can be cancelled, which means they will not continue to be transmitted.
-
 #### The final participant status report data frame
 
 The final output for the `kissutil` will look like this:
 
-> KG7SIO>APDW15,WIDE1-1:{{100923450000111In good shape!
+> KG7SIO>APDW15,WIDE1-1:{{P100923450004211In good shape!
 
 ## Parsing received messages
 
