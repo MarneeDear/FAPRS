@@ -69,7 +69,7 @@ This video is a nice demonstration of what you can do with APRS. The system demo
 
 ## System design
 
-FAPRS will act like a digipeater in it's own network.
+FAPRS will act like a [APRS digipeater](http://www.nwclimate.org/aprs/digipeater/), that you can also command to transmit your own messages for certain purposes.
 
 ### Motivation, purpose, and use cases
 
@@ -115,10 +115,10 @@ The Raspberry Pi 3 provides these services
         * Message scheduler and processor
     * CLI
         * Can be used to manually craft APRS messages for testing and troubleshooting
-    * Database (SQL Lite) for storing sent and received messages
+    * Database (`SQLite`) for storing sent and received messages
 * Wired to a VHF radio through the audio port
     * A USB sound card may be used
-    * Need both an audio-in and audio-out (mic and speaker) so that messages can both be received and transmitted.
+    * Need both an audio-in and audio-out (mic and speaker) so that messages can be both received and transmitted.
 
 ### My equipment
 
@@ -248,15 +248,15 @@ type Path =
                         | WIDE22    -> WIDE22.ToString()
 ```
 
-The PATH part used to have a number of types, but those were mode obsolete and the recommend PATH is to only use one of the `WIDEnN` options. That is how I modeled it here, while also allowing for the possibility of supporting other PATH types.
+The PATH part used to have a number of types, but those were made obsolete and the recommend PATH is to only use one of the `WIDEnN` options. That is how I modeled it here, while also allowing for the possibility of supporting other PATH types.
 
 #### MESSAGE
 
-The `MESSAGE` is also known at the `payload`. This is the data you want to transmit `and the fun part`.
+The `MESSAGE` is also known as the `payload`. This is the data you want to transmit `and the fun part`.
 
 The `MESSAGE` is also where it starts to get more complicated. As `APRS` started as a position reporting system, APRS specifies a number of standard message formats for identifying a station's position, but also provides for user-defined messages, weather reports, telemetry, and plain old messages (as if you were tweeting). 
 
-FAPRS supports a number of message formats. I will describe three of them
+FAPRS supports a number of message formats. I will cover some of them, here.
 
 ### APRS data formats
 
@@ -266,11 +266,11 @@ All of the support message formats are defined by a union type. Each of the opti
 type Message =
     | Unformatted                       of UnformattedMessage
     | PositionReportWithoutTimeStamp    of PositionReportWithoutTimeStamp
-    | ParticipantStatusReport           of Participant.ParitcipantStatusReport
+    | ParticipantStatusReport           of Participant.ParticipantStatusReport
     | Unsupported                       of UnformattedMessage
     override this.ToString() =
         match this with 
-        | Unformatted m                     -> UnformattedMessage.value m // (:) is the aprs data type ID for message
+        | Unformatted m                     -> UnformattedMessage.value m
         | PositionReportWithoutTimeStamp r  -> r.ToString()
         | ParticipantStatusReport r         -> r.ToString()
         | Unsupported u                     -> UnformattedMessage.value u //This is where anything that cant be parsed will end up
@@ -339,10 +339,10 @@ Latitude and longitude take a decimal coordinate and convert it to the APRS form
     minutes (to two decimal places), followed by the letter E for east or W for
     west.
 
-I created two single case union types called `FormattedLatitude` and `FormattedLatitude` that do the conversion and create a formatted latitude or longitude. The hemisphere designation is further constrained by a type.
+I created two single case union types called `FormattedLatitude` and `FormattedLongitude` that do the conversion and create a formatted latitude or longitude. The hemisphere designation is further constrained by a type.
 
 ```fsharp
-type LatitiudeHemisphere =
+type LatitudeHemisphere =
     | North     
     | South     
     member this.ToHemisphereChar() =
@@ -351,8 +351,8 @@ type LatitiudeHemisphere =
         | South _   -> 'S'
     static member fromHemisphere h =
         match h with
-        | 'N'   -> Some LatitiudeHemisphere.North
-        | 'S'   -> Some LatitiudeHemisphere.South
+        | 'N'   -> Some LatitudeHemisphere.North
+        | 'S'   -> Some LatitudeHemisphere.South
         | _     -> None //"Latitude must be in northern (N) or southern (S) hemisphere."
 
 type FormattedLatitude = private FormattedLatitude of string
@@ -413,14 +413,14 @@ module PositionReportComment =
     let create (s:string) =
         match (s.Trim()) with
         | s when s.Length < 44  -> Some (PositionReportComment s)
-        | _                     -> None //failwith "Position Report Comment must be less than 43 characters long."
+        | _                     -> None 
 
     let value (PositionReportComment c) = c //Was trimmed during create
 ```
 
 #### Participant Status Report
 
-The `Participant Status Report` is a user-defined format that I created in order to facilitate tracking race participant. 
+The `Participant Status Report` is a user-defined format that I created in order to facilitate tracking race participants. 
 
 User-defined formating is defined in APRS 1.01 `18 USER DEFINED FORMATS`. The first 3 characters of a user-defined data format are the data identifiers. 
 
@@ -438,8 +438,6 @@ Participant Status should include these parts:
 * Participant number (bib number)
 * Time last seen at comm station
 * Status (continued, injured, waiting for help, taking a break) 
-* Sender should identify the transmitting station
-* Destination identifies the comm HQ or one of the stations in the network
 
 ```text
 Participant Status Field
@@ -464,10 +462,10 @@ The `TIMESTAMP` field is an APRS formatted timestamp.
     consisting of the month (01–12) and day-of-the-month (01–31), followed by
     the time in hours and minutes zulu. For example: 10092345 is 23 hours 45 minutes zulu on October 9th.
 
-I created a new record type called `ParitcipantStatusReport` that defines 4 fields.
+I created a new record type called `ParticipantStatusReport` that defines 4 fields.
 
 ```fsharp
-type ParitcipantStatusReport =
+type ParticipantStatusReport =
     {
         TimeStamp           : RecordedOn
         ParticipantID       : ParticipantID

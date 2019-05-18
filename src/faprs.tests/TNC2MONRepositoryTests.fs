@@ -25,7 +25,7 @@ let PATH = "WIDE1-1"
 let LATITUDE = 36.0591117
 let LONGITUDE = -112.1093343
 let LONGITUDE_HEMISPHERE = LongitudeHemisphere.East // 'E'
-let LATITUDE_HEMISPHERE =  LatitiudeHemisphere.North // 'N'
+let LATITUDE_HEMISPHERE =  LatitudeHemisphere.North // 'N'
 let POSITION_REPORT_HOUSE = sprintf "=%.2f%c/%.2f%c-" LATITUDE (LATITUDE_HEMISPHERE.ToHemisphereChar()) LONGITUDE (LONGITUDE_HEMISPHERE.ToHemisphereChar())
 let TNC2_FINAL = (sprintf "%s>%s,%s:%s" (SENDER.ToUpper()) (DESTINATION.ToUpper()) PATH POSITION_REPORT_HOUSE)
 

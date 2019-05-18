@@ -86,7 +86,7 @@ module Participant =
             let dd = (timestamp.Substring(2, 2))
             let HH = (timestamp.Substring(4, 2))
             let MM = (timestamp.Substring(6, 2))
-            let dt = sprintf "%i-%s-%sT%s:%s" DateTime.Today.Year mm dd HH MM
+            let dt = sprintf "%i-%s-%sT%s:%s" DateTime.Today.Year mm dd HH MM //TODO this will be a problem at the new year or when otherwise dealing with timestamps that cross over years
             DateTime.Parse(dt)
         let create (date:DateTime option) =
             match date with
@@ -149,7 +149,7 @@ module Participant =
             | (0, 0, m) -> (Unknown (ParticipantStatusMessage.create m))
             | (_, _, m) -> (Unknown (ParticipantStatusMessage.create m))
 
-    type ParitcipantStatusReport =
+    type ParticipantStatusReport =
         {
             TimeStamp           : RecordedOn
             ParticipantID       : ParticipantID

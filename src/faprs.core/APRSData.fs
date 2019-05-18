@@ -18,7 +18,7 @@ module APRSData =
 
         let value (PositionReportComment c) = c //Was trimmed during create
 
-    type LatitiudeHemisphere =
+    type LatitudeHemisphere =
         | North     
         | South     
         member this.ToHemisphereChar() =
@@ -27,8 +27,8 @@ module APRSData =
             | South _   -> 'S'
         static member fromHemisphere h =
             match h with
-            | 'N'   -> Some LatitiudeHemisphere.North
-            | 'S'   -> Some LatitiudeHemisphere.South
+            | 'N'   -> Some LatitudeHemisphere.North
+            | 'S'   -> Some LatitudeHemisphere.South
             | _     -> None //"Latitude must be in northern (N) or southern (S) hemisphere."
 
     type LongitudeHemisphere = 
@@ -140,7 +140,7 @@ module APRSData =
     type Message =
         | Unformatted                       of UnformattedMessage
         | PositionReportWithoutTimeStamp    of PositionReportWithoutTimeStamp
-        | ParticipantStatusReport           of Participant.ParitcipantStatusReport
+        | ParticipantStatusReport           of Participant.ParticipantStatusReport
         | Unsupported                       of UnformattedMessage
         override this.ToString() =
             match this with 

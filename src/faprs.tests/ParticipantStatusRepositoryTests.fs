@@ -8,7 +8,7 @@ open FSharp.Control.Tasks
 open System.Threading.Tasks
 
 [<Literal>]
-let CONN = "DataSource=../../database.sqlite"
+let CONN = "DataSource=database.sqlite"
 
 [<Tests>]
 let ParticipantStatusRepoTests =
