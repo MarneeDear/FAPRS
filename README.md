@@ -232,13 +232,13 @@ Debugging tip:  Use the direwolf "-d n" command line option to print the KISS fr
 
 You can run it with `dotnet run` and `dotnet watch`.
 
-Run with re-loading after changes.
+### Run with re-loading after changes.
 
 ```bash
 dotnet watch -p src/faprs.service/ run
 ```
 
-Just run.
+### Run once
 
 ```bash
 dotnet run -p src/faprs.service/
