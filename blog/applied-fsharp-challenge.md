@@ -712,6 +712,30 @@ testCase "Can get message part of well formed frame with message" <| fun _ ->
     Expect.equal result "=03216.4N/011057.3Wb,b>,lah:blah /fishcakes" "Message does not match"
 ```
 
+## Sending messages and a demo (proof of concept)
+
+To send messages we can use faprs.cli, but it only supports the `unformatted` and `position report without timestamp` APRS data formats at the moment. For the demo I am sending a position report. 
+
+> See [the project's README](https://github.com/MarneeDear/FAPRS/blob/master/README.md) for more on how to run and use FAPRS
+
+I will use `dotnet run` to run the CLI command, like this:
+
+```bash
+dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO-7 --destination KG7SIL --path WIDE1-1 --rpt latitude 32.2217 longitude -110.9265 symbol b comment "My submission for the applied F# challenge."
+```
+
+The CLI takes latitude and longitude in decimal degrees and converts it to APRS format.
+
+Steps:
+
+1. Start DireWolf
+2. Start the kissutil
+3. Enter the CLI command
+4. Check that DireWolf and the kissutil detected the message and sent
+5. Attach the radio to the computer audio
+6. Enter the CLI command again and watch the radio transmit
+7. Check with aprs.fi
+
 ## Other Resources
 
 > [![History of APRS](https://img.youtube.com/vi/OgFBXfwmKYc/0.jpg)](https://www.youtube.com/watch?v=OgFBXfwmKYc "Everything Ham Radio Podcast")
