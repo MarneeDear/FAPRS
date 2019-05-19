@@ -26,6 +26,7 @@ TODO draw a diagram
 
 * .NET Core SDK 2.2 and above
 * [Dire Wolf v1.5](https://github.com/wb2osz/direwolf/releases/tag/1.5)
+* SQLite3
 
 #### Dependencies
 
@@ -57,7 +58,15 @@ Currently, there is only a CLI that can be used to create a `TNC2MON` formatted 
 
 The CLI can produce a frame with a simple message or a Lat/Lon position report without timestamp as per the APRS 1.01 specification.
 
-After cloning this repo you can restore the dependencies, run the tests, or run the CLI with `dotnet`.
+After cloning this repo you can restore the dependencies, run the migrations, run the tests, or run the CLI with `dotnet`.
+
+### Run the migrations
+
+```bash
+dotnet run -p src/faprs.migrations
+```
+
+This should create two tables.
 
 ### Run the CLI and see the possible commands
 
