@@ -75,6 +75,8 @@ This video is a nice demonstration of what you can do with APRS. The system demo
 
 FAPRS will act like a [APRS digipeater](http://www.nwclimate.org/aprs/digipeater/) that you can also command to transmit your own messages for certain purposes.
 
+> Note: this is a work in progress and not all features have been developed.
+
 ### Motivation, purpose, and use cases
 
 Hams often volunteer for middle-of-nowhere long distances races. You know the kind? Where 20 persons run 50 miles through the desert for fun? The participants need trail support and we Hams are best-equipped to run the communications system. We setup stations with mobile radios at known locations along the trail, make sure we can communicate with each other, and setup a process by which we share participant status and location, so we can keep track of them and request medical support if needed. It's great fun, and many of these events wouldn't happen if it weren't for us Hams.
