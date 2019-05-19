@@ -10,6 +10,8 @@ A system for sending APRS messages built in F#, because functional programming a
 
 > Mac and Linux users: You too can work on this code. Install the .NET Core SDK for your system and you can do all the things. I recommend installing Visual Studio Code with the Ionide plugin for development.
 
+See also my [blog post](https://github.com/MarneeDear/FAPRS/blob/master/blog/applied-fsharp-challenge.md) with lots of details about the application architecture, functional domain modeling, and APRS.
+
 ## Prior Art
 
 Here is a similar system using a Kantronics packet radio setup that functions like a BBS with keyboard-to-keyboard communications.
