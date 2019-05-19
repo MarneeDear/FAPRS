@@ -1,6 +1,10 @@
 # F# for APRS
 ###### A system for sending and receiving APRS messages integrated with DireWolf, and built on .NET Core in F#. 
 
+![alt text][logo]
+
+[logo]: https://raw.githubusercontent.com/MarneeDear/FAPRS/master/logo.png "FAPRS"
+
 _This is also my submission for the [Applied F# Challenge](http://foundation.fsharp.org/applied_fsharp_challenge) - F# in your organization or domain category._
 
 ## Applied F# Challenge
@@ -69,7 +73,7 @@ This video is a nice demonstration of what you can do with APRS. The system demo
 
 ## System design
 
-FAPRS will act like a [APRS digipeater](http://www.nwclimate.org/aprs/digipeater/), that you can also command to transmit your own messages for certain purposes.
+FAPRS will act like a [APRS digipeater](http://www.nwclimate.org/aprs/digipeater/) that you can also command to transmit your own messages for certain purposes.
 
 ### Motivation, purpose, and use cases
 
@@ -104,7 +108,7 @@ I designed this system with a few things in mind:
 * Compatible with common hand-held VHF radios like my Baofeng UV-82* 
 * Low-power and possible to run off a portable solar cell
 
-The Raspberry Pi 3 provides these services
+The Raspberry Pi 3 will provide these services
 
 * WiFi hot-spot
 * DireWolf -- the Terminal Node Controller 
@@ -162,8 +166,6 @@ There are 3 specification versions.
 * [APRS v1.1](http://www.aprs.org/aprs11.html)
 * [APRS v1.2](http://www.aprs.org/aprs12.html)
 
-Versions 1.1 and 1.2 specify mostly additional features.
-
 ### TNC 2 Monitor format (TNC2MON)
 
 The `kissutil` accepts APRS packets in the TNC 2 Monitor format. This format is defined in the
@@ -175,7 +177,7 @@ It looks like this:
 
 > *SENDER*>*DESTINATION*,*PATH*:*MESSAGE*
 
-The packet consists of a source, a destination, a path, and a message. The message can be user-defined, but is most often a Position Report. There are a number of Position Report formats as defined by the APRS spec. 
+The packet consists of a source, a destination, a path, and a message. The message can be user-defined, but is most often a Position Report or a Weather Report. There are a number of Position Report formats as defined by the APRS spec. 
 
 #### SENDER
 
@@ -210,9 +212,11 @@ Since destination is also a call sign, I can use the CallSign type.
 
 #### PATH
 
-The `PATH`` is also known as the digipath, and specifies if and how an APRS package should be repeated (re-transmitted) when received by a digital repeater (digipeater). This is intended to avoid repeating packets redundantly, and reduce the amount of traffic on the APRS network. The digipeater will be configured to re-transmit according to the PATH depending on its location and general network conditions in order to help prevent network congestion. 
+The `PATH` is also known as the digipath, and specifies if and how an APRS package should be repeated (re-transmitted) when received by a digital repeater (digipeater). This is intended to avoid repeating packets redundantly, and reduce the amount of traffic on the APRS network. The digipeater will be configured to re-transmit according to the PATH depending on its location and general network conditions in order to help prevent network congestion. 
 
 > PATH settings determine what kind and how many digipeaters will be used to deliver your packets to their destination.
+
+For example, `WIDE1-1`:
 
 > It requests that a "wide" digipeater (one with a wide coverage area, like on a mountaintop) repeat the packet, but only once; if a second "wide" digipeater should hear the rebroadcast packet, then the second digipeater wouldn't repeat it.
 
@@ -451,9 +455,11 @@ Example including the data identifier:
 {{P100923450004211In good shape!
 ```
 
-    IDENTIFIER  TIMESTAMP           PARTICIPANT-ID      STATUS-1    STATUS-2    MESSAGE
-    {{P         10092345            00042               1           1           In good shape!
-                2019-10-09 23:34                        Continued   Continued
+```text
+IDENTIFIER  TIMESTAMP   PARTICIPANT-ID  STATUS-1    STATUS-2    MESSAGE
+{{P         10092345    00042           1           1           In good shape!
+            2019-10-09 23:34            Continued   Continued
+```
 
 The `TIMESTAMP` field is an APRS formatted timestamp.
 
@@ -462,7 +468,7 @@ The `TIMESTAMP` field is an APRS formatted timestamp.
     consisting of the month (01–12) and day-of-the-month (01–31), followed by
     the time in hours and minutes zulu. For example: 10092345 is 23 hours 45 minutes zulu on October 9th.
 
-I created a new record type called `ParticipantStatusReport` that defines 4 fields.
+I created a new record type called `ParticipantStatusReport` that defines 3 fields.
 
 ```fsharp
 type ParticipantStatusReport =
@@ -509,7 +515,7 @@ module ParticipantID =
     let value (ParticipantID n) = n
 ```
 
-`ParticipantStatus` is fixed-width can limited to a set of statuses in a combination of one or two status options, plus a free form message. I modeled this as a tuple of (status, status, message).
+`ParticipantStatus` is fixed-width and limited to a set of statuses in a combination of 1 or 2 status options, plus a free form message. I modeled this as a tuple of (status, status, message).
 
 Only `Injured` has a sub status combination. For example, an `Injured` participant could also be `Continued`, `Resting`, `NeedsEmergencySupport`, `DroppedOut`, `Unknown`.
 
@@ -726,15 +732,21 @@ dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO-7 --destin
 
 The CLI takes latitude and longitude in decimal degrees and converts it to APRS format.
 
-Steps:
+In this demo I am expecting an iGate and digipeater in my area (`N7HND`) to receive my signal and forward it to [aprs.fi](https://aprs.fi), where I will be able to see my station on a map, and see the packets that were received.
 
-1. Start DireWolf
-2. Start the kissutil
-3. Enter the CLI command
-4. Check that DireWolf and the kissutil detected the message and sent
-5. Attach the radio to the computer audio
-6. Enter the CLI command again and watch the radio transmit
-7. Check with aprs.fi
+### Steps:
+
+1. Tune my radio to the [recommended APRS frequency](http://www.aprs.org/) `144.390` so other stations near me can pick up my signal.
+2. Attach the radio to the computer audio. I can select the "headset" option which lets me transmit and receive
+3. Start `DireWolf`
+4. Start the `kissutil`
+5. Enter the CLI command
+6. Check that `DireWolf` and the `kissutil` read the file that was generated and sent the message 
+7. Check with aprs.fi to see if the message made it through the local digipeater
+
+![Imgur](https://i.imgur.com/QoR9wYK.gif)
+
+![Imgur](https://i.imgur.com/ksav8IY.png)
 
 ## Other Resources
 
