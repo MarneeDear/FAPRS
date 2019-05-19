@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\faprs.core\faprs.core.fsproj" />
+    <ProjectReference Include="..\faprs.infrastructure\faprs.infrastructure.fsproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
