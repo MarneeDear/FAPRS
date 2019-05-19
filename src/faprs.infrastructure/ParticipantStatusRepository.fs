@@ -86,6 +86,17 @@ module ParticipantSatusRepository =
                                       VALUES (@message_id, 1, @cancelled_on, @cancelled_by)" v
         }
 
+    let deleteAllTestStatusRecords connectionString =
+        task {
+            use connection = new SqliteConnection(connectionString)
+            return! query connection "DELETE FROM cancelled_message WHERE cancelled_by = 'TEST'" None
+        } 
+    let deleteAllTestCancelledRecords connectionString =
+        task {
+            use connection = new SqliteConnection(connectionString)
+            return! query connection "DELETE FROM status_message WHERE created_by = 'TEST'" None
+        }
+
     //SAVE MESSAGE
     //For non-participant status related information
 

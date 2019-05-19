@@ -11,6 +11,10 @@ open System.Numerics
 [<Literal>]
 let CONN = "DataSource=database.sqlite"
 
+let cleanData = 
+    deleteAllTestCancelledRecords CONN |> ignore
+    deleteAllTestStatusRecords CONN |> ignore
+
 [<Tests>]
 let ParticipantStatusRepoTests =
     testSequenced <| testList "Participant database layer tests" [
