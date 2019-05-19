@@ -19,11 +19,11 @@ type CreateStatusMessage() =
     );
     
     CREATE TABLE cancelled_message(
-      message_row_id INTEGER PRIMARY KEY,
+      message_rowid INTEGER PRIMARY KEY,
       cancelled INTEGER DEFAULT 0,
       cancelled_on INTEGER NULL,
       cancelled_by TEXT NULL,
-      UNIQUE (message_row_id)
+      UNIQUE (message_rowid)
     );")
 
   override __.Down() =
