@@ -4,11 +4,11 @@
 
 # F# for APRS
 
-A work in progress.
-
 A system for sending APRS messages built in F#, because functional programming and static typing make everything better.
 
 > Mac and Linux users: You too can work on this code. Install the .NET Core SDK for your system and you can do all the things. I recommend installing Visual Studio Code with the Ionide plugin for development.
+
+A work in progress.
 
 ## Prior Art
 
