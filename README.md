@@ -2,6 +2,8 @@
 
 [logo]: https://raw.githubusercontent.com/MarneeDear/FAPRS/master/logo.png "FAPRS"
 
+> APRS is a protocol for widely spreading messages over an ad-hoc radio network while avoiding redundancy and network congestion.
+
 # F# for APRS
 
 A system for sending APRS messages built in F#, because functional programming and static typing make everything better.
