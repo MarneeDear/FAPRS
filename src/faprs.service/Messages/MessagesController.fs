@@ -8,7 +8,13 @@ module Controller =
 
     let indexAction (ctx: HttpContext) = 
         task {
-            return Views.index
+            let messagesList =      
+                [
+                    "FILE HASH"
+                    "B HASH"
+                    "C HASH"
+                ]
+            return Views.index messagesList
         }
 
     let resource = controller {

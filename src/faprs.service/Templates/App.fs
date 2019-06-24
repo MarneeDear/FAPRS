@@ -9,7 +9,7 @@ let layout (content: XmlNode list) =
             meta [_name "viewport"; _content "width=device-width, initial-scale=1" ]
             title [] [encodedText "FAPRS"]
             //link [_rel "stylesheet"; _href "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" ]
-            link [_rel "stylesheet"; _href "/bulma.min.css" ] //_href "https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css" ]
+            link [_rel "stylesheet"; _href "bulma.min.css" ] //_href "https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css" ]
             link [_rel "stylesheet"; _href "/app.css" ]
             link [_rel "shortcut icon"; _href "/favicon.ico"]
 
