@@ -10,7 +10,7 @@ open SimpleMigrations.Console
 [<EntryPoint>]
 let main argv =
     let assembly = Assembly.GetExecutingAssembly()
-    use db = new SqliteConnection "DataSource=database.sqlite"
+    use db = new SqliteConnection "DataSource=..\..\database\database.sqlite"
     let provider = SqliteDatabaseProvider(db)
     let migrator = SimpleMigrator(assembly, provider)
     let consoleRunner = ConsoleRunner(migrator)
