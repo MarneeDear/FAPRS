@@ -8,7 +8,7 @@ module Views =
         let content = [
             yield div [ _class "hero is-warning" ] [ 
                 div [ _class "hero-body"] [ 
-                    p [ _class "title" ] [encodedText "You will see all of the latest APRS messages or IPFS files hashes"]
+                    p [ _class "title" ] [encodedText "Refresh to see all of the latest APRS messages"]
                     ]
                 ] 
             yield div [_class "box"] [
