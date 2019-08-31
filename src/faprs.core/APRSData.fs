@@ -23,8 +23,8 @@ module APRSData =
         | South     
         member this.ToHemisphereChar() =
             match this with
-            | North _   -> 'N'
-            | South _   -> 'S'
+            | North   -> 'N'
+            | South   -> 'S'
         static member fromHemisphere h =
             match h with
             | 'N'   -> Some LatitudeHemisphere.North
@@ -36,8 +36,8 @@ module APRSData =
         | West      
         member this.ToHemisphereChar() =
             match this with
-            | East _    -> 'E'
-            | West _    -> 'W'
+            | East    -> 'E'
+            | West    -> 'W'
         static member fromHemisphere h =
             match h with
             | 'E'   -> Some LongitudeHemisphere.East
