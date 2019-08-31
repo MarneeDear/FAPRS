@@ -9,7 +9,7 @@ open System.Threading.Tasks
 open System.Numerics
 
 [<Literal>]
-let CONN = "DataSource=..\..\database\database.sqlite"
+let CONN = "DataSource=database.sqlite"
 
 let cleanData = 
     deleteAllTestCancelledRecords CONN |> ignore

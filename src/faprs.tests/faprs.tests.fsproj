@@ -24,10 +24,12 @@
     <PackageReference Include="FSharp.Core" Version="4.*" />
     <PackageReference Include="YoloDev.Expecto.TestSdk" Version="0.*" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.*" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="2.2.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\faprs.core\faprs.core.fsproj" />
     <ProjectReference Include="..\faprs.crc\faprs.crc.fsproj" />
     <ProjectReference Include="..\faprs.infrastructure\faprs.infrastructure.fsproj" />
+    <ProjectReference Include="..\faprs.migrations\faprs.migrations.fsproj" />
   </ItemGroup>
 </Project>
