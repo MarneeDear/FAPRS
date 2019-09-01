@@ -226,7 +226,7 @@ dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destinat
 
 ## DireWolf tips
 
-Debugging tip:  Use the direwolf "-d n" command line option to print the KISS frames in hexadecimal so we can see what is being sent.
+Debugging tip:  Use the DireWolf "-d n" command line option to print the KISS frames in hexadecimal so we can see what is being sent.
 
 ```bash
 direwolf -d n
@@ -234,15 +234,9 @@ direwolf -d n
 
 ### Running DireWolf with RTL-SDR devices
 
-TODO. 
+For testing I setup my Baofeng connected to my desktop PC, running DireWolf and FAPRS, and a Nooelc RTL-SDR connected to a Raspberry Pi 3 running DireWolf, RTL-FM, and FAPRS. The RTL-SDR software seems only work on Linux.
 
 DireWolf provides documentation about use SDR in the guide `Raspberry-Pi-SDR-IGate.pdf` (look in the reference-materials of this repo), but I will summarize what I do, here. The guide describes how and what to install to get it to work.
-
-Connect the RTL, calibrate it, and start DireWolf like this:
-
-```bash
-rtl_fm -f 144.39M - | direwolf -c sdr.conf -r 24000 -D 1 - 
-```
 
 #### Calibrating RTL-SDR
 
@@ -260,10 +254,10 @@ real sample rate: 2048124 current PPM: 61 cumulative PPM: 63
 real sample rate: 2048129 current PPM: 63 cumulative PPM: 63
 ```
 
-Run direwolf with the rtl-sdr calibration. The flag is `-p`
+Run direwolf with the PPM calibration value. The flag is `-p`
 
 ```bash
-rtl_fm -p 63 -f 144.39M - | direwolf -c sdr.conf -r 24000 -D 1 - 
+rtl_fm -p 63 -f 144.39M - | direwolf -d n -c sdr.conf -r 24000 -D 1 - 
 ```
 
 ## Run the web project
