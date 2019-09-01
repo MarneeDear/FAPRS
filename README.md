@@ -228,6 +228,44 @@ dotnet run --project src/faprs.cli/ -- --save-to XMIT --sender KG7SIO --destinat
 
 Debugging tip:  Use the direwolf "-d n" command line option to print the KISS frames in hexadecimal so we can see what is being sent.
 
+```bash
+direwolf -d n
+```
+
+### Running DireWolf with RTL-SDR devices
+
+TODO. 
+
+DireWolf provides documentation about use SDR in the guide `Raspberry-Pi-SDR-IGate.pdf` (look in the reference-materials of this repo), but I will summarize what I do, here. The guide describes how and what to install to get it to work.
+
+Connect the RTL, calibrate it, and start DireWolf like this:
+
+```bash
+rtl_fm -f 144.39M - | direwolf -c sdr.conf -r 24000 -D 1 - 
+```
+
+#### Calibrating RTL-SDR
+
+Attach the RTL_SDR and run the `rtl_test`. (You will need to install the rtl-sdr software first).
+
+```bash
+rtl_test -p60
+```
+
+Let this run for at least 5 minutes. The last PPM reported with the value you will use.
+
+```text
+real sample rate: 2048132 current PPM: 65 cumulative PPM: 65
+real sample rate: 2048124 current PPM: 61 cumulative PPM: 63
+real sample rate: 2048129 current PPM: 63 cumulative PPM: 63
+```
+
+Run direwolf with the rtl-sdr calibration. The flag is `-p`
+
+```bash
+rtl_fm -p 63 -f 144.39M - | direwolf -c sdr.conf -r 24000 -D 1 - 
+```
+
 ## Run the web project
 
 `faprs.service` provides a web interface to enter messages you want to send over APRS and to see messages received over APRS.
