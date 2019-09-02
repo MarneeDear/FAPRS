@@ -74,6 +74,7 @@ module Main =
                 match r with
                 | Some d    -> d
                 | None      -> "APDW15"
+
             let path = Common.Path.WIDEnN //only this for now TODO
 
             let pRpt = results.TryGetResult(CommandArguments.PositionReport)
@@ -105,7 +106,8 @@ module Main =
                 }
 
             let txDelay =                 
-                Some [ TxDelay 100; TxDelay 100; ] //2 seconds in 10 ms units
+                //Some [ TxDelay 0; TxDelay 0; ] //2 seconds in 10 ms units
+                None
 
             match saveTo with
             | Some path -> writeKissUtilRecord txDelay [packet] path (DateTime.Now.ToString("yyyyMMddHHmmssff")) 
