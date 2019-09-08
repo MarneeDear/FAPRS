@@ -44,7 +44,7 @@ let PACKET =
         Sender      = (CallSign.create (SENDER.ToUpper())).Value
         Destination = (CallSign.create (DESTINATION.ToUpper())).Value
         Path        = WIDEnN WIDE11 //"WIDE1-1"
-        Message     = Some (PositionReportWithoutTimeStamp PACKET_POSITION_REPORT_HOUSE)
+        Information = Some (PositionReportWithoutTimeStamp PACKET_POSITION_REPORT_HOUSE)
     }
 
 [<Tests>]

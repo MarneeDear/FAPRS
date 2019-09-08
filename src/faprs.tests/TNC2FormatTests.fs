@@ -42,7 +42,7 @@ let TNC2MONFormatTests =
                     Sender      = (CallSign.create (SENDER.ToUpper())).Value
                     Destination = (CallSign.create (DESTINATION.ToUpper())).Value
                     Path        = WIDEnN WIDE11 //"WIDE1-1"
-                    Message     = Some (PositionReportWithoutTimeStamp PACKET_POSITION_REPORT_HOUSE)
+                    Information = Some (PositionReportWithoutTimeStamp PACKET_POSITION_REPORT_HOUSE)
                 }.ToString()
             // Console.WriteLine packet
             Expect.equal packet TNC2_FINAL (sprintf "TNC2MON formats didnt match")
@@ -52,7 +52,7 @@ let TNC2MONFormatTests =
                     Sender      = (CallSign.create SENDER).Value
                     Destination = (CallSign.create DESTINATION).Value
                     Path        = WIDEnN WIDE11 //"WIDE1-1"
-                    Message     = Some (PositionReportWithoutTimeStamp PACKET_POSITION_REPORT_HOUSE)
+                    Information = Some (PositionReportWithoutTimeStamp PACKET_POSITION_REPORT_HOUSE)
                 }.ToString()
             // Console.WriteLine packet
             Expect.equal packet TNC2_FINAL (sprintf "TNC2 formats didnt match")

@@ -9,6 +9,7 @@ open System
 
 [<AutoOpen>]
 module APRSData = 
+
     type PositionReportComment = private PositionReportComment of string
     module PositionReportComment =
         let create (s:string) =
@@ -129,25 +130,48 @@ module APRSData =
                 | None      -> String.Empty
             sprintf "=%s/%s%c%s" (FormattedLatitude.value this.Position.Latitude) (FormattedLongitude.value this.Position.Longitude) (this.Symbol.ToChar()) comment
     
-    type UnformattedMessage = private UnformattedMessage of string
-    module UnformattedMessage =
+    type MessageText = private MessageText of string
+    module MessageText =
         let create (m:string) =
             match (m.Trim()) with
-            | m when m.Length <= 255    -> UnformattedMessage m //AX.25 field is 256 chars but the message has to accomodate the { for user defined messages
-            | _                         -> UnformattedMessage (m.Substring(0, 255)) //TODO or throw an exception?
-        let value (UnformattedMessage m) = sprintf ":%s" m
+            | m when m.Length <= 67    -> MessageText m //AX.25 field is 256 chars but the message has to accomodate the { for user defined messages
+            | _                         -> MessageText (m.Substring(0, 67)) //or return None TODO or throw an exception?
+        let value (MessageText m) = m
 
+    type MessageNumber = private MessageNumber of string
+    module MessageNumber =
+        let create (n:string) =
+            match (n.Trim()) with
+            | n when n.Length <= 5 -> MessageNumber n
+            | _ -> MessageNumber (n.Substring(0, 5)) //Or fail with None?
+        let value (MessageNumber n) = n
+
+    (*            
+    Message Format
+            | : | Addressee | : | Message Text  | Message ID | Message Number (xxxxx)
+    bytes   | 1 |    9      | 1 |    0-67       |     {      |      1-5
+    :KG7SIO___:HELLO WORLD{1111
+    *)
     type Message =
-        | Unformatted                       of UnformattedMessage
+        {
+            Addressee : CallSign
+            MessageText : MessageText
+            MessageNumber : MessageNumber
+        }
+        override this.ToString() =
+            sprintf ":%s:%s{%s" (CallSign.value this.Addressee) (MessageText.value this.MessageText) (MessageNumber.value this.MessageNumber)
+
+    type Information =
+        | Message                           of Message
         | PositionReportWithoutTimeStamp    of PositionReportWithoutTimeStamp
         | ParticipantStatusReport           of Participant.ParticipantStatusReport
-        | Unsupported                       of UnformattedMessage
+        | Unsupported                       of string
         override this.ToString() =
             match this with 
-            | Unformatted m                     -> UnformattedMessage.value m // (:) is the aprs data type ID for message
+            | Message m                         -> m.ToString()
             | PositionReportWithoutTimeStamp r  -> r.ToString()
             | ParticipantStatusReport r         -> r.ToString()
-            | Unsupported u                     -> UnformattedMessage.value u //This is where anything that cant be parsed will end up
+            | Unsupported u                     -> u //This is where anything that cant be parsed will end up
 
     (*
     http://www.aprs.org/aprs11/SSIDs.txt

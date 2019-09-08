@@ -2,6 +2,7 @@
 
 open Expecto
 open faprs.core.TNC2MonActivePatterns
+open faprs.core.DataFormatActivePatterns
 open System
 open faprs.core
 
@@ -93,12 +94,12 @@ let AddressParsingTests =
     ]
 
 [<Tests>]
-let MessageParsingTests =
-    testList "Message Parsing Tests" [
+let PositionReportParsingTests =
+    testList "Position Report with message Parsing Tests" [
         testCase "Can get message part of well formed frame with message" <| fun _ ->
             let result =
                 match "[0] KG7SIO-7>APRD15,WIDE1-1,TCPXX*,qAX,CWOP-2:=03216.4N/011057.3Wb,b>,lah:blah /fishcakes" with
-                | TNC2MonActivePatterns.Message m -> m
+                | TNC2MonActivePatterns.Information i -> i
                 | _ -> String.Empty
             Expect.equal result "=03216.4N/011057.3Wb,b>,lah:blah /fishcakes" "Message does not match"
         testCase "Can get Latitude from well formed message position report" <| fun _ ->
@@ -145,4 +146,27 @@ let MessageParsingTests =
             Expect.equal result ",b>,lah:blah /fishcakes" "Comment did not match"
         //testCase "Can parse well formed position report in well formed frame" <| fun _ ->
         //    let 
+    ]
+
+[<Tests>]
+let MessageParsingTests =
+    testList "Parse elements" [
+        testCase "Can parse addressee in good message data format" <| fun _ ->
+            let result =
+                match "KG7SIO   :HELLO WORLD{12345" with
+                | Addressee a   -> a
+                | _             -> String.Empty
+            Expect.equal result "KG7SIO" "Addressee part was not parsed correctly"
+        testCase "Can parse message in good message data format" <| fun _ ->
+            let result =
+                match "KG7SIO   :HELLO WORLD{12345" with
+                | DataFormatActivePatterns.Message m    -> m
+                | _                                     -> String.Empty
+            Expect.equal result "HELLO WORLD" "Message part was not parsed correctly"
+        testCase "Can parse message number in good message data format" <| fun _ ->
+            let result =
+                match "KG7SIO   :HELLO WORLD{12345" with
+                | DataFormatActivePatterns.MessageNumber n  -> n
+                | _                                         -> String.Empty
+            Expect.equal result "12345" "Message Number part was not parsed correctly"
     ]

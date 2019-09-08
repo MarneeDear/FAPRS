@@ -67,7 +67,7 @@ let ParticipantTests =
         testCase "Can parse good participant report" <| fun _ ->
             match TNC2MONRepository.convertRecordToAPRSData (REC_RPT "{{P" GOOD_PARTICIPANT_STATUS_MSG) with
             | Ok m ->   match m with
-                        | Message.ParticipantStatusReport r -> ()
+                        | Information.ParticipantStatusReport r -> ()
                         | _ -> failwith "Message was not converted to a Participant Report"
             | Error msg -> failwith msg
         testCase "Participant report with bad identifier is Error result" <| fun _ ->

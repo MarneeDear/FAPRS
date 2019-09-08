@@ -2,6 +2,7 @@
 
 open faprs.core
 open faprs.core.TNC2MonActivePatterns
+open faprs.core.DataFormatActivePatterns
 open faprs.core.Participant
 
 //TODO Kiss settings
@@ -53,11 +54,34 @@ module TNC2MONRepository =
                     } |> PositionReportWithoutTimeStamp |> Ok
         | Error msg -> Error msg
 
-    let mapUnformattedMessage (msg:string) =
-        Unformatted (UnformattedMessage.create msg)
+    let mapMessage (msg:string) = //Can I do this recursivley
+        //let partMsg (part, partName) =
+        //    match part with
+        //    | Some p -> String.Empty
+        //    | None -> sprintf "%s%s" partName "part of message not in expected format."
+            //match (a, m, n) with
+            //| None, Some _, Some _ -> "Addressee"
+            //| Some _, None, Some _ -> "Message"
+            //| Some _, Some _, None -> "Message Number"
 
-    let mapUnsupportedMessage (msg:string) =
-        Unsupported (UnformattedMessage.create msg)
+        match (|Addressee|_|) msg, (|Message|_|) msg, (|MessageNumber|_|) msg with
+        | Some a, Some m, Some n -> 
+                                match CallSign.create a with
+                                | Some c -> 
+                                            {
+                                                Addressee = c
+                                                MessageText = MessageText.create m
+                                                MessageNumber = MessageNumber.create n
+                                            } |> Information.Message |> Ok
+                                | None -> Error "Addressee call sign not in expected format."
+        //| _, _, _ -> [(a, "Addressee"; (m, "Message"); (n, "Message Number")] > List.fold (fun acc elem -> partMsg elem acc)
+        | None, Some _, Some _ -> Error "Addressee part of message not in expected format."
+        | Some _, None, Some _ -> Error "Message part of message not in expected format."
+        | Some _, Some _, None -> Error "Message Number part of message not in expected format."
+        | _, _, _              -> Error "Message not in expected format."
+
+    //let mapUnsupportedMessage (msg:string) =
+    //    Unsupported (UnformattedMessage.create msg)
 
     //18 USER-DEFINED DATA FORMAT --experimental designator
     //APRS 1.01 For experimentation, or prior to being issued a User ID, anyone may utilize
@@ -138,21 +162,21 @@ module TNC2MONRepository =
             | None      -> "Frame not in expected format." |> Error
         
         let msg frame =
-            match (|Message|_|) frame with
+            match (|Information|_|) frame with
             | Some m    -> m |> Ok
             | None      -> "No message part found." |> Error
 
-        let data (msg:string) =
-            match msg.Substring(0, 1) with
-            | id when id.Equals("=") -> mapPositionReport (msg.Substring 1) //We have a lat/lon position report without timestamot. Let's try to parse it.
-            | id when id.Equals(":") -> mapUnformattedMessage (msg.Substring 1) |> Ok //we have an unformatted messsage. Let's try to parse it
+        let data (info:string) =
+            match info.Substring(0, 1) with
+            | id when id.Equals("=") -> mapPositionReport (info.Substring 1) //We have a lat/lon position report without timestamot. Let's try to parse it.
+            | id when id.Equals(":") -> mapMessage (info.Substring 1) //|> Ok //we have Message data type. Lets try to parse it
             | id when id.Equals("{") -> //Ok (mapParticipantReport (msg.Substring(1))) //We have user-defined data. Maybe it's a participant report. Let's try to parse it
-                                        mapParticipantReport (msg.Substring 1)
+                                        mapParticipantReport (info.Substring 1)
                                         //let pRpt = (mapParticipantReport (msg.Substring 1))
                                         //match pRpt with
                                         //| Some r -> Ok r
                                         //| None -> Error "Participant report not in expected format"
-            | _                      -> mapUnsupportedMessage(msg.Substring 1) |> Ok //if not in supported format just turn it into a message so it can be logged
+            //| _                      -> mapUnsupportedMessage(info.Substring 1) |> Ok //if not in supported format just turn it into a message so it can be logged
 
         frame record
         |> Result.bind msg

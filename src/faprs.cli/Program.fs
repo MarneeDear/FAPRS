@@ -57,6 +57,19 @@ module Main =
             Comment = PositionReportComment.create comment
         }
 
+    let composeMessage (msg:ParseResults<CustomMessageArguments>) =
+        let addressee = msg.GetResult(CommandArguments.Addressee)
+        let message = msg.GetResult(CommandArguments.Message)
+        let callsign = 
+            match CallSign.create addressee with
+            | Some c -> c
+            | None -> failwith "ADDRESSEE cannot be empty and must be 1 - 9 characters." //TODO use a proper flow/pipeline with result type instead?
+        {
+            Addressee = callsign
+            MessageText = MessageText.create message
+            MessageNumber = MessageNumber.create String.Empty
+        }
+
     [<EntryPoint>]
     let main argv =
         let errorHandler = ProcessExiter(colorizer = function ErrorCode.HelpText -> None | _ -> Some ConsoleColor.Red)
@@ -80,12 +93,12 @@ module Main =
             let pRpt = results.TryGetResult(CommandArguments.PositionReport)
             let msg = results.TryGetResult(CommandArguments.CustomMessage)
 
-            let messageData =
+            let information =
                 match pRpt, msg with
                 | Some _, Some _        -> failwith "Cannot use both Position Report and Custom Message at the same time."
                 | Some rptArgs, None    -> PositionReportWithoutTimeStamp (composePositionReportMessage rptArgs) 
-                | None _, Some msg      -> Unformatted (UnformattedMessage.create msg)
-                | None, None            -> failwith "Must provide a position report or a custom message."
+                | None _, Some msg      -> Message (composeMessage msg) //Unformatted (UnformattedMessage.create msg)
+                | None, None            -> failwith "Must provide a position report or a message."
             
             let senderCallSign = 
                 match CallSign.create sender with
@@ -102,7 +115,7 @@ module Main =
                     Sender      = senderCallSign
                     Destination = destCall
                     Path        = WIDEnN WIDE11
-                    Message     = Some messageData
+                    Information = Some information
                 }
 
             let txDelay =                 
